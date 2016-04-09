@@ -15,19 +15,14 @@ namespace PilotRosteringSystem
 {
     public partial class Form1 : Form
     {
-        [DllImport("PilotRosteringSolver.dll", EntryPoint = "EC_OpenPort", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern uint EC_OpenPort(String port, String param);
+        //[DllImport("PilotRosteringSolver.dll", EntryPoint = "run", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        //public static extern void run(int argc, string argv);
 
-
-        [DllImport("PilotRosteringSolver.dll", EntryPoint = "EC_ClosePort", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern void EC_ClosePort(uint hdl_port);
-
-
-        [DllImport("PilotRosteringSolver.dll", EntryPoint = "EC_RunCmd", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern bool EC_RunCmd(uint hdl_port, byte[] cmd);
+        [DllImport("PilotRosteringSolver.dll", EntryPoint = "createRoster")]
+        public static extern void createRoster(string instanceFilePath, string rosterFilePath, string unfinishedIemsFilePath, bool ifRecovery);
 
         private const int PER_PAGE = 7;
-        private const String DATE = "date";
+        private const String HEADER = "  ";
         private DataTable sourceData;
         private int currentPage = 1;
         private int year;
@@ -35,8 +30,18 @@ namespace PilotRosteringSystem
         public Form1()
         {
             InitializeComponent();
-            String fileName = "roster.csv";
             dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Gray;
+            createRosterAndLoad(false);
+        }
+        private void createRosterAndLoad(bool ifRecovery)
+        {
+            String fileName = "roster";
+            createRoster("instance_1.txt", "roster.csv", "unfinished.txt", ifRecovery);
+            if (ifRecovery)
+            {
+                fileName += "20150101";
+            }
+            fileName += ".csv";
             loadRoster(fileName);
         }
         private void loadRoster(String fileName)
@@ -78,24 +83,21 @@ namespace PilotRosteringSystem
         }
         private DataTable getData(String filePath)
         {
-            Encoding encoding = Encoding.ASCII;
             DataTable dataTable = new DataTable();
             GregorianCalendar gc = new GregorianCalendar();
             DateTime dt;
             int spareDay;
-
-            FileStream fs = new FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
-
-            StreamReader sr = new StreamReader(fs, encoding);
+            FileStream fileStream = new FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+            StreamReader streamReader = new StreamReader(fileStream, Encoding.ASCII);
             string strLine = "";
             //记录每行记录中的各字段内容
             string[] aryLine = null;
             string[] tableHead = null;
             int columnCount = 0;
             //读取表头
-            if ((strLine = sr.ReadLine()) != null)
+            if ((strLine = streamReader.ReadLine()) != null)
             {
-                DataColumn dataColumn = new DataColumn(DATE);
+                DataColumn dataColumn = new DataColumn(HEADER);
                 dataTable.Columns.Add(dataColumn);
                 tableHead = strLine.Split(',');
                 columnCount = tableHead.Length - 1;
@@ -118,7 +120,7 @@ namespace PilotRosteringSystem
             {
                 return null;
             }
-            while ((strLine = sr.ReadLine()) != null)
+            while ((strLine = streamReader.ReadLine()) != null)
             {
                 aryLine = strLine.Split(',');
                 DataRow dataRow = dataTable.NewRow();
@@ -130,8 +132,8 @@ namespace PilotRosteringSystem
                 dataTable.Rows.Add(dataRow);
             }
 
-            sr.Close();
-            fs.Close();
+            streamReader.Close();
+            fileStream.Close();
             pageCount = (dataTable.Columns.Count - 2) / PER_PAGE + 1;
             return dataTable;
         }
@@ -140,7 +142,7 @@ namespace PilotRosteringSystem
             pageIndex--;
             DataTable desData = new DataTable();
             int columnsCount = sourceData.Columns.Count;
-            desData.Columns.Add(new DataColumn(DATE));
+            desData.Columns.Add(new DataColumn(HEADER));
             for (int i = 0; i < PER_PAGE && i + pageIndex * 7 + 1 < columnsCount; i++)
             {
                 DataColumn dataColumn = new DataColumn(sourceData.Columns[i + pageIndex * 7 + 1].ColumnName);
@@ -192,6 +194,11 @@ namespace PilotRosteringSystem
             dataGridView.DataSource = getDataByPage(++currentPage);
             setPage();
         
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            createRosterAndLoad(true);
         }
 
     }
