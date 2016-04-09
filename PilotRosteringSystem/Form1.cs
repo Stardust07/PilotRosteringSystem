@@ -22,15 +22,17 @@ namespace PilotRosteringSystem
         public static extern void createRoster(string instanceFilePath, string rosterFilePath, string unfinishedIemsFilePath, bool ifRecovery);
 
         private const int PER_PAGE = 7;
-        private const String HEADER = "  ";
+        private const String HEADER = " ";
         private DataTable sourceData;
         private int currentPage = 1;
-        private int year;
         private int pageCount = 0;
+        private int currentYear = 2016;
+        private int weekOfFirstDay = 1;
         public Form1()
         {
             InitializeComponent();
-            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Gray;
+            button1.Visible = false;
+            //dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Gray;
             createRosterAndLoad(false);
         }
         private void createRosterAndLoad(bool ifRecovery)
@@ -44,25 +46,40 @@ namespace PilotRosteringSystem
             fileName += ".csv";
             loadRoster(fileName);
         }
+        private void loadRosterByPage(int currentPage)
+        {
+            if (currentYear != dateTimePicker.Value.Year)
+            {
+                dataGridView.DataSource = new DataTable();
+                tipLabel.Visible = true;
+                pageContainer.Visible = false;
+                return;
+            }
+            pageContainer.Visible = true;
+            tipLabel.Visible = false;
+            dataGridView.DataSource = getDataByPage(currentPage);
+            for (int i = 0; i < dataGridView.Columns.Count; i++)
+            {
+                dataGridView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            adjustPage();
+            dataGridView.ClearSelection();
+            
+        }
         private void loadRoster(String fileName)
         {
             sourceData = getData(fileName);
+            
             int day = dateTimePicker.Value.DayOfYear;
             currentPage = (day - 1) / 7 + 1;
-            dataGridView.DataSource = getDataByPage(currentPage);
 
-            //dataGridView.Rows[0].Cells[0].Selected = false;
-            //int rowCount = dataGridView.Rows.Count;
-            //int currentIndex = day - (currentPage - 1) * 7 - 1;
-            //for (int i = 0; i < rowCount; i++)
-            //{
-            //    dataGridView.Rows[i].Cells[currentIndex].Selected = true;
-            //}
-
+            loadRosterByPage(currentPage);
+            //dataGridView.SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect;
+          
             label1.Text = "共" + pageCount.ToString() + "页";
-            setPage();
+            
         }
-        private void setPage()
+        private void adjustPage()
         {
             pageBox.Text = currentPage.ToString();
             if (currentPage == 1)
@@ -86,7 +103,6 @@ namespace PilotRosteringSystem
             DataTable dataTable = new DataTable();
             GregorianCalendar gc = new GregorianCalendar();
             DateTime dt;
-            int spareDay;
             FileStream fileStream = new FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
             StreamReader streamReader = new StreamReader(fileStream, Encoding.ASCII);
             string strLine = "";
@@ -101,13 +117,13 @@ namespace PilotRosteringSystem
                 dataTable.Columns.Add(dataColumn);
                 tableHead = strLine.Split(',');
                 columnCount = tableHead.Length - 1;
-                year = Convert.ToInt32(tableHead[1].Substring(0, 4));
-                dt = gc.ToDateTime(year, 1, 1, 0, 0, 0, 0);
-                spareDay = Convert.ToInt32(dt.DayOfWeek) - 1;
+                currentYear = Convert.ToInt32(tableHead[1].Substring(0, 4));
+                dt = gc.ToDateTime(currentYear, 1, 1, 0, 0, 0, 0);
+                weekOfFirstDay = Convert.ToInt32(dt.DayOfWeek);
 
-                for (int i = spareDay - 1; i >= 0 ; i--)
+                for (int i = weekOfFirstDay - 2; i >= 0; i--)
                 {
-                    dataColumn = new DataColumn((year - 1).ToString() + "12" + (31 - i).ToString());
+                    dataColumn = new DataColumn((currentYear - 1).ToString() + "12" + (31 - i).ToString());
                     dataTable.Columns.Add(dataColumn);
                 }
                 for (int i = 1; i <= columnCount; i++)
@@ -127,7 +143,7 @@ namespace PilotRosteringSystem
                 dataRow[0] = aryLine[0];
                 for (int j = 1; j < columnCount; j++)
                 {
-                    dataRow[j + spareDay] = aryLine[j];
+                    dataRow[j + weekOfFirstDay - 1] = aryLine[j];
                 }
                 dataTable.Rows.Add(dataRow);
             }
@@ -148,9 +164,9 @@ namespace PilotRosteringSystem
                 DataColumn dataColumn = new DataColumn(sourceData.Columns[i + pageIndex * 7 + 1].ColumnName);
                 desData.Columns.Add(dataColumn);
             }
-            for (int i = 0; i + desData.Columns.Count <= PER_PAGE; i++)
+            for (int i = 0; desData.Columns.Count <= PER_PAGE; i++)
             {
-                DataColumn dataColumn = new DataColumn((year + 1).ToString() + "010" + (1 + i).ToString());
+                DataColumn dataColumn = new DataColumn((currentYear + 1).ToString() + "010" + (1 + i).ToString());
                 desData.Columns.Add(dataColumn);
             }
             int rowsCount = sourceData.Rows.Count;
@@ -169,36 +185,84 @@ namespace PilotRosteringSystem
             return desData;
         }
 
-
         private void dateTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            int futurePage = (dateTimePicker.Value.DayOfYear - 1) / 7 + 1;
+            int futurePage = (dateTimePicker.Value.DayOfYear + weekOfFirstDay - 2) / 7 + 1;
             if (currentPage == futurePage)
             {
                 return;
             }
             currentPage = futurePage;
-            dataGridView.DataSource = getDataByPage(currentPage);
-            setPage();
+            loadRosterByPage(currentPage);
         }
 
+        private void adjustCalendar()
+        {
+            String timeString = dataGridView.Columns[1].HeaderText.ToString();
+            int year = Convert.ToInt32(timeString.Substring(0, 4));
+            int month, day;
+            if (year == currentYear)
+            {
+                month = Convert.ToInt32(timeString.Substring(4, 2));
+                day = Convert.ToInt32(timeString.Substring(6, 2));
+            }
+            else if (year < currentYear)
+            {
+                year = currentYear;
+                month = 1;
+                day = 1;
+            }
+            else
+            {
+                year = currentYear;
+                month = 12;
+                day = 31;
+            }
+            dateTimePicker.Value = new DateTime(year, month, day, new GregorianCalendar());
+        }
 
         private void previousButton_Click(object sender, EventArgs e)
         {
-            dataGridView.DataSource = getDataByPage(--currentPage);
-            setPage();
+            loadRosterByPage(--currentPage);
+            adjustCalendar();
         }
 
         private void nextButton_Click(object sender, EventArgs e)
         {
-            dataGridView.DataSource = getDataByPage(++currentPage);
-            setPage();
-        
+            loadRosterByPage(++currentPage);
+            adjustCalendar();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             createRosterAndLoad(true);
+        }
+
+        private void dataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+                {
+                    if (dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.Equals(""))
+                    {
+                        return;
+                    }
+                    if (dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Selected == false)
+                    {
+                        dataGridView.ClearSelection();
+                        dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Selected = true;
+                    }
+
+                    //弹出操作菜单
+                    contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
+                }
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            dataGridView.ClearSelection();
         }
 
     }

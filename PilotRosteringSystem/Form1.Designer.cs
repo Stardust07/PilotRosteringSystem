@@ -28,16 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.previousButton = new System.Windows.Forms.Button();
             this.nextButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.pageBox = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pageContainer = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tipLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.pageContainer.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView
@@ -50,14 +55,16 @@
             this.dataGridView.ColumnHeadersHeight = 45;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView.EnableHeadersVisualStyles = false;
-            this.dataGridView.Location = new System.Drawing.Point(13, 54);
+            this.dataGridView.Location = new System.Drawing.Point(10, 54);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.RowHeadersVisible = false;
             this.dataGridView.RowTemplate.Height = 27;
             this.dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView.Size = new System.Drawing.Size(982, 533);
+            this.dataGridView.ShowEditingIcon = false;
+            this.dataGridView.Size = new System.Drawing.Size(900, 500);
             this.dataGridView.TabIndex = 0;
             this.dataGridView.VirtualMode = true;
+            this.dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellMouseDown);
             // 
             // dateTimePicker
             // 
@@ -104,20 +111,20 @@
             this.pageBox.TabIndex = 5;
             this.pageBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // panel1
+            // pageContainer
             // 
-            this.panel1.Controls.Add(this.nextButton);
-            this.panel1.Controls.Add(this.pageBox);
-            this.panel1.Controls.Add(this.previousButton);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(700, 668);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(294, 41);
-            this.panel1.TabIndex = 6;
+            this.pageContainer.Controls.Add(this.nextButton);
+            this.pageContainer.Controls.Add(this.pageBox);
+            this.pageContainer.Controls.Add(this.previousButton);
+            this.pageContainer.Controls.Add(this.label1);
+            this.pageContainer.Location = new System.Drawing.Point(616, 581);
+            this.pageContainer.Name = "pageContainer";
+            this.pageContainer.Size = new System.Drawing.Size(294, 41);
+            this.pageContainer.TabIndex = 6;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(341, 23);
+            this.button1.Location = new System.Drawing.Point(835, 23);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
@@ -125,21 +132,52 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.删除ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(115, 30);
+            // 
+            // 删除ToolStripMenuItem
+            // 
+            this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
+            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(114, 26);
+            this.删除ToolStripMenuItem.Text = "删除";
+            // 
+            // tipLabel
+            // 
+            this.tipLabel.AutoSize = true;
+            this.tipLabel.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.tipLabel.Font = new System.Drawing.Font("宋体", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tipLabel.Location = new System.Drawing.Point(355, 287);
+            this.tipLabel.Name = "tipLabel";
+            this.tipLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.tipLabel.Size = new System.Drawing.Size(190, 34);
+            this.tipLabel.TabIndex = 8;
+            this.tipLabel.Text = "无排班计划";
+            this.tipLabel.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1006, 721);
+            this.ClientSize = new System.Drawing.Size(922, 631);
+            this.Controls.Add(this.tipLabel);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pageContainer);
             this.Controls.Add(this.dateTimePicker);
             this.Controls.Add(this.dataGridView);
             this.Name = "Form1";
             this.Text = "飞行员训练排班系统";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.pageContainer.ResumeLayout(false);
+            this.pageContainer.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -151,8 +189,11 @@
         private System.Windows.Forms.Button nextButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox pageBox;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pageContainer;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 删除ToolStripMenuItem;
+        private System.Windows.Forms.Label tipLabel;
     }
 }
 
