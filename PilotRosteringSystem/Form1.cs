@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Collections;
 namespace PilotRosteringSystem
 {
     public partial class Form1 : Form
@@ -21,6 +21,7 @@ namespace PilotRosteringSystem
         [DllImport("PilotRosteringSolver.dll", EntryPoint = "createRoster")]
         public static extern void createRoster(string instanceFilePath, string rosterFilePath, string unfinishedIemsFilePath, bool ifRecovery);
 
+        private Hashtable colorTable  = new Hashtable();
         private const int PER_PAGE = 7;
         private const String HEADER = " ";
         private DataTable sourceData;
@@ -28,12 +29,16 @@ namespace PilotRosteringSystem
         private int pageCount = 0;
         private int currentYear = 2016;
         private int weekOfFirstDay = 1;
+
         public Form1()
         {
             InitializeComponent();
-            button1.Visible = false;
+            reRosterBtn.Visible = true;
             //dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Gray;
-            createRosterAndLoad(false);
+            colorTable.Add("D1", Color.LightPink); 
+            colorTable.Add("D2", Color.LightSalmon);
+            colorTable.Add("D3", Color.IndianRed);
+            colorTable.Add("N1", Color.SlateGray);
         }
         private void createRosterAndLoad(bool ifRecovery)
         {
@@ -41,7 +46,7 @@ namespace PilotRosteringSystem
             createRoster("instance_1.txt", "roster.csv", "unfinished.txt", ifRecovery);
             if (ifRecovery)
             {
-                fileName += "20150101";
+                fileName += "20160101";
             }
             fileName += ".csv";
             loadRoster(fileName);
@@ -69,13 +74,11 @@ namespace PilotRosteringSystem
         private void loadRoster(String fileName)
         {
             sourceData = getData(fileName);
-            
             int day = dateTimePicker.Value.DayOfYear;
             currentPage = (day - 1) / 7 + 1;
 
             loadRosterByPage(currentPage);
             //dataGridView.SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect;
-          
             label1.Text = "共" + pageCount.ToString() + "页";
             
         }
@@ -179,7 +182,6 @@ namespace PilotRosteringSystem
                     dataRow[j] = sourceData.Rows[i][j + pageIndex * 7].ToString();
                 }
                 desData.Rows.Add(dataRow);
-
             }
 
             return desData;
@@ -235,14 +237,22 @@ namespace PilotRosteringSystem
 
         private void button1_Click(object sender, EventArgs e)
         {
-            createRosterAndLoad(true);
+            if (reRosterBtn.Text == "排班")
+            {
+                createRosterAndLoad(false);
+                reRosterBtn.Text = "重新排班";
+            }
+            else
+            {
+                createRosterAndLoad(true);
+            }
         }
 
         private void dataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+                if (e.RowIndex >= 0 && e.ColumnIndex > 0)
                 {
                     if (dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.Equals(""))
                     {
@@ -251,7 +261,9 @@ namespace PilotRosteringSystem
                     if (dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Selected == false)
                     {
                         dataGridView.ClearSelection();
-                        dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Selected = true;
+                        dataGridView.CurrentCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                        //dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Selected = true;
+                        
                     }
 
                     //弹出操作菜单
@@ -260,9 +272,42 @@ namespace PilotRosteringSystem
             }
         }
 
+        private void setCellBackColor()
+        {
+            for (int i = 0; i < dataGridView.RowCount; i++)
+            {
+                for (int j = 1; j < dataGridView.ColumnCount; j++)
+                {
+                    if (dataGridView.Rows[i].Cells[j].Value.ToString().Contains('|'))
+                    {
+                        String[] cellStrings = new String[2];
+                        cellStrings = dataGridView.Rows[i].Cells[j].Value.ToString().Split('|');
+                        dataGridView.Rows[i].Cells[j].Style.BackColor = (Color)colorTable[cellStrings[1]];
+                        dataGridView.Rows[i].Cells[j].Value = cellStrings[0];
+                    }
+                }
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             dataGridView.ClearSelection();
+            //dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        }
+
+        private void 删除ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int columnIndex = dataGridView.CurrentCell.ColumnIndex;
+            int rowIndex = dataGridView.CurrentCell.RowIndex;
+            label2.Text = dataGridView.Columns[columnIndex].HeaderText;
+            label2.Text = dataGridView.SelectedCells.Count.ToString();
+
+        }
+
+        private void dataGridView_DataSourceChanged(object sender, EventArgs e)
+        {
+            setCellBackColor();
         }
 
     }
