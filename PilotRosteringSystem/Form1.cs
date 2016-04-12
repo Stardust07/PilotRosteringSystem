@@ -22,6 +22,7 @@ namespace PilotRosteringSystem
         public static extern void createRoster(string instanceFilePath, string rosterFilePath, string unfinishedIemsFilePath, bool ifRecovery);
 
         private Hashtable colorTable  = new Hashtable();
+        private Hashtable durationTable = new Hashtable();
         private const int PER_PAGE = 7;
         private const String HEADER = " ";
         private DataTable sourceData;
@@ -29,26 +30,41 @@ namespace PilotRosteringSystem
         private int pageCount = 0;
         private int currentYear = 2016;
         private int weekOfFirstDay = 1;
-
+        private String instanceFile = "instance_1.txt";
+        private String lastRoster = "roster.csv";
+        private String unfinishedFile = "unfinished.txt";
+        private String unfinishedDate = "";
+        private Color D1_COLOR = Color.LightPink;
+        private Color D2_COLOR = Color.LightSalmon;
+        private Color D3_COLOR = Color.IndianRed;
+        private Color N1_COLOR = Color.SlateGray;
         public Form1()
         {
             InitializeComponent();
-            reRosterBtn.Visible = true;
-            //dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Gray;
-            colorTable.Add("D1", Color.LightPink); 
-            colorTable.Add("D2", Color.LightSalmon);
-            colorTable.Add("D3", Color.IndianRed);
-            colorTable.Add("N1", Color.SlateGray);
+            initialize();
+        }
+        private void initialize()
+        {
+            colorTable.Add("D1", D1_COLOR);
+            colorTable.Add("D2", D2_COLOR);
+            colorTable.Add("D3", D3_COLOR);
+            colorTable.Add("N1", N1_COLOR);
+
+            durationTable.Add(D1_COLOR, "D1");
+            durationTable.Add(D2_COLOR, "D2");
+            durationTable.Add(D3_COLOR, "D3");
+            durationTable.Add(N1_COLOR, "N1");
         }
         private void createRosterAndLoad(bool ifRecovery)
         {
             String fileName = "roster";
-            createRoster("instance_1.txt", "roster.csv", "unfinished.txt", ifRecovery);
+            createRoster(instanceFile, lastRoster, unfinishedFile, ifRecovery);
             if (ifRecovery)
             {
-                fileName += "20160101";
+                fileName += unfinishedDate;
             }
             fileName += ".csv";
+            lastRoster = fileName;
             loadRoster(fileName);
         }
         private void loadRosterByPage(int currentPage)
@@ -67,6 +83,7 @@ namespace PilotRosteringSystem
             {
                 dataGridView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
             }
+            //dataGridView.SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect;
             adjustPage();
             dataGridView.ClearSelection();
             
@@ -78,7 +95,7 @@ namespace PilotRosteringSystem
             currentPage = (day - 1) / 7 + 1;
 
             loadRosterByPage(currentPage);
-            //dataGridView.SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect;
+            
             label1.Text = "共" + pageCount.ToString() + "页";
             
         }
@@ -246,6 +263,7 @@ namespace PilotRosteringSystem
             {
                 createRosterAndLoad(true);
             }
+            reRosterBtn.Enabled = false;
         }
 
         private void dataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -292,7 +310,6 @@ namespace PilotRosteringSystem
         private void Form1_Load(object sender, EventArgs e)
         {
             dataGridView.ClearSelection();
-            //dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridView.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
@@ -300,14 +317,40 @@ namespace PilotRosteringSystem
         {
             int columnIndex = dataGridView.CurrentCell.ColumnIndex;
             int rowIndex = dataGridView.CurrentCell.RowIndex;
-            label2.Text = dataGridView.Columns[columnIndex].HeaderText;
-            label2.Text = dataGridView.SelectedCells.Count.ToString();
 
+            DataGridViewSelectedCellCollection selectedCells = dataGridView.SelectedCells;
+            selectedCells.GetType();
+            writeUnfinished(dataGridView.Columns[columnIndex].HeaderText, selectedCells);
+            for (int i = 0; i < selectedCells.Count; i++)
+            {
+                selectedCells[i].Value = "";
+            }
+            dataGridView.ClearSelection();
         }
 
         private void dataGridView_DataSourceChanged(object sender, EventArgs e)
         {
             setCellBackColor();
+        }
+
+        private void writeUnfinished(String date, DataGridViewSelectedCellCollection cells)
+        {
+            FileStream fileStream = new FileStream(unfinishedFile, FileMode.Create);
+            StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.Default);
+            unfinishedDate = date;
+            streamWriter.Write(date + " ");
+            streamWriter.Write(cells.Count.ToString() + "\r\n");
+            for (int i = 0; i < cells.Count; i++)
+            {
+                streamWriter.Write(dataGridView.Rows[cells[i].RowIndex].Cells[0].Value + " ");
+                streamWriter.Write(cells[i].Value + " ");       
+                streamWriter.Write(durationTable[cells[i].Style.BackColor] + "\r\n");
+            }
+            
+            streamWriter.Close();
+            fileStream.Close();
+            reRosterBtn.Enabled = true;
+            return;
         }
 
     }
