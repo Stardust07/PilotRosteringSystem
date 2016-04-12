@@ -29,7 +29,7 @@ namespace PilotRosteringSystem
         private Hashtable colorTable, durationTable;
         private String[] durations = { "D1", "D2", "D3", "N1" };
         private Color[] colors = { Color.LightPink, Color.LightSalmon, Color.IndianRed, Color.SlateGray };
-
+        private ArrayList unfinishedList;
         public Form1()
         {
             InitializeComponent();
@@ -47,6 +47,7 @@ namespace PilotRosteringSystem
             unfinishedFile = "unfinished.txt";
             unfinishedDate = "";
 
+            unfinishedList = new ArrayList();
             colorTable = new Hashtable();
             durationTable = new Hashtable();
 
@@ -122,24 +123,20 @@ namespace PilotRosteringSystem
         private DataTable getData(String filePath)
         {
             DataTable dataTable = new DataTable();
-            GregorianCalendar gc = new GregorianCalendar();
-            DateTime dt;
             FileStream fileStream = new FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
             StreamReader streamReader = new StreamReader(fileStream, Encoding.ASCII);
             string strLine = "";
-            //记录每行记录中的各字段内容
-            string[] aryLine = null;
-            string[] tableHead = null;
             int columnCount = 0;
             //读取表头
             if ((strLine = streamReader.ReadLine()) != null)
             {
                 DataColumn dataColumn = new DataColumn(HEADER);
                 dataTable.Columns.Add(dataColumn);
-                tableHead = strLine.Split(',');
-                columnCount = tableHead.Length - 1;
-                currentYear = Convert.ToInt32(tableHead[1].Substring(0, 4));
-                dt = gc.ToDateTime(currentYear, 1, 1, 0, 0, 0, 0);
+                string[] tableHeader = strLine.Split(',');
+                columnCount = tableHeader.Length - 1;
+                currentYear = Convert.ToInt32(tableHeader[1].Substring(0, 4));
+                GregorianCalendar gc = new GregorianCalendar();
+                DateTime dt = gc.ToDateTime(currentYear, 1, 1, 0, 0, 0, 0);
                 weekOfFirstDay = Convert.ToInt32(dt.DayOfWeek);
 
                 for (int i = weekOfFirstDay - 2; i >= 0; i--)
@@ -149,7 +146,7 @@ namespace PilotRosteringSystem
                 }
                 for (int i = 1; i <= columnCount; i++)
                 {
-                    dataColumn = new DataColumn(tableHead[i]);
+                    dataColumn = new DataColumn(tableHeader[i]);
                     dataTable.Columns.Add(dataColumn);
                 }
             }
@@ -159,12 +156,12 @@ namespace PilotRosteringSystem
             }
             while ((strLine = streamReader.ReadLine()) != null)
             {
-                aryLine = strLine.Split(',');
+                string[] contentStrings = strLine.Split(',');
                 DataRow dataRow = dataTable.NewRow();
-                dataRow[0] = aryLine[0];
+                dataRow[0] = contentStrings[0];
                 for (int j = 1; j < columnCount; j++)
                 {
-                    dataRow[j + weekOfFirstDay - 1] = aryLine[j];
+                    dataRow[j + weekOfFirstDay - 1] = contentStrings[j];
                 }
                 dataTable.Rows.Add(dataRow);
             }
@@ -262,6 +259,7 @@ namespace PilotRosteringSystem
             }
             else
             {
+                writeUnfinished();
                 createRosterAndLoad(true);
             }
             reRosterBtn.Enabled = false;
@@ -329,10 +327,16 @@ namespace PilotRosteringSystem
                     return;
                 }
             }
-            writeUnfinished(dataGridView.Columns[columnIndex].HeaderText, selectedCells);
-            foreach (DataGridViewCell cell in selectedCells)
+            if (updateUnfinishedList(dataGridView.Columns[columnIndex].HeaderText, selectedCells))
             {
-                cell.Value = "";
+                foreach (DataGridViewCell cell in selectedCells)
+                {
+                    cell.Value = "";
+                }
+            }
+            else
+            {
+                MessageBox.Show("非法的选择");
             }
             dataGridView.ClearSelection();
         }
@@ -342,28 +346,43 @@ namespace PilotRosteringSystem
             setCellBackColor();
         }
 
-        private void writeUnfinished(String date, DataGridViewSelectedCellCollection cells)
+        private bool updateUnfinishedList(String date, DataGridViewSelectedCellCollection cells)
+        {
+            
+            if (unfinishedList.Count != 0 && unfinishedDate != date)
+            {
+                return false;
+            }
+            unfinishedDate = date;
+            for (int i = 0; i < cells.Count; i++)
+            {
+                if (!cells[i].Value.Equals(""))
+                {
+                    String unfinished = "";
+                    unfinished += dataGridView.Rows[cells[i].RowIndex].Cells[0].Value + " ";
+                    unfinished += cells[i].Value + " ";
+                    unfinished += durationTable[cells[i].Style.BackColor] + "\r\n";
+                    unfinishedList.Add(unfinished);
+                }
+            }
+            reRosterBtn.Enabled = true;
+            return true;
+        }
+
+        private void writeUnfinished()
         {
             FileStream fileStream = new FileStream(unfinishedFile, FileMode.Create);
             StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.Default);
-            unfinishedDate = date;
-            streamWriter.Write(date + " ");
-            streamWriter.Write(cells.Count.ToString() + "\r\n");
-            for (int i = 0; i < cells.Count; i++)
+
+            streamWriter.Write(unfinishedDate + " " + unfinishedList.Count.ToString() + "\r\n");
+            for (int i = 0; i < unfinishedList.Count; i++)
             {
-                if (cells[i].Value != "")
-                {
-                    streamWriter.Write(dataGridView.Rows[cells[i].RowIndex].Cells[0].Value + " ");
-                    streamWriter.Write(cells[i].Value + " ");
-                    streamWriter.Write(durationTable[cells[i].Style.BackColor] + "\r\n");
-                }
+                streamWriter.Write(unfinishedList[i].ToString());
             }
-            
             streamWriter.Close();
             fileStream.Close();
-            reRosterBtn.Enabled = true;
-            return;
-        }
+            unfinishedList.Clear();
+        } 
 
     }
 }
