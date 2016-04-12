@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.previousButton = new System.Windows.Forms.Button();
             this.nextButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.totalPage = new System.Windows.Forms.Label();
             this.pageBox = new System.Windows.Forms.TextBox();
             this.pageContainer = new System.Windows.Forms.Panel();
             this.reRosterBtn = new System.Windows.Forms.Button();
@@ -61,14 +61,14 @@
             this.dataGridView.AllowUserToResizeRows = false;
             this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView.ColumnHeadersHeight = 45;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView.EnableHeadersVisualStyles = false;
@@ -112,14 +112,14 @@
             this.nextButton.UseVisualStyleBackColor = true;
             this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
             // 
-            // label1
+            // totalPage
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(246, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 15);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "共 页";
+            this.totalPage.AutoSize = true;
+            this.totalPage.Location = new System.Drawing.Point(246, 14);
+            this.totalPage.Name = "totalPage";
+            this.totalPage.Size = new System.Drawing.Size(45, 15);
+            this.totalPage.TabIndex = 4;
+            this.totalPage.Text = "共 页";
             // 
             // pageBox
             // 
@@ -134,7 +134,7 @@
             this.pageContainer.Controls.Add(this.nextButton);
             this.pageContainer.Controls.Add(this.pageBox);
             this.pageContainer.Controls.Add(this.previousButton);
-            this.pageContainer.Controls.Add(this.label1);
+            this.pageContainer.Controls.Add(this.totalPage);
             this.pageContainer.Location = new System.Drawing.Point(616, 581);
             this.pageContainer.Name = "pageContainer";
             this.pageContainer.Size = new System.Drawing.Size(294, 41);
@@ -156,12 +156,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.删除ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(109, 28);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(115, 30);
             // 
             // 删除ToolStripMenuItem
             // 
             this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
-            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(108, 24);
+            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(114, 26);
             this.删除ToolStripMenuItem.Text = "删除";
             this.删除ToolStripMenuItem.Click += new System.EventHandler(this.删除ToolStripMenuItem_Click);
             // 
@@ -271,7 +271,7 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.Button previousButton;
         private System.Windows.Forms.Button nextButton;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label totalPage;
         private System.Windows.Forms.TextBox pageBox;
         private System.Windows.Forms.Panel pageContainer;
         private System.Windows.Forms.Button reRosterBtn;
