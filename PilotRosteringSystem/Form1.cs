@@ -15,6 +15,37 @@ namespace PilotRosteringSystem
 {
     public partial class Form1 : Form
     {
+        class UnfinishedItem
+        {
+            private int rowIndex, columnIndex;
+            private String subject;
+            private Color backColor;
+
+            public UnfinishedItem(int x, int y, String subject, Color color)
+            {
+                this.rowIndex = x;
+                this.columnIndex = y;
+                this.subject = subject;
+                this.backColor = color;
+            }
+
+            public int getRow()
+            {
+                return rowIndex;
+            }
+            public int getColumn()
+            {
+                return columnIndex;
+            }
+            public String getSubject()
+            {
+                return subject;
+            }
+            public Color getColor()
+            {
+                return backColor;
+            }
+        }
         //[DllImport("PilotRosteringSolver.dll", EntryPoint = "run", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         //public static extern void run(int argc, string argv);
 
@@ -333,6 +364,7 @@ namespace PilotRosteringSystem
                 foreach (DataGridViewCell cell in selectedCells)
                 {
                     cell.Value = "";
+                    cell.Style.BackColor = Color.White;
                 }
             }
             else
@@ -349,21 +381,17 @@ namespace PilotRosteringSystem
 
         private bool updateUnfinishedList(String date, DataGridViewSelectedCellCollection cells)
         {
-            
-            if (unfinishedList.Count != 0 && String.Compare(unfinishedDate, date) != 0)
+
+            if (unfinishedList.Count != 0 && String.Compare(unfinishedDate, date.Substring(0, 8)) != 0)
             {
                 return false;
             }
-            unfinishedDate = date;
+            unfinishedDate = date.Substring(0, 8);
             for (int i = 0; i < cells.Count; i++)
             {
                 if (!String.IsNullOrEmpty(cells[i].Value.ToString()))
                 {
-                    String unfinished = "";
-                    unfinished += dataGridView.Rows[cells[i].RowIndex].Cells[0].Value + " ";
-                    unfinished += cells[i].Value + " ";
-                    unfinished += durationTable[cells[i].Style.BackColor] + "\r\n";
-                    unfinishedList.Add(unfinished);
+                    unfinishedList.Add(new UnfinishedItem(cells[i].RowIndex, cells[i].ColumnIndex, cells[i].Value.ToString(), cells[i].Style.BackColor));
                 }
             }
             reRosterBtn.Enabled = true;
@@ -378,11 +406,36 @@ namespace PilotRosteringSystem
             streamWriter.Write(unfinishedDate + " " + unfinishedList.Count.ToString() + "\r\n");
             for (int i = 0; i < unfinishedList.Count; i++)
             {
-                streamWriter.Write(unfinishedList[i].ToString());
+                String unfinished = "";
+                UnfinishedItem item = (UnfinishedItem)unfinishedList[i];
+                unfinished += dataGridView.Rows[item.getRow()].Cells[0].Value + " ";
+                unfinished += item.getSubject() + " ";
+                unfinished += durationTable[item.getColor()] + "\r\n";
+                streamWriter.Write(unfinished);
             }
             streamWriter.Close();
             fileStream.Close();
             unfinishedList.Clear();
+        }
+
+        private void undoButton_Click(object sender, EventArgs e)
+        {
+            if (unfinishedList.Count == 0)
+            {
+                return;
+            }
+            UnfinishedItem item = (UnfinishedItem)unfinishedList[unfinishedList.Count - 1];
+            int row = item.getRow();
+            int column = item.getColumn();
+            Color color = item.getColor();
+            String value = item.getSubject();
+            dataGridView.Rows[row].Cells[column].Value = value;
+            dataGridView.Rows[row].Cells[column].Style.BackColor = color;
+            unfinishedList.Remove(item);
+            if (unfinishedList.Count == 0)
+            {
+                unfinishedDate = "";
+            }
         }
     }
 }

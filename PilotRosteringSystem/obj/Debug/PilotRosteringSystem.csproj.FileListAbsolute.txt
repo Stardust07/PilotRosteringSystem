@@ -1,9 +1,9 @@
-F:\毕设\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.pdb
+F:\毕设\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.csprojFakesResolveAssemblyReference.cache
 F:\毕设\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.Form1.resources
 F:\毕设\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.Properties.Resources.resources
 F:\毕设\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.csproj.GenerateResource.Cache
 F:\毕设\PilotRosteringSystem\PilotRosteringSystem\bin\Debug\PilotRosteringSystem.exe.config
 F:\毕设\PilotRosteringSystem\PilotRosteringSystem\bin\Debug\PilotRosteringSystem.exe
 F:\毕设\PilotRosteringSystem\PilotRosteringSystem\bin\Debug\PilotRosteringSystem.pdb
-F:\毕设\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.csprojFakesResolveAssemblyReference.cache
 F:\毕设\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.exe
+F:\毕设\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.pdb

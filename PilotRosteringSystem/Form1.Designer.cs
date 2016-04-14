@@ -46,6 +46,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.D1Label = new System.Windows.Forms.Label();
+            this.undoButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.pageContainer.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -236,11 +237,22 @@
             this.D1Label.TabIndex = 0;
             this.D1Label.Text = "D1";
             // 
+            // undoButton
+            // 
+            this.undoButton.Location = new System.Drawing.Point(478, 25);
+            this.undoButton.Name = "undoButton";
+            this.undoButton.Size = new System.Drawing.Size(75, 23);
+            this.undoButton.TabIndex = 11;
+            this.undoButton.Text = "撤销";
+            this.undoButton.UseVisualStyleBackColor = true;
+            this.undoButton.Click += new System.EventHandler(this.undoButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(922, 631);
+            this.Controls.Add(this.undoButton);
             this.Controls.Add(this.colorPanel);
             this.Controls.Add(this.tipLabel);
             this.Controls.Add(this.reRosterBtn);
@@ -279,6 +291,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.Button undoButton;
     }
 }
 
