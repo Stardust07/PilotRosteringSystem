@@ -29,6 +29,7 @@ namespace PilotRosteringSystem
         private Hashtable colorTable, durationTable;
         private String[] durations = { "D1", "D2", "D3", "N1" };
         private Color[] colors = { Color.LightPink, Color.LightSalmon, Color.IndianRed, Color.SlateGray };
+        private String[] weekDays = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
         private ArrayList unfinishedList;
         public Form1()
         {
@@ -97,7 +98,7 @@ namespace PilotRosteringSystem
             currentPage = (day + weekOfFirstDay - 2) / 7 + 1;
 
             loadRosterByPage(currentPage);
-            
+            pageContainer.Enabled = true;
             totalPage.Text = "共" + pageCount.ToString() + "页";
             
         }
@@ -179,12 +180,12 @@ namespace PilotRosteringSystem
             desData.Columns.Add(new DataColumn(HEADER));
             for (int i = 0; i < PER_PAGE && i + pageIndex * 7 + 1 < columnsCount; i++)
             {
-                DataColumn dataColumn = new DataColumn(sourceData.Columns[i + pageIndex * 7 + 1].ColumnName);
+                DataColumn dataColumn = new DataColumn(sourceData.Columns[i + pageIndex * 7 + 1].ColumnName + "\r\n" + weekDays[i]);
                 desData.Columns.Add(dataColumn);
             }
             for (int i = 0; desData.Columns.Count <= PER_PAGE; i++)
             {
-                DataColumn dataColumn = new DataColumn((currentYear + 1).ToString() + "010" + (1 + i).ToString());
+                DataColumn dataColumn = new DataColumn((currentYear + 1).ToString() + "010" + (1 + i).ToString() + "\r\n" + weekDays[desData.Columns.Count - 1]);
                 desData.Columns.Add(dataColumn);
             }
             int rowsCount = sourceData.Rows.Count;
@@ -312,7 +313,7 @@ namespace PilotRosteringSystem
             dataGridView.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
-        private void 删除ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void 未完成ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int columnIndex = dataGridView.CurrentCell.ColumnIndex;
             int rowIndex = dataGridView.CurrentCell.RowIndex;
@@ -336,7 +337,7 @@ namespace PilotRosteringSystem
             }
             else
             {
-                MessageBox.Show("非法的选择");
+                MessageBox.Show("请选择" + unfinishedDate.ToString() + "的计划");
             }
             dataGridView.ClearSelection();
         }
@@ -349,14 +350,14 @@ namespace PilotRosteringSystem
         private bool updateUnfinishedList(String date, DataGridViewSelectedCellCollection cells)
         {
             
-            if (unfinishedList.Count != 0 && unfinishedDate != date)
+            if (unfinishedList.Count != 0 && String.Compare(unfinishedDate, date) != 0)
             {
                 return false;
             }
             unfinishedDate = date;
             for (int i = 0; i < cells.Count; i++)
             {
-                if (!cells[i].Value.Equals(""))
+                if (!String.IsNullOrEmpty(cells[i].Value.ToString()))
                 {
                     String unfinished = "";
                     unfinished += dataGridView.Rows[cells[i].RowIndex].Cells[0].Value + " ";
@@ -382,7 +383,6 @@ namespace PilotRosteringSystem
             streamWriter.Close();
             fileStream.Close();
             unfinishedList.Clear();
-        } 
-
+        }
     }
 }

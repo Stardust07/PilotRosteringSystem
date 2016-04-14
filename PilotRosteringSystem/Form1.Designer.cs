@@ -39,9 +39,8 @@
             this.pageContainer = new System.Windows.Forms.Panel();
             this.reRosterBtn = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.未完成ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tipLabel = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.colorPanel = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -72,7 +71,7 @@
             this.dataGridView.ColumnHeadersHeight = 45;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView.EnableHeadersVisualStyles = false;
-            this.dataGridView.Location = new System.Drawing.Point(10, 54);
+            this.dataGridView.Location = new System.Drawing.Point(10, 65);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.RowHeadersVisible = false;
             this.dataGridView.RowTemplate.Height = 27;
@@ -86,7 +85,7 @@
             // 
             // dateTimePicker
             // 
-            this.dateTimePicker.Location = new System.Drawing.Point(13, 23);
+            this.dateTimePicker.Location = new System.Drawing.Point(12, 23);
             this.dateTimePicker.Name = "dateTimePicker";
             this.dateTimePicker.Size = new System.Drawing.Size(200, 25);
             this.dateTimePicker.TabIndex = 1;
@@ -115,7 +114,7 @@
             // totalPage
             // 
             this.totalPage.AutoSize = true;
-            this.totalPage.Location = new System.Drawing.Point(246, 14);
+            this.totalPage.Location = new System.Drawing.Point(246, 10);
             this.totalPage.Name = "totalPage";
             this.totalPage.Size = new System.Drawing.Size(45, 15);
             this.totalPage.TabIndex = 4;
@@ -128,6 +127,7 @@
             this.pageBox.Size = new System.Drawing.Size(38, 25);
             this.pageBox.TabIndex = 5;
             this.pageBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.pageBox.Enter += new System.EventHandler(this.nextButton_Click);
             // 
             // pageContainer
             // 
@@ -135,6 +135,7 @@
             this.pageContainer.Controls.Add(this.pageBox);
             this.pageContainer.Controls.Add(this.previousButton);
             this.pageContainer.Controls.Add(this.totalPage);
+            this.pageContainer.Enabled = false;
             this.pageContainer.Location = new System.Drawing.Point(616, 581);
             this.pageContainer.Name = "pageContainer";
             this.pageContainer.Size = new System.Drawing.Size(294, 41);
@@ -142,9 +143,11 @@
             // 
             // reRosterBtn
             // 
-            this.reRosterBtn.Location = new System.Drawing.Point(835, 23);
+            this.reRosterBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reRosterBtn.Font = new System.Drawing.Font("宋体", 10F);
+            this.reRosterBtn.Location = new System.Drawing.Point(820, 18);
             this.reRosterBtn.Name = "reRosterBtn";
-            this.reRosterBtn.Size = new System.Drawing.Size(75, 23);
+            this.reRosterBtn.Size = new System.Drawing.Size(90, 30);
             this.reRosterBtn.TabIndex = 7;
             this.reRosterBtn.Text = "排班";
             this.reRosterBtn.UseVisualStyleBackColor = true;
@@ -154,16 +157,16 @@
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.删除ToolStripMenuItem});
+            this.未完成ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(115, 30);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(130, 30);
             // 
-            // 删除ToolStripMenuItem
+            // 未完成ToolStripMenuItem
             // 
-            this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
-            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(114, 26);
-            this.删除ToolStripMenuItem.Text = "删除";
-            this.删除ToolStripMenuItem.Click += new System.EventHandler(this.删除ToolStripMenuItem_Click);
+            this.未完成ToolStripMenuItem.Name = "未完成ToolStripMenuItem";
+            this.未完成ToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
+            this.未完成ToolStripMenuItem.Text = "未完成";
+            this.未完成ToolStripMenuItem.Click += new System.EventHandler(this.未完成ToolStripMenuItem_Click);
             // 
             // tipLabel
             // 
@@ -178,25 +181,15 @@
             this.tipLabel.Text = "无排班计划";
             this.tipLabel.Visible = false;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(643, 27);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(22, 15);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "的";
-            this.label2.Visible = false;
-            // 
             // colorPanel
             // 
             this.colorPanel.Controls.Add(this.label5);
             this.colorPanel.Controls.Add(this.label4);
             this.colorPanel.Controls.Add(this.label3);
             this.colorPanel.Controls.Add(this.D1Label);
-            this.colorPanel.Location = new System.Drawing.Point(240, 12);
+            this.colorPanel.Location = new System.Drawing.Point(648, 11);
             this.colorPanel.Name = "colorPanel";
-            this.colorPanel.Size = new System.Drawing.Size(166, 36);
+            this.colorPanel.Size = new System.Drawing.Size(166, 38);
             this.colorPanel.TabIndex = 10;
             // 
             // label5
@@ -205,7 +198,8 @@
             this.label5.BackColor = System.Drawing.Color.SlateGray;
             this.label5.Location = new System.Drawing.Point(127, 12);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(23, 15);
+            this.label5.Padding = new System.Windows.Forms.Padding(5);
+            this.label5.Size = new System.Drawing.Size(33, 25);
             this.label5.TabIndex = 3;
             this.label5.Text = "N1";
             // 
@@ -215,7 +209,8 @@
             this.label4.BackColor = System.Drawing.Color.IndianRed;
             this.label4.Location = new System.Drawing.Point(86, 12);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(23, 15);
+            this.label4.Padding = new System.Windows.Forms.Padding(5);
+            this.label4.Size = new System.Drawing.Size(33, 25);
             this.label4.TabIndex = 2;
             this.label4.Text = "D3";
             // 
@@ -225,7 +220,8 @@
             this.label3.BackColor = System.Drawing.Color.LightSalmon;
             this.label3.Location = new System.Drawing.Point(43, 12);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(23, 15);
+            this.label3.Padding = new System.Windows.Forms.Padding(5);
+            this.label3.Size = new System.Drawing.Size(33, 25);
             this.label3.TabIndex = 1;
             this.label3.Text = "D2";
             // 
@@ -235,7 +231,8 @@
             this.D1Label.BackColor = System.Drawing.Color.LightPink;
             this.D1Label.Location = new System.Drawing.Point(3, 12);
             this.D1Label.Name = "D1Label";
-            this.D1Label.Size = new System.Drawing.Size(23, 15);
+            this.D1Label.Padding = new System.Windows.Forms.Padding(5);
+            this.D1Label.Size = new System.Drawing.Size(33, 25);
             this.D1Label.TabIndex = 0;
             this.D1Label.Text = "D1";
             // 
@@ -245,7 +242,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(922, 631);
             this.Controls.Add(this.colorPanel);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.tipLabel);
             this.Controls.Add(this.reRosterBtn);
             this.Controls.Add(this.pageContainer);
@@ -267,7 +263,6 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.Button previousButton;
         private System.Windows.Forms.Button nextButton;
@@ -276,14 +271,14 @@
         private System.Windows.Forms.Panel pageContainer;
         private System.Windows.Forms.Button reRosterBtn;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 删除ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 未完成ToolStripMenuItem;
         private System.Windows.Forms.Label tipLabel;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel colorPanel;
         private System.Windows.Forms.Label D1Label;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DataGridView dataGridView;
     }
 }
 
