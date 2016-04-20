@@ -52,7 +52,7 @@ namespace PilotRosteringSystem
         [DllImport("PilotRosteringSolver.dll", EntryPoint = "createRoster")]
         public static extern void createRoster(string instanceFilePath, string rosterFilePath, string unfinishedIemsFilePath, bool ifRecovery);
 
-        private const int PER_PAGE = 7;
+        private int numberOfPerPage = 7;
         private const String HEADER = " ";
         private DataTable sourceData;
         private int currentPage, pageCount, currentYear, weekOfFirstDay;
@@ -107,6 +107,7 @@ namespace PilotRosteringSystem
             {
                 dataGridView.DataSource = new DataTable();
                 tipLabel.Visible = true;
+                dataGridView.BackgroundColor = Color.LightGray;
                 pageContainer.Visible = false;
                 return;
             }
@@ -126,7 +127,7 @@ namespace PilotRosteringSystem
         {
             sourceData = getData(fileName);
             int day = dateTimePicker.Value.DayOfYear;
-            currentPage = (day + weekOfFirstDay - 2) / 7 + 1;
+            currentPage = (day + weekOfFirstDay - 2) / numberOfPerPage + 1;
 
             loadRosterByPage(currentPage);
             pageContainer.Enabled = true;
@@ -173,12 +174,13 @@ namespace PilotRosteringSystem
 
                 for (int i = weekOfFirstDay - 2; i >= 0; i--)
                 {
-                    dataColumn = new DataColumn((currentYear - 1).ToString() + "12" + (31 - i).ToString());
+                    String header = (currentYear - 1).ToString() + "12" + (31 - i).ToString() + "\r\n" + weekDays[weekOfFirstDay - 2 - i];
+                    dataColumn = new DataColumn(header);
                     dataTable.Columns.Add(dataColumn);
                 }
                 for (int i = 1; i <= columnCount; i++)
                 {
-                    dataColumn = new DataColumn(tableHeader[i]);
+                    dataColumn = new DataColumn(tableHeader[i] + "\r\n" + weekDays[(i + weekOfFirstDay - 2) % 7]);
                     dataTable.Columns.Add(dataColumn);
                 }
             }
@@ -200,7 +202,7 @@ namespace PilotRosteringSystem
 
             streamReader.Close();
             fileStream.Close();
-            pageCount = (dataTable.Columns.Count - 2) / PER_PAGE + 1;
+            pageCount = (dataTable.Columns.Count - 2) / numberOfPerPage + 1;
             return dataTable;
         }
         private DataTable getDataByPage(int pageIndex)
@@ -209,14 +211,14 @@ namespace PilotRosteringSystem
             DataTable desData = new DataTable();
             int columnsCount = sourceData.Columns.Count;
             desData.Columns.Add(new DataColumn(HEADER));
-            for (int i = 0; i < PER_PAGE && i + pageIndex * 7 + 1 < columnsCount; i++)
+            for (int i = 0; i < numberOfPerPage && i + pageIndex * numberOfPerPage + 1 < columnsCount; i++)
             {
-                DataColumn dataColumn = new DataColumn(sourceData.Columns[i + pageIndex * 7 + 1].ColumnName + "\r\n" + weekDays[i]);
+                DataColumn dataColumn = new DataColumn(sourceData.Columns[i + pageIndex * numberOfPerPage + 1].ColumnName);
                 desData.Columns.Add(dataColumn);
             }
-            for (int i = 0; desData.Columns.Count <= PER_PAGE; i++)
+            for (int i = 0; desData.Columns.Count <= numberOfPerPage; i++)
             {
-                DataColumn dataColumn = new DataColumn((currentYear + 1).ToString() + "010" + (1 + i).ToString() + "\r\n" + weekDays[desData.Columns.Count - 1]);
+                DataColumn dataColumn = new DataColumn((currentYear + 1).ToString() + "010" + (1 + i).ToString());
                 desData.Columns.Add(dataColumn);
             }
             int rowsCount = sourceData.Rows.Count;
@@ -224,9 +226,9 @@ namespace PilotRosteringSystem
             {
                 DataRow dataRow = desData.NewRow();
                 dataRow[0] = sourceData.Rows[i][0].ToString();
-                for (int j = 1; j <= PER_PAGE && j + pageIndex * 7 < columnsCount; j++)
+                for (int j = 1; j <= numberOfPerPage && j + pageIndex * numberOfPerPage < columnsCount; j++)
                 {
-                    dataRow[j] = sourceData.Rows[i][j + pageIndex * 7].ToString();
+                    dataRow[j] = sourceData.Rows[i][j + pageIndex * numberOfPerPage].ToString();
                 }
                 desData.Rows.Add(dataRow);
             }
@@ -236,7 +238,7 @@ namespace PilotRosteringSystem
 
         private void dateTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            int futurePage = (dateTimePicker.Value.DayOfYear + weekOfFirstDay - 2) / 7 + 1;
+            int futurePage = (dateTimePicker.Value.DayOfYear + weekOfFirstDay - 2) / numberOfPerPage + 1;
             if (currentPage == futurePage)
             {
                 return;
@@ -293,6 +295,7 @@ namespace PilotRosteringSystem
             {
                 writeUnfinished();
                 createRosterAndLoad(true);
+                撤销ToolStripMenuItem.Enabled = false;
             }
             reRosterBtn.Enabled = false;
         }
@@ -386,7 +389,12 @@ namespace PilotRosteringSystem
             {
                 return false;
             }
-            unfinishedDate = date.Substring(0, 8);
+            if (unfinishedList.Count == 0)
+            {
+                撤销ToolStripMenuItem.Enabled = true;
+                unfinishedDate = date.Substring(0, 8);
+            }
+           
             for (int i = 0; i < cells.Count; i++)
             {
                 if (!String.IsNullOrEmpty(cells[i].Value.ToString()))
@@ -435,6 +443,73 @@ namespace PilotRosteringSystem
             if (unfinishedList.Count == 0)
             {
                 unfinishedDate = "";
+            }
+        }
+
+        private void dataGridView_SizeChanged(object sender, EventArgs e)
+        {
+            if (numberOfPerPage == (dataGridView.Width - 1) / 100 || dataGridView.DataSource == null)
+            {
+                return;
+            }
+            numberOfPerPage = (dataGridView.Width - 1) / 100;
+            loadRosterByPage(1);
+            label1.Text = numberOfPerPage.ToString() + " " + dataGridView.Width.ToString();
+        }
+
+        private void 撤销ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (unfinishedList.Count == 0)
+            {
+                return;
+            }
+            UnfinishedItem item = (UnfinishedItem)unfinishedList[unfinishedList.Count - 1];
+            int row = item.getRow();
+            int column = item.getColumn();
+            Color color = item.getColor();
+            String value = item.getSubject();
+            dataGridView.Rows[row].Cells[column].Value = value;
+            dataGridView.Rows[row].Cells[column].Style.BackColor = color;
+            unfinishedList.Remove(item);
+            if (unfinishedList.Count == 0)
+            {
+                unfinishedDate = "";
+                撤销ToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        private void 调整计划ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            writeUnfinished();
+            createRosterAndLoad(true);
+            撤销ToolStripMenuItem.Enabled = false;
+        }
+
+        private void 打开算例ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = "文本文件 (*.txt)|*.txt|所有文件 (*.*)|*.*"; //过滤文件类型
+            fileDialog.InitialDirectory = Application.StartupPath + "\\Temp\\";//设定初始目录
+            DialogResult result = fileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                instanceFile = fileDialog.FileName;
+                createRosterAndLoad(false);
+                return;
+            }
+        }
+
+        private void 打开排班表ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = "表格文件 (*.csv)|*.csv|所有文件 (*.*)|*.*"; 
+            fileDialog.InitialDirectory = Application.StartupPath + "\\Temp\\";
+            DialogResult result = fileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                lastRoster = fileDialog.FileName;
+                loadRoster(lastRoster);
+                return;
             }
         }
     }
