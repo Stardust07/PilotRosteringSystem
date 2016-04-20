@@ -103,11 +103,11 @@ namespace PilotRosteringSystem
         }
         private void loadRosterByPage(int currentPage)
         {
+            dataGridView.DataSource = null;
             if (currentYear != dateTimePicker.Value.Year)
             {
                 dataGridView.DataSource = new DataTable();
                 tipLabel.Visible = true;
-                dataGridView.BackgroundColor = Color.LightGray;
                 pageContainer.Visible = false;
                 return;
             }
@@ -216,11 +216,11 @@ namespace PilotRosteringSystem
                 DataColumn dataColumn = new DataColumn(sourceData.Columns[i + pageIndex * numberOfPerPage + 1].ColumnName);
                 desData.Columns.Add(dataColumn);
             }
-            for (int i = 0; desData.Columns.Count <= numberOfPerPage; i++)
-            {
-                DataColumn dataColumn = new DataColumn((currentYear + 1).ToString() + "010" + (1 + i).ToString());
-                desData.Columns.Add(dataColumn);
-            }
+            //for (int i = 0; desData.Columns.Count <= numberOfPerPage; i++)
+            //{
+            //    DataColumn dataColumn = new DataColumn((currentYear + 1).ToString() + "010" + (1 + i).ToString());
+            //    desData.Columns.Add(dataColumn);
+            //}
             int rowsCount = sourceData.Rows.Count;
             for (int i = 0; i < rowsCount; i++)
             {
@@ -284,21 +284,21 @@ namespace PilotRosteringSystem
             adjustCalendar();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (reRosterBtn.Text == "排班")
-            {
-                createRosterAndLoad(false);
-                reRosterBtn.Text = "重新排班";
-            }
-            else
-            {
-                writeUnfinished();
-                createRosterAndLoad(true);
-                撤销ToolStripMenuItem.Enabled = false;
-            }
-            reRosterBtn.Enabled = false;
-        }
+        //private void button1_Click(object sender, EventArgs e)
+        //{
+        //    if (reRosterBtn.Text == "排班")
+        //    {
+        //        createRosterAndLoad(false);
+        //        reRosterBtn.Text = "重新排班";
+        //    }
+        //    else
+        //    {
+        //        writeUnfinished();
+        //        createRosterAndLoad(true);
+        //        撤销ToolStripMenuItem.Enabled = false;
+        //    }
+        //    reRosterBtn.Enabled = false;
+        //}
 
         private void dataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -392,6 +392,7 @@ namespace PilotRosteringSystem
             if (unfinishedList.Count == 0)
             {
                 撤销ToolStripMenuItem.Enabled = true;
+                调整计划ToolStripMenuItem.Enabled = true;
                 unfinishedDate = date.Substring(0, 8);
             }
            
@@ -402,7 +403,7 @@ namespace PilotRosteringSystem
                     unfinishedList.Add(new UnfinishedItem(cells[i].RowIndex, cells[i].ColumnIndex, cells[i].Value.ToString(), cells[i].Style.BackColor));
                 }
             }
-            reRosterBtn.Enabled = true;
+            
             return true;
         }
 
@@ -447,14 +448,21 @@ namespace PilotRosteringSystem
         }
 
         private void dataGridView_SizeChanged(object sender, EventArgs e)
-        {
-            if (numberOfPerPage == (dataGridView.Width - 1) / 100 || dataGridView.DataSource == null)
+        {    
+            if (numberOfPerPage == (dataGridView.Width - 1) / 100)
             {
+               
                 return;
             }
-            numberOfPerPage = (dataGridView.Width - 1) / 100;
-            loadRosterByPage(1);
-            label1.Text = numberOfPerPage.ToString() + " " + dataGridView.Width.ToString();
+            numberOfPerPage = (dataGridView.Width - 1) / 100 > 0 ? (dataGridView.Width - 1) / 100 : 1;
+            
+            if (dataGridView.DataSource != null)
+            {
+                pageCount = (sourceData.Columns.Count - 2) / numberOfPerPage + 1;
+                totalPage.Text = "共" + pageCount.ToString() + "页";
+                currentPage = (dateTimePicker.Value.DayOfYear + weekOfFirstDay - 2) / numberOfPerPage + 1;
+                loadRosterByPage(currentPage);
+            }
         }
 
         private void 撤销ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -475,6 +483,7 @@ namespace PilotRosteringSystem
             {
                 unfinishedDate = "";
                 撤销ToolStripMenuItem.Enabled = false;
+                调整计划ToolStripMenuItem.Enabled = false;
             }
         }
 
@@ -483,6 +492,7 @@ namespace PilotRosteringSystem
             writeUnfinished();
             createRosterAndLoad(true);
             撤销ToolStripMenuItem.Enabled = false;
+            调整计划ToolStripMenuItem.Enabled = false;
         }
 
         private void 打开算例ToolStripMenuItem_Click(object sender, EventArgs e)

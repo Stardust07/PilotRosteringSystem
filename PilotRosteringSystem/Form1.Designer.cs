@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.previousButton = new System.Windows.Forms.Button();
@@ -37,7 +37,6 @@
             this.totalPage = new System.Windows.Forms.Label();
             this.pageBox = new System.Windows.Forms.TextBox();
             this.pageContainer = new System.Windows.Forms.Panel();
-            this.reRosterBtn = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.未完成ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tipLabel = new System.Windows.Forms.Label();
@@ -46,8 +45,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.D1Label = new System.Windows.Forms.Label();
-            this.undoButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.打开算例ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,26 +69,26 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView.ColumnHeadersHeight = 45;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView.EnableHeadersVisualStyles = false;
             this.dataGridView.Location = new System.Drawing.Point(10, 65);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.RowHeadersVisible = false;
             this.dataGridView.RowHeadersWidth = 100;
             this.dataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dataGridView.RowTemplate.Height = 27;
+            this.dataGridView.RowTemplate.Height = 30;
             this.dataGridView.ShowEditingIcon = false;
             this.dataGridView.Size = new System.Drawing.Size(800, 500);
             this.dataGridView.TabIndex = 0;
+            this.dataGridView.Tag = "";
             this.dataGridView.VirtualMode = true;
             this.dataGridView.DataSourceChanged += new System.EventHandler(this.dataGridView_DataSourceChanged);
             this.dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellMouseDown);
@@ -141,7 +138,6 @@
             this.pageBox.Size = new System.Drawing.Size(38, 25);
             this.pageBox.TabIndex = 5;
             this.pageBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.pageBox.Enter += new System.EventHandler(this.nextButton_Click);
             // 
             // pageContainer
             // 
@@ -155,18 +151,6 @@
             this.pageContainer.Name = "pageContainer";
             this.pageContainer.Size = new System.Drawing.Size(294, 41);
             this.pageContainer.TabIndex = 6;
-            // 
-            // reRosterBtn
-            // 
-            this.reRosterBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.reRosterBtn.Font = new System.Drawing.Font("宋体", 10F);
-            this.reRosterBtn.Location = new System.Drawing.Point(720, 29);
-            this.reRosterBtn.Name = "reRosterBtn";
-            this.reRosterBtn.Size = new System.Drawing.Size(90, 30);
-            this.reRosterBtn.TabIndex = 7;
-            this.reRosterBtn.Text = "排班";
-            this.reRosterBtn.UseVisualStyleBackColor = true;
-            this.reRosterBtn.Click += new System.EventHandler(this.button1_Click);
             // 
             // contextMenuStrip1
             // 
@@ -188,15 +172,13 @@
             this.tipLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tipLabel.AutoEllipsis = true;
-            this.tipLabel.AutoSize = true;
             this.tipLabel.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.tipLabel.Font = new System.Drawing.Font("宋体", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tipLabel.Location = new System.Drawing.Point(305, 287);
+            this.tipLabel.Location = new System.Drawing.Point(10, 65);
             this.tipLabel.Name = "tipLabel";
             this.tipLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tipLabel.Size = new System.Drawing.Size(185, 33);
-            this.tipLabel.TabIndex = 8;
+            this.tipLabel.Size = new System.Drawing.Size(800, 500);
+            this.tipLabel.TabIndex = 0;
             this.tipLabel.Text = "无排班计划";
             this.tipLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -207,9 +189,9 @@
             this.colorPanel.Controls.Add(this.label4);
             this.colorPanel.Controls.Add(this.label3);
             this.colorPanel.Controls.Add(this.D1Label);
-            this.colorPanel.Location = new System.Drawing.Point(548, 21);
+            this.colorPanel.Location = new System.Drawing.Point(647, 21);
             this.colorPanel.Name = "colorPanel";
-            this.colorPanel.Size = new System.Drawing.Size(166, 38);
+            this.colorPanel.Size = new System.Drawing.Size(163, 38);
             this.colorPanel.TabIndex = 10;
             // 
             // label5
@@ -256,25 +238,6 @@
             this.D1Label.TabIndex = 0;
             this.D1Label.Text = "D1";
             // 
-            // undoButton
-            // 
-            this.undoButton.Location = new System.Drawing.Point(433, 29);
-            this.undoButton.Name = "undoButton";
-            this.undoButton.Size = new System.Drawing.Size(75, 23);
-            this.undoButton.TabIndex = 11;
-            this.undoButton.Text = "撤销";
-            this.undoButton.UseVisualStyleBackColor = true;
-            this.undoButton.Click += new System.EventHandler(this.undoButton_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(333, 29);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 15);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "label1";
-            // 
             // menuStrip1
             // 
             this.menuStrip1.BackColor = System.Drawing.SystemColors.MenuBar;
@@ -301,14 +264,14 @@
             // 打开算例ToolStripMenuItem
             // 
             this.打开算例ToolStripMenuItem.Name = "打开算例ToolStripMenuItem";
-            this.打开算例ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.打开算例ToolStripMenuItem.Size = new System.Drawing.Size(159, 26);
             this.打开算例ToolStripMenuItem.Text = "打开算例";
             this.打开算例ToolStripMenuItem.Click += new System.EventHandler(this.打开算例ToolStripMenuItem_Click);
             // 
             // 打开排班表ToolStripMenuItem
             // 
             this.打开排班表ToolStripMenuItem.Name = "打开排班表ToolStripMenuItem";
-            this.打开排班表ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.打开排班表ToolStripMenuItem.Size = new System.Drawing.Size(159, 26);
             this.打开排班表ToolStripMenuItem.Text = "打开排班表";
             this.打开排班表ToolStripMenuItem.Click += new System.EventHandler(this.打开排班表ToolStripMenuItem_Click);
             // 
@@ -331,6 +294,7 @@
             // 
             // 调整计划ToolStripMenuItem
             // 
+            this.调整计划ToolStripMenuItem.Enabled = false;
             this.调整计划ToolStripMenuItem.Name = "调整计划ToolStripMenuItem";
             this.调整计划ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.调整计划ToolStripMenuItem.Text = "调整计划";
@@ -342,11 +306,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(822, 631);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.undoButton);
             this.Controls.Add(this.colorPanel);
             this.Controls.Add(this.tipLabel);
-            this.Controls.Add(this.reRosterBtn);
             this.Controls.Add(this.pageContainer);
             this.Controls.Add(this.dateTimePicker);
             this.Controls.Add(this.dataGridView);
@@ -375,7 +336,6 @@
         private System.Windows.Forms.Label totalPage;
         private System.Windows.Forms.TextBox pageBox;
         private System.Windows.Forms.Panel pageContainer;
-        private System.Windows.Forms.Button reRosterBtn;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 未完成ToolStripMenuItem;
         private System.Windows.Forms.Label tipLabel;
@@ -385,8 +345,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.Button undoButton;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 文件ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 打开算例ToolStripMenuItem;
