@@ -82,6 +82,7 @@ namespace PilotRosteringSystem
             unfinishedList = new ArrayList();
             colorTable = new Hashtable();
             durationTable = new Hashtable();
+            columnBox.Text = numberOfPerPage.ToString();
 
             for (int i = 0; i < durations.Length; i++)
             {
@@ -455,14 +456,8 @@ namespace PilotRosteringSystem
                 return;
             }
             numberOfPerPage = (dataGridView.Width - 1) / 100 > 0 ? (dataGridView.Width - 1) / 100 : 1;
-            
-            if (dataGridView.DataSource != null)
-            {
-                pageCount = (sourceData.Columns.Count - 2) / numberOfPerPage + 1;
-                totalPage.Text = "共" + pageCount.ToString() + "页";
-                currentPage = (dateTimePicker.Value.DayOfYear + weekOfFirstDay - 2) / numberOfPerPage + 1;
-                loadRosterByPage(currentPage);
-            }
+
+            loadPageAfterResizing();
         }
 
         private void 撤销ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -520,6 +515,66 @@ namespace PilotRosteringSystem
                 lastRoster = fileDialog.FileName;
                 loadRoster(lastRoster);
                 return;
+            }
+        }
+
+        private void pageBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                int page = Convert.ToInt32(pageBox.Text);
+                if (page > 0 && page <= pageCount)
+                {
+                    currentPage = page;
+                    loadRosterByPage(currentPage);
+                }
+                else if (page > pageCount)
+                {
+                    pageBox.Text = pageCount.ToString();
+                    currentPage = pageCount;
+                    loadRosterByPage(currentPage);
+                }
+                else
+                {
+                    pageBox.Text = 1.ToString();
+                    currentPage = 1;
+                    loadRosterByPage(currentPage);
+                }
+            }
+        }
+
+        private void keyPressed(object sender, KeyPressEventArgs e)
+        {
+            if (!(Char.IsNumber(e.KeyChar)) && e.KeyChar != (char)13 && e.KeyChar != (char)8)
+            {
+                e.Handled = true;
+            } 
+        }
+
+        private void columnBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (Convert.ToInt32(columnBox.Text) < 7)
+                {
+                    numberOfPerPage = 7;
+                }
+                else
+                {
+                    numberOfPerPage = Convert.ToInt32(columnBox.Text);
+                }
+                loadPageAfterResizing();
+            }
+        }
+        private void loadPageAfterResizing()
+        {
+            columnBox.Text = numberOfPerPage.ToString();
+            if (dataGridView.DataSource != null)
+            {
+                //pageCount = (sourceData.Columns.Count - 2) / numberOfPerPage + 1;
+                //totalPage.Text = "共" + pageCount.ToString() + "页";
+                //currentPage = (dateTimePicker.Value.DayOfYear + weekOfFirstDay - 2) / numberOfPerPage + 1;
+                //loadRosterByPage(currentPage);
             }
         }
     }

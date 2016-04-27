@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.previousButton = new System.Windows.Forms.Button();
@@ -52,6 +52,8 @@
             this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.撤销ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.调整计划ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.columnBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.pageContainer.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -69,18 +71,19 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView.ColumnHeadersHeight = 45;
             this.dataGridView.EnableHeadersVisualStyles = false;
             this.dataGridView.Location = new System.Drawing.Point(10, 65);
             this.dataGridView.Name = "dataGridView";
+            this.dataGridView.ReadOnly = true;
             this.dataGridView.RowHeadersVisible = false;
             this.dataGridView.RowHeadersWidth = 100;
             this.dataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
@@ -134,10 +137,13 @@
             // pageBox
             // 
             this.pageBox.Location = new System.Drawing.Point(93, 3);
+            this.pageBox.MaxLength = 2;
             this.pageBox.Name = "pageBox";
             this.pageBox.Size = new System.Drawing.Size(38, 25);
             this.pageBox.TabIndex = 5;
             this.pageBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.pageBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.pageBox_KeyDown);
+            this.pageBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.keyPressed);
             // 
             // pageContainer
             // 
@@ -288,7 +294,7 @@
             // 
             this.撤销ToolStripMenuItem.Enabled = false;
             this.撤销ToolStripMenuItem.Name = "撤销ToolStripMenuItem";
-            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
             this.撤销ToolStripMenuItem.Text = "撤销";
             this.撤销ToolStripMenuItem.Click += new System.EventHandler(this.撤销ToolStripMenuItem_Click);
             // 
@@ -296,15 +302,38 @@
             // 
             this.调整计划ToolStripMenuItem.Enabled = false;
             this.调整计划ToolStripMenuItem.Name = "调整计划ToolStripMenuItem";
-            this.调整计划ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.调整计划ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
             this.调整计划ToolStripMenuItem.Text = "调整计划";
             this.调整计划ToolStripMenuItem.Click += new System.EventHandler(this.调整计划ToolStripMenuItem_Click);
+            // 
+            // columnBox
+            // 
+            this.columnBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.columnBox.Location = new System.Drawing.Point(584, 34);
+            this.columnBox.MaxLength = 2;
+            this.columnBox.Name = "columnBox";
+            this.columnBox.Size = new System.Drawing.Size(41, 25);
+            this.columnBox.TabIndex = 14;
+            this.columnBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.columnBox_KeyDown);
+            this.columnBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.keyPressed);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(501, 44);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(67, 15);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "每页列数";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(822, 631);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.columnBox);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.colorPanel);
             this.Controls.Add(this.tipLabel);
@@ -312,6 +341,7 @@
             this.Controls.Add(this.dateTimePicker);
             this.Controls.Add(this.dataGridView);
             this.MainMenuStrip = this.menuStrip1;
+            this.MinimumSize = new System.Drawing.Size(840, 47);
             this.Name = "Form1";
             this.Text = "飞行员训练排班系统";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -352,6 +382,8 @@
         private System.Windows.Forms.ToolStripMenuItem 编辑ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 撤销ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 调整计划ToolStripMenuItem;
+        private System.Windows.Forms.TextBox columnBox;
+        private System.Windows.Forms.Label label1;
     }
 }
 
