@@ -55,7 +55,7 @@ namespace PilotRosteringSystem
         private int numberOfPerPage = 7;
         private const String HEADER = " ";
         private DataTable sourceData;
-        private int currentPage, pageCount, currentYear, weekOfFirstDay;
+        private int currentPage, pageCount, currentYear, weekOfFirstDay, currentOffset;
         private String instanceFile, lastRoster, unfinishedFile, unfinishedDate;
         private Hashtable colorTable, durationTable;
         private String[] durations = { "D1", "D2", "D3", "N1" };
@@ -73,6 +73,7 @@ namespace PilotRosteringSystem
             pageCount = 0;
             currentYear = 2016;
             weekOfFirstDay = 1;
+            currentOffset = 0;
 
             instanceFile = "instance_1.txt";
             lastRoster = "roster.csv";
@@ -114,12 +115,13 @@ namespace PilotRosteringSystem
             }
             pageContainer.Visible = true;
             tipLabel.Visible = false;
-            dataGridView.DataSource = getDataByPage(currentPage);
+            dataGridView.DataSource = getDataByDay(currentOffset + (currentPage - 1) * numberOfPerPage + 1);
+            //dataGridView.DataSource = getDataByPage(currentPage);
             for (int i = 0; i < dataGridView.Columns.Count; i++)
             {
                 dataGridView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            //dataGridView.SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect;
+
             adjustPage();
             dataGridView.ClearSelection();
             
@@ -128,7 +130,7 @@ namespace PilotRosteringSystem
         {
             sourceData = getData(fileName);
             int day = dateTimePicker.Value.DayOfYear;
-            currentPage = (day + weekOfFirstDay - 2) / numberOfPerPage + 1;
+            currentPage = (day - 1) / numberOfPerPage + 1;
 
             loadRosterByPage(currentPage);
             pageContainer.Enabled = true;
@@ -153,6 +155,7 @@ namespace PilotRosteringSystem
                 previousButton.Enabled = true;
                 nextButton.Enabled = true;
             }
+            totalPage.Text = "共" + pageCount.ToString() + "页";
         }
         private DataTable getData(String filePath)
         {
@@ -171,14 +174,8 @@ namespace PilotRosteringSystem
                 currentYear = Convert.ToInt32(tableHeader[1].Substring(0, 4));
                 GregorianCalendar gc = new GregorianCalendar();
                 DateTime dt = gc.ToDateTime(currentYear, 1, 1, 0, 0, 0, 0);
-                weekOfFirstDay = Convert.ToInt32(dt.DayOfWeek);
+                weekOfFirstDay = Convert.ToInt32(dt.DayOfWeek) == 0 ? 7 : Convert.ToInt32(dt.DayOfWeek);
 
-                for (int i = weekOfFirstDay - 2; i >= 0; i--)
-                {
-                    String header = (currentYear - 1).ToString() + "12" + (31 - i).ToString() + "\r\n" + weekDays[weekOfFirstDay - 2 - i];
-                    dataColumn = new DataColumn(header);
-                    dataTable.Columns.Add(dataColumn);
-                }
                 for (int i = 1; i <= columnCount; i++)
                 {
                     dataColumn = new DataColumn(tableHeader[i] + "\r\n" + weekDays[(i + weekOfFirstDay - 2) % 7]);
@@ -196,7 +193,7 @@ namespace PilotRosteringSystem
                 dataRow[0] = contentStrings[0];
                 for (int j = 1; j < columnCount; j++)
                 {
-                    dataRow[j + weekOfFirstDay - 1] = contentStrings[j];
+                    dataRow[j] = contentStrings[j];
                 }
                 dataTable.Rows.Add(dataRow);
             }
@@ -206,6 +203,48 @@ namespace PilotRosteringSystem
             pageCount = (dataTable.Columns.Count - 2) / numberOfPerPage + 1;
             return dataTable;
         }
+
+        private DataTable getDataByDay(int start)
+        {
+
+            DataTable desData = new DataTable();
+            int columnsCount = sourceData.Columns.Count;
+            desData.Columns.Add(new DataColumn(HEADER));
+            int i = start;
+            for (; i <= 0; i++)
+            {
+                DataColumn dataColumn = new DataColumn(formatDate(i - 1));
+                desData.Columns.Add(dataColumn);
+            }
+            for (; i - start < numberOfPerPage && i < columnsCount; i++)
+            {
+                DataColumn dataColumn = new DataColumn(sourceData.Columns[i].ColumnName);
+                desData.Columns.Add(dataColumn);
+            }
+            for (; i - start < numberOfPerPage; i++)
+            {
+                DataColumn dataColumn = new DataColumn(formatDate(i - columnsCount));
+                desData.Columns.Add(dataColumn);
+            }
+
+            int rowsCount = sourceData.Rows.Count;
+            for (i = 0; i < rowsCount; i++)
+            {
+                DataRow dataRow = desData.NewRow();
+                dataRow[0] = sourceData.Rows[i][0].ToString();
+                for (int j = 1; j <= numberOfPerPage && j + start - 1 < columnsCount; j++)
+                {
+                    if (j + start - 1 >= 1)
+                    {
+                        dataRow[j] = sourceData.Rows[i][j + start - 1].ToString();
+                    }
+                }
+                desData.Rows.Add(dataRow);
+            }
+
+            return desData;
+        }
+
         private DataTable getDataByPage(int pageIndex)
         {
             pageIndex--;
@@ -217,11 +256,7 @@ namespace PilotRosteringSystem
                 DataColumn dataColumn = new DataColumn(sourceData.Columns[i + pageIndex * numberOfPerPage + 1].ColumnName);
                 desData.Columns.Add(dataColumn);
             }
-            //for (int i = 0; desData.Columns.Count <= numberOfPerPage; i++)
-            //{
-            //    DataColumn dataColumn = new DataColumn((currentYear + 1).ToString() + "010" + (1 + i).ToString());
-            //    desData.Columns.Add(dataColumn);
-            //}
+
             int rowsCount = sourceData.Rows.Count;
             for (int i = 0; i < rowsCount; i++)
             {
@@ -239,7 +274,7 @@ namespace PilotRosteringSystem
 
         private void dateTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            int futurePage = (dateTimePicker.Value.DayOfYear + weekOfFirstDay - 2) / numberOfPerPage + 1;
+            int futurePage = (dateTimePicker.Value.DayOfYear - currentOffset - 1) / numberOfPerPage + 1;
             if (currentPage == futurePage)
             {
                 return;
@@ -307,7 +342,7 @@ namespace PilotRosteringSystem
             {
                 if (e.RowIndex >= 0 && e.ColumnIndex > 0)
                 {
-                    if (dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.Equals(""))
+                    if (String.IsNullOrEmpty(dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()))
                     {
                         return;
                     }
@@ -452,7 +487,10 @@ namespace PilotRosteringSystem
         {    
             if (numberOfPerPage == (dataGridView.Width - 1) / 100)
             {
-               
+                return;
+            }
+            if (Convert.ToInt32(columnBox.Text) > numberOfPerPage)
+            {
                 return;
             }
             numberOfPerPage = (dataGridView.Width - 1) / 100 > 0 ? (dataGridView.Width - 1) / 100 : 1;
@@ -540,6 +578,7 @@ namespace PilotRosteringSystem
                     currentPage = 1;
                     loadRosterByPage(currentPage);
                 }
+                adjustCalendar();
             }
         }
 
@@ -555,6 +594,7 @@ namespace PilotRosteringSystem
         {
             if (e.KeyCode == Keys.Enter)
             {
+                resize(Convert.ToInt32(columnBox.Text));
                 if (Convert.ToInt32(columnBox.Text) < 7)
                 {
                     numberOfPerPage = 7;
@@ -571,11 +611,75 @@ namespace PilotRosteringSystem
             columnBox.Text = numberOfPerPage.ToString();
             if (dataGridView.DataSource != null)
             {
-                //pageCount = (sourceData.Columns.Count - 2) / numberOfPerPage + 1;
-                //totalPage.Text = "共" + pageCount.ToString() + "页";
-                //currentPage = (dateTimePicker.Value.DayOfYear + weekOfFirstDay - 2) / numberOfPerPage + 1;
-                //loadRosterByPage(currentPage);
+                if (currentYear != dateTimePicker.Value.Year)
+                {
+                    dataGridView.DataSource = new DataTable();
+                    tipLabel.Visible = true;
+                    pageContainer.Visible = false;
+                    return;
+                }
+                pageContainer.Visible = true;
+                tipLabel.Visible = false;
+                if (currentPage != 1)
+                {
+                    String date = dataGridView.Columns[1].HeaderText.ToString().Substring(0, 8);
+                    GregorianCalendar gc = new GregorianCalendar();
+                    DateTime dt = gc.ToDateTime(currentYear, Convert.ToInt32(date.Substring(4, 2)), Convert.ToInt32(date.Substring(6, 2)), 0, 0, 0, 0);
+                    int day = dt.DayOfYear;
+                    dataGridView.DataSource = null;
+                    dataGridView.DataSource = getDataByDay(day);
+                    currentPage = (day == 1) ? 1 : ((day - 2) / numberOfPerPage + 2);
+                    pageCount = currentPage + ((DateTime.IsLeapYear(dt.Year) ? 366 : 365) - dt.DayOfYear) / numberOfPerPage;
+                    currentOffset = (day == 1) ? 0 : (day - 1 - (currentPage - 1) * numberOfPerPage); 
+                }
+                else
+                {
+                    dataGridView.DataSource = null;
+                    dataGridView.DataSource = getDataByDay(currentOffset + 1);
+                    pageCount = (sourceData.Columns.Count - currentOffset) / numberOfPerPage + 1;
+                }
+                for (int i = 0; i < dataGridView.Columns.Count; i++)
+                {
+                    dataGridView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
+                
+                adjustPage();
+                dataGridView.ClearSelection();
             }
+        }
+        private void resize(int number)
+        {
+            this.Size = new Size(140 + 100 * number, this.Size.Height); 
+        }
+
+        private String formatDate(int offset)
+        {
+            String date = "";
+            DateTime dt;
+            if (offset < 0)
+            {
+                date += (currentYear - 1).ToString();
+                dt = new DateTime(currentYear - 1, 12, 31);
+                offset++;
+            }
+            else
+            {
+                dt = new DateTime(currentYear + 1, 1, 1);
+                date += (currentYear + 1).ToString();
+            }
+            dt = dt.AddDays(offset);
+            if (dt.Month < 10)
+            {
+                date += "0";
+            }
+            date += dt.Month.ToString();
+            if (dt.Day < 10)
+            {
+                date += "0";
+            }
+            date += dt.Day.ToString();
+            date += "\r\n" + weekDays[(Convert.ToInt32(dt.DayOfWeek) + 6) % 7];
+            return date;
         }
     }
 }
