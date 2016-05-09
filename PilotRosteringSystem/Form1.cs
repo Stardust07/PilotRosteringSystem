@@ -62,6 +62,7 @@ namespace PilotRosteringSystem
         private Color[] colors = { Color.LightPink, Color.LightSalmon, Color.IndianRed, Color.SlateGray };
         private String[] weekDays = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
         private ArrayList unfinishedList;
+        private ArrayList unfinishedActionList;
         public Form1()
         {
             InitializeComponent();
@@ -81,6 +82,7 @@ namespace PilotRosteringSystem
             unfinishedDate = "";
 
             unfinishedList = new ArrayList();
+            unfinishedActionList = new ArrayList();
             colorTable = new Hashtable();
             durationTable = new Hashtable();
             columnBox.Text = numberOfPerPage.ToString();
@@ -427,11 +429,12 @@ namespace PilotRosteringSystem
             }
             if (unfinishedList.Count == 0)
             {
+                undoButton.Enabled = true;
                 撤销ToolStripMenuItem.Enabled = true;
                 调整计划ToolStripMenuItem.Enabled = true;
                 unfinishedDate = date.Substring(0, 8);
             }
-           
+            unfinishedActionList.Add(cells.Count);
             for (int i = 0; i < cells.Count; i++)
             {
                 if (!String.IsNullOrEmpty(cells[i].Value.ToString()))
@@ -461,26 +464,7 @@ namespace PilotRosteringSystem
             streamWriter.Close();
             fileStream.Close();
             unfinishedList.Clear();
-        }
-
-        private void undoButton_Click(object sender, EventArgs e)
-        {
-            if (unfinishedList.Count == 0)
-            {
-                return;
-            }
-            UnfinishedItem item = (UnfinishedItem)unfinishedList[unfinishedList.Count - 1];
-            int row = item.getRow();
-            int column = item.getColumn();
-            Color color = item.getColor();
-            String value = item.getSubject();
-            dataGridView.Rows[row].Cells[column].Value = value;
-            dataGridView.Rows[row].Cells[column].Style.BackColor = color;
-            unfinishedList.Remove(item);
-            if (unfinishedList.Count == 0)
-            {
-                unfinishedDate = "";
-            }
+            unfinishedActionList.Clear();
         }
 
         private void dataGridView_SizeChanged(object sender, EventArgs e)
@@ -500,30 +484,19 @@ namespace PilotRosteringSystem
 
         private void 撤销ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (unfinishedList.Count == 0)
+            int length = unfinishedList.Count;
+            for (int i = 0; i < length; i++)
             {
-                return;
+                recoverItem();
             }
-            UnfinishedItem item = (UnfinishedItem)unfinishedList[unfinishedList.Count - 1];
-            int row = item.getRow();
-            int column = item.getColumn();
-            Color color = item.getColor();
-            String value = item.getSubject();
-            dataGridView.Rows[row].Cells[column].Value = value;
-            dataGridView.Rows[row].Cells[column].Style.BackColor = color;
-            unfinishedList.Remove(item);
-            if (unfinishedList.Count == 0)
-            {
-                unfinishedDate = "";
-                撤销ToolStripMenuItem.Enabled = false;
-                调整计划ToolStripMenuItem.Enabled = false;
-            }
+            unfinishedActionList.Clear();
         }
 
         private void 调整计划ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             writeUnfinished();
             createRosterAndLoad(true);
+            undoButton.Enabled = false;
             撤销ToolStripMenuItem.Enabled = false;
             调整计划ToolStripMenuItem.Enabled = false;
         }
@@ -680,6 +653,40 @@ namespace PilotRosteringSystem
             date += dt.Day.ToString();
             date += "\r\n" + weekDays[(Convert.ToInt32(dt.DayOfWeek) + 6) % 7];
             return date;
+        }
+
+        private void undoButton_Click_1(object sender, EventArgs e)
+        {
+            if (unfinishedList.Count == 0)
+            {
+                return;
+            }
+            //recoverItem(); 
+            Object count = unfinishedActionList[unfinishedActionList.Count - 1];
+            for (int i = 0; i < (int)count; i++)
+            {
+                recoverItem();
+            }
+            unfinishedActionList.Remove(count);
+
+        }
+
+        private void recoverItem()
+        {
+            UnfinishedItem item = (UnfinishedItem)unfinishedList[unfinishedList.Count - 1];
+            int row = item.getRow();
+            int column = item.getColumn();
+            Color color = item.getColor();
+            String value = item.getSubject();
+            dataGridView.Rows[row].Cells[column].Value = value;
+            dataGridView.Rows[row].Cells[column].Style.BackColor = color;
+            unfinishedList.Remove(item);
+            if (unfinishedList.Count == 0)
+            {
+                unfinishedDate = "";
+                撤销ToolStripMenuItem.Enabled = false;
+                调整计划ToolStripMenuItem.Enabled = false;
+            }
         }
     }
 }

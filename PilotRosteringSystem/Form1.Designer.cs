@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.previousButton = new System.Windows.Forms.Button();
@@ -52,6 +53,7 @@
             this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.撤销ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.调整计划ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.undoButton = new System.Windows.Forms.ToolStripMenuItem();
             this.columnBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -164,12 +166,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.未完成ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(124, 28);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(130, 30);
             // 
             // 未完成ToolStripMenuItem
             // 
             this.未完成ToolStripMenuItem.Name = "未完成ToolStripMenuItem";
-            this.未完成ToolStripMenuItem.Size = new System.Drawing.Size(123, 24);
+            this.未完成ToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
             this.未完成ToolStripMenuItem.Text = "未完成";
             this.未完成ToolStripMenuItem.Click += new System.EventHandler(this.未完成ToolStripMenuItem_Click);
             // 
@@ -251,7 +253,8 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.文件ToolStripMenuItem,
-            this.编辑ToolStripMenuItem});
+            this.编辑ToolStripMenuItem,
+            this.undoButton});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(822, 28);
@@ -294,17 +297,24 @@
             // 
             this.撤销ToolStripMenuItem.Enabled = false;
             this.撤销ToolStripMenuItem.Name = "撤销ToolStripMenuItem";
-            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
-            this.撤销ToolStripMenuItem.Text = "撤销";
+            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.撤销ToolStripMenuItem.Text = "撤销全部";
             this.撤销ToolStripMenuItem.Click += new System.EventHandler(this.撤销ToolStripMenuItem_Click);
             // 
             // 调整计划ToolStripMenuItem
             // 
             this.调整计划ToolStripMenuItem.Enabled = false;
             this.调整计划ToolStripMenuItem.Name = "调整计划ToolStripMenuItem";
-            this.调整计划ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
+            this.调整计划ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.调整计划ToolStripMenuItem.Text = "调整计划";
             this.调整计划ToolStripMenuItem.Click += new System.EventHandler(this.调整计划ToolStripMenuItem_Click);
+            // 
+            // undoButton
+            // 
+            this.undoButton.Image = ((System.Drawing.Image)(resources.GetObject("undoButton.Image")));
+            this.undoButton.Name = "undoButton";
+            this.undoButton.Size = new System.Drawing.Size(32, 24);
+            this.undoButton.Click += new System.EventHandler(this.undoButton_Click_1);
             // 
             // columnBox
             // 
@@ -386,6 +396,7 @@
         private System.Windows.Forms.ToolStripMenuItem 调整计划ToolStripMenuItem;
         private System.Windows.Forms.TextBox columnBox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem undoButton;
     }
 }
 
