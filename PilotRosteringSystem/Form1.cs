@@ -55,7 +55,7 @@ namespace PilotRosteringSystem
         private int numberOfPerPage = 7;
         private const String HEADER = " ";
         private DataTable sourceData;
-        private int currentPage, pageCount, currentYear, weekOfFirstDay, currentOffset;
+        private int currentPage, pageCount, currentYear, weekOfFirstDay, currentOffset, userPage;
         private String instanceFile, lastRoster, unfinishedFile, unfinishedDate;
         private Hashtable colorTable, durationTable;
         private String[] durations = { "D1", "D2", "D3", "N1" };
@@ -75,6 +75,7 @@ namespace PilotRosteringSystem
             currentYear = 2016;
             weekOfFirstDay = 1;
             currentOffset = 0;
+            userPage = 0;
 
             instanceFile = "instance_1.txt";
             lastRoster = "roster.csv";
@@ -132,7 +133,7 @@ namespace PilotRosteringSystem
         {
             sourceData = getData(fileName);
             int day = dateTimePicker.Value.DayOfYear;
-            currentPage = (day - 1) / numberOfPerPage + 1;
+            currentPage = (day - currentOffset - 1) / numberOfPerPage + 1;
 
             loadRosterByPage(currentPage);
             pageContainer.Enabled = true;
@@ -322,22 +323,6 @@ namespace PilotRosteringSystem
             adjustCalendar();
         }
 
-        //private void button1_Click(object sender, EventArgs e)
-        //{
-        //    if (reRosterBtn.Text == "排班")
-        //    {
-        //        createRosterAndLoad(false);
-        //        reRosterBtn.Text = "重新排班";
-        //    }
-        //    else
-        //    {
-        //        writeUnfinished();
-        //        createRosterAndLoad(true);
-        //        撤销ToolStripMenuItem.Enabled = false;
-        //    }
-        //    reRosterBtn.Enabled = false;
-        //}
-
         private void dataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -352,10 +337,7 @@ namespace PilotRosteringSystem
                     {
                         dataGridView.ClearSelection();
                         dataGridView.CurrentCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                        //dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Selected = true;
-                        
                     }
-
                     //弹出操作菜单
                     contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
                 }
@@ -382,6 +364,7 @@ namespace PilotRosteringSystem
         private void Form1_Load(object sender, EventArgs e)
         {
             dataGridView.ClearSelection();
+            dataGridView.Size = new Size(800, 500);
             dataGridView.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
@@ -391,7 +374,7 @@ namespace PilotRosteringSystem
             int rowIndex = dataGridView.CurrentCell.RowIndex;
 
             DataGridViewSelectedCellCollection selectedCells = dataGridView.SelectedCells;
-            for (int i = 1; i < selectedCells.Count; i++)
+            for (int i = 0; i < selectedCells.Count; i++)
             {
                 if (selectedCells[i].ColumnIndex != columnIndex)
                 {
@@ -473,12 +456,15 @@ namespace PilotRosteringSystem
             {
                 return;
             }
-            if (Convert.ToInt32(columnBox.Text) > numberOfPerPage)
+            if (userPage == 0)
             {
-                return;
+                numberOfPerPage = (dataGridView.Width - 1) / 100 > 7 ? (dataGridView.Width - 1) / 100 : 7;
             }
-            numberOfPerPage = (dataGridView.Width - 1) / 100 > 0 ? (dataGridView.Width - 1) / 100 : 1;
-
+            else
+            {
+                numberOfPerPage = userPage;
+                userPage = 0;
+            }
             loadPageAfterResizing();
         }
 
@@ -567,16 +553,18 @@ namespace PilotRosteringSystem
         {
             if (e.KeyCode == Keys.Enter)
             {
-                resize(Convert.ToInt32(columnBox.Text));
-                if (Convert.ToInt32(columnBox.Text) < 7)
+                userPage = Convert.ToInt32(columnBox.Text);
+                if (userPage < 7)
                 {
-                    numberOfPerPage = 7;
+                    userPage = 7;
+                    columnBox.Text = userPage.ToString();
                 }
-                else
+                resize(userPage);
+                if (numberOfPerPage != Convert.ToInt32(columnBox.Text))
                 {
                     numberOfPerPage = Convert.ToInt32(columnBox.Text);
+                    loadPageAfterResizing();
                 }
-                loadPageAfterResizing();
             }
         }
         private void loadPageAfterResizing()
@@ -608,6 +596,10 @@ namespace PilotRosteringSystem
                 else
                 {
                     dataGridView.DataSource = null;
+                    if (numberOfPerPage + currentOffset <= 0)
+                    {
+                        currentOffset = 0;
+                    }
                     dataGridView.DataSource = getDataByDay(currentOffset + 1);
                     pageCount = (sourceData.Columns.Count - currentOffset) / numberOfPerPage + 1;
                 }
@@ -622,7 +614,13 @@ namespace PilotRosteringSystem
         }
         private void resize(int number)
         {
-            this.Size = new Size(140 + 100 * number, this.Size.Height); 
+            if (this.WindowState == FormWindowState.Maximized)
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+                
+            this.Size = new Size(140 + 100 * number, this.Size.Height);
+            return;
         }
 
         private String formatDate(int offset)
@@ -661,7 +659,6 @@ namespace PilotRosteringSystem
             {
                 return;
             }
-            //recoverItem(); 
             Object count = unfinishedActionList[unfinishedActionList.Count - 1];
             for (int i = 0; i < (int)count; i++)
             {
@@ -686,6 +683,18 @@ namespace PilotRosteringSystem
                 unfinishedDate = "";
                 撤销ToolStripMenuItem.Enabled = false;
                 调整计划ToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        private void dataGridView_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            DataGridViewSelectedCellCollection selectedCells = dataGridView.SelectedCells;
+            foreach (DataGridViewCell cell in selectedCells)
+            {
+                if (String.IsNullOrEmpty(cell.Value.ToString()))
+                {
+                    cell.Selected = false;
+                }
             }
         }
     }

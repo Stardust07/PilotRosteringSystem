@@ -46,6 +46,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.D1Label = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.columnBox = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.打开算例ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,13 +56,15 @@
             this.撤销ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.调整计划ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.columnBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.pageContainer.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.colorPanel.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView
@@ -83,7 +87,8 @@
             this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView.ColumnHeadersHeight = 45;
             this.dataGridView.EnableHeadersVisualStyles = false;
-            this.dataGridView.Location = new System.Drawing.Point(10, 65);
+            this.dataGridView.Location = new System.Drawing.Point(10, 70);
+            this.dataGridView.MinimumSize = new System.Drawing.Size(800, 500);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
             this.dataGridView.RowHeadersVisible = false;
@@ -97,11 +102,13 @@
             this.dataGridView.VirtualMode = true;
             this.dataGridView.DataSourceChanged += new System.EventHandler(this.dataGridView_DataSourceChanged);
             this.dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellMouseDown);
+            this.dataGridView.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellMouseUp);
             this.dataGridView.SizeChanged += new System.EventHandler(this.dataGridView_SizeChanged);
             // 
             // dateTimePicker
             // 
-            this.dateTimePicker.Location = new System.Drawing.Point(10, 34);
+            this.dateTimePicker.Dock = System.Windows.Forms.DockStyle.Left;
+            this.dateTimePicker.Location = new System.Drawing.Point(0, 0);
             this.dateTimePicker.Name = "dateTimePicker";
             this.dateTimePicker.Size = new System.Drawing.Size(200, 25);
             this.dateTimePicker.TabIndex = 1;
@@ -109,6 +116,7 @@
             // 
             // previousButton
             // 
+            this.previousButton.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.previousButton.Location = new System.Drawing.Point(12, 3);
             this.previousButton.Name = "previousButton";
             this.previousButton.Size = new System.Drawing.Size(75, 26);
@@ -119,6 +127,7 @@
             // 
             // nextButton
             // 
+            this.nextButton.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.nextButton.Location = new System.Drawing.Point(137, 3);
             this.nextButton.Name = "nextButton";
             this.nextButton.Size = new System.Drawing.Size(75, 26);
@@ -166,12 +175,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.未完成ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(130, 30);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(124, 28);
             // 
             // 未完成ToolStripMenuItem
             // 
             this.未完成ToolStripMenuItem.Name = "未完成ToolStripMenuItem";
-            this.未完成ToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
+            this.未完成ToolStripMenuItem.Size = new System.Drawing.Size(123, 24);
             this.未完成ToolStripMenuItem.Text = "未完成";
             this.未完成ToolStripMenuItem.Click += new System.EventHandler(this.未完成ToolStripMenuItem_Click);
             // 
@@ -182,7 +191,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tipLabel.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.tipLabel.Font = new System.Drawing.Font("宋体", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tipLabel.Location = new System.Drawing.Point(10, 65);
+            this.tipLabel.Location = new System.Drawing.Point(10, 70);
             this.tipLabel.Name = "tipLabel";
             this.tipLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tipLabel.Size = new System.Drawing.Size(800, 500);
@@ -192,21 +201,22 @@
             // 
             // colorPanel
             // 
-            this.colorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.colorPanel.Controls.Add(this.label5);
             this.colorPanel.Controls.Add(this.label4);
             this.colorPanel.Controls.Add(this.label3);
             this.colorPanel.Controls.Add(this.D1Label);
-            this.colorPanel.Location = new System.Drawing.Point(647, 21);
+            this.colorPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.colorPanel.Location = new System.Drawing.Point(646, 0);
+            this.colorPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.colorPanel.Name = "colorPanel";
-            this.colorPanel.Size = new System.Drawing.Size(163, 38);
+            this.colorPanel.Size = new System.Drawing.Size(154, 33);
             this.colorPanel.TabIndex = 10;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.SlateGray;
-            this.label5.Location = new System.Drawing.Point(127, 12);
+            this.label5.Location = new System.Drawing.Point(120, 0);
             this.label5.Name = "label5";
             this.label5.Padding = new System.Windows.Forms.Padding(5);
             this.label5.Size = new System.Drawing.Size(33, 25);
@@ -217,7 +227,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.IndianRed;
-            this.label4.Location = new System.Drawing.Point(86, 12);
+            this.label4.Location = new System.Drawing.Point(81, 0);
             this.label4.Name = "label4";
             this.label4.Padding = new System.Windows.Forms.Padding(5);
             this.label4.Size = new System.Drawing.Size(33, 25);
@@ -228,7 +238,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.LightSalmon;
-            this.label3.Location = new System.Drawing.Point(43, 12);
+            this.label3.Location = new System.Drawing.Point(42, 0);
             this.label3.Name = "label3";
             this.label3.Padding = new System.Windows.Forms.Padding(5);
             this.label3.Size = new System.Drawing.Size(33, 25);
@@ -239,12 +249,39 @@
             // 
             this.D1Label.AutoSize = true;
             this.D1Label.BackColor = System.Drawing.Color.LightPink;
-            this.D1Label.Location = new System.Drawing.Point(3, 12);
+            this.D1Label.Location = new System.Drawing.Point(3, 0);
+            this.D1Label.Margin = new System.Windows.Forms.Padding(3);
             this.D1Label.Name = "D1Label";
             this.D1Label.Padding = new System.Windows.Forms.Padding(5);
             this.D1Label.Size = new System.Drawing.Size(33, 25);
             this.D1Label.TabIndex = 0;
             this.D1Label.Text = "D1";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("宋体", 9F);
+            this.label1.Location = new System.Drawing.Point(21, 0);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
+            this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(5);
+            this.label1.Size = new System.Drawing.Size(77, 25);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "每页列数";
+            // 
+            // columnBox
+            // 
+            this.columnBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.columnBox.Location = new System.Drawing.Point(106, 0);
+            this.columnBox.Margin = new System.Windows.Forms.Padding(0);
+            this.columnBox.MaxLength = 2;
+            this.columnBox.Name = "columnBox";
+            this.columnBox.Size = new System.Drawing.Size(32, 25);
+            this.columnBox.TabIndex = 14;
+            this.columnBox.Text = "7";
+            this.columnBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.columnBox_KeyDown);
+            this.columnBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.keyPressed);
             // 
             // menuStrip1
             // 
@@ -297,7 +334,7 @@
             // 
             this.撤销ToolStripMenuItem.Enabled = false;
             this.撤销ToolStripMenuItem.Name = "撤销ToolStripMenuItem";
-            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
             this.撤销ToolStripMenuItem.Text = "撤销全部";
             this.撤销ToolStripMenuItem.Click += new System.EventHandler(this.撤销ToolStripMenuItem_Click);
             // 
@@ -305,7 +342,7 @@
             // 
             this.调整计划ToolStripMenuItem.Enabled = false;
             this.调整计划ToolStripMenuItem.Name = "调整计划ToolStripMenuItem";
-            this.调整计划ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.调整计划ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
             this.调整计划ToolStripMenuItem.Text = "调整计划";
             this.调整计划ToolStripMenuItem.Click += new System.EventHandler(this.调整计划ToolStripMenuItem_Click);
             // 
@@ -316,46 +353,42 @@
             this.undoButton.Size = new System.Drawing.Size(32, 24);
             this.undoButton.Click += new System.EventHandler(this.undoButton_Click_1);
             // 
-            // columnBox
+            // panel1
             // 
-            this.columnBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.columnBox.Location = new System.Drawing.Point(584, 34);
-            this.columnBox.MaxLength = 2;
-            this.columnBox.Name = "columnBox";
-            this.columnBox.Size = new System.Drawing.Size(41, 25);
-            this.columnBox.TabIndex = 14;
-            this.columnBox.Text = "7";
-            this.columnBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.columnBox_KeyDown);
-            this.columnBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.keyPressed);
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.panel2);
+            this.panel1.Controls.Add(this.dateTimePicker);
+            this.panel1.Controls.Add(this.colorPanel);
+            this.panel1.Location = new System.Drawing.Point(10, 36);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(800, 33);
+            this.panel1.TabIndex = 16;
             // 
-            // label1
+            // panel2
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(501, 44);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 15);
-            this.label1.TabIndex = 15;
-            this.label1.Text = "每页列数";
+            this.panel2.Controls.Add(this.label1);
+            this.panel2.Controls.Add(this.columnBox);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel2.Location = new System.Drawing.Point(495, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(151, 33);
+            this.panel2.TabIndex = 16;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(822, 631);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.columnBox);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.colorPanel);
             this.Controls.Add(this.tipLabel);
             this.Controls.Add(this.pageContainer);
-            this.Controls.Add(this.dateTimePicker);
             this.Controls.Add(this.dataGridView);
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(840, 47);
+            this.MinimumSize = new System.Drawing.Size(840, 678);
             this.Name = "Form1";
-            this.Text = "飞行员训练排班系统";
+            this.Text = "飞行员训练排班智能系统";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.pageContainer.ResumeLayout(false);
@@ -365,6 +398,9 @@
             this.colorPanel.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -397,6 +433,8 @@
         private System.Windows.Forms.TextBox columnBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem undoButton;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
     }
 }
 
