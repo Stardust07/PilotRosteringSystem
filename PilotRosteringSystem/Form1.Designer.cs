@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
@@ -57,6 +57,7 @@
             this.调整计划ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoButton = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.timeLabel = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.pageContainer.SuspendLayout();
@@ -77,15 +78,16 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView.ColumnHeadersHeight = 45;
+            this.dataGridView.ColumnHeadersVisible = false;
             this.dataGridView.EnableHeadersVisualStyles = false;
             this.dataGridView.Location = new System.Drawing.Point(10, 70);
             this.dataGridView.MinimumSize = new System.Drawing.Size(800, 500);
@@ -175,12 +177,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.未完成ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(124, 28);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(130, 30);
             // 
             // 未完成ToolStripMenuItem
             // 
             this.未完成ToolStripMenuItem.Name = "未完成ToolStripMenuItem";
-            this.未完成ToolStripMenuItem.Size = new System.Drawing.Size(123, 24);
+            this.未完成ToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
             this.未完成ToolStripMenuItem.Text = "未完成";
             this.未完成ToolStripMenuItem.Click += new System.EventHandler(this.未完成ToolStripMenuItem_Click);
             // 
@@ -191,10 +193,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tipLabel.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.tipLabel.Font = new System.Drawing.Font("宋体", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tipLabel.Location = new System.Drawing.Point(10, 70);
+            this.tipLabel.Location = new System.Drawing.Point(10, 69);
             this.tipLabel.Name = "tipLabel";
             this.tipLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tipLabel.Size = new System.Drawing.Size(800, 500);
+            this.tipLabel.Size = new System.Drawing.Size(800, 501);
             this.tipLabel.TabIndex = 0;
             this.tipLabel.Text = "无排班计划";
             this.tipLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -357,6 +359,7 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.timeLabel);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.dateTimePicker);
             this.panel1.Controls.Add(this.colorPanel);
@@ -364,6 +367,14 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(800, 33);
             this.panel1.TabIndex = 16;
+            // 
+            // timeLabel
+            // 
+            this.timeLabel.AutoSize = true;
+            this.timeLabel.Location = new System.Drawing.Point(223, 9);
+            this.timeLabel.Name = "timeLabel";
+            this.timeLabel.Size = new System.Drawing.Size(0, 15);
+            this.timeLabel.TabIndex = 17;
             // 
             // panel2
             // 
@@ -399,6 +410,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
@@ -435,6 +447,7 @@
         private System.Windows.Forms.ToolStripMenuItem undoButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label timeLabel;
     }
 }
 
