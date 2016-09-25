@@ -140,7 +140,9 @@ namespace PilotRosteringSystem
         {
             sourceData = readFromFile(fileName);
             int day = dateTimePicker.Value.DayOfYear;
-            currentPage = (day - currentOffset - 1) / numberOfPerPage + 1;
+            int month = dateTimePicker.Value.Month;
+            //currentPage = (day - currentOffset - 1) / numberOfPerPage + 1;
+            currentPage = month - startDay.Month + 1;
    
             loadRosterByPage(currentPage);
             pageContainer.Enabled = true;
@@ -167,6 +169,10 @@ namespace PilotRosteringSystem
             }
             totalPage.Text = "共" + pageCount.ToString() + "页";
         }
+        private void readInstance()
+        {
+
+        }
         private DataTable readFromFile(String filePath)
         {
             DataTable dataTable = new DataTable();
@@ -182,9 +188,9 @@ namespace PilotRosteringSystem
                 string[] tableHeader = strLine.Split(',');
                 int year, month, day;
                 columnCount = tableHeader.Length - 1;
-                year = Convert.ToInt32(tableHeader[1].Substring(0, 4));
-                month = Convert.ToInt32(tableHeader[1].Substring(4, 2));
-                day = Convert.ToInt32(tableHeader[1].Substring(6, 2));
+                year = Convert.ToInt32(tableHeader[2].Substring(0, 4));
+                month = Convert.ToInt32(tableHeader[2].Substring(4, 2));
+                day = Convert.ToInt32(tableHeader[2].Substring(6, 2));
                 startDay = new DateTime(year, month, day);
                 currentYear = year;
                 GregorianCalendar gc = new GregorianCalendar();
@@ -281,7 +287,7 @@ namespace PilotRosteringSystem
             }
             for (int i = 0; i < numberOfPerPage && i + baseOffset + 1 < columnsCount; i++)
             {
-                DataColumn dataColumn = new DataColumn(sourceData.Columns[i + baseOffset + 1].ColumnName);
+                DataColumn dataColumn = new DataColumn(sourceData.Columns[i + baseOffset + 2].ColumnName);
                 desData.Columns.Add(dataColumn);
             }
 
@@ -289,10 +295,10 @@ namespace PilotRosteringSystem
             for (int i = 0; i < rowsCount; i++)
             {
                 DataRow dataRow = desData.NewRow();
-                dataRow[0] = sourceData.Rows[i][0].ToString();
+                dataRow[0] = sourceData.Rows[i][1].ToString();
                 for (int j = 1; j <= numberOfPerPage && j + baseOffset < columnsCount; j++)
                 {
-                    dataRow[j] = sourceData.Rows[i][j + baseOffset].ToString();
+                    dataRow[j] = sourceData.Rows[i][j + baseOffset + 1].ToString();
                 }
                 desData.Rows.Add(dataRow);
             }
@@ -464,7 +470,8 @@ namespace PilotRosteringSystem
             {
                 String unfinished = "";
                 UnfinishedItem item = (UnfinishedItem)unfinishedList[i];
-                unfinished += dataGridView.Rows[item.getRow()].Cells[0].Value + " ";
+                unfinished += sourceData.Rows[item.getRow()][0] + " ";
+                    //dataGridView.Rows[item.getRow()].Cells[0].Value + " ";
                 unfinished += item.getSubject() + " ";
                 unfinished += durationTable[item.getColor()] + "\r\n";
                 streamWriter.Write(unfinished);

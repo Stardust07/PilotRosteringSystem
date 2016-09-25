@@ -1,0 +1,50 @@
+SCHEDULING_PERIOD
+20160101 20161231     //训练周期起止日期
+
+TACTICAL_TIME
+S7 20160901           //战术科目编号，起始日期
+
+SUBJECTS 9            //科目总数
+S1 15 5 2 4           //科目编号，白天训练次数，夜间训练次数，一次训练小时数，同一时间段最多支持训练人数
+S2 10 0 1.5 4
+S3 10 5 1.5 4
+S4 10 0 1.5 4
+S5 22 0 1.5 4
+S6 8 2 1.5 4
+S7 10 0 1.5 5
+S8 20 3 1.5 4
+S9 10 0 1.5 4
+
+SUBJECT_DEPENDENCIES
+S1 0                  //科目编号，先序科目数，先序科目编号序列
+S2 0
+S3 0
+S4 3 S1 S2 S3
+S5 3 S1 S2 S3
+S6 2 S4 S5
+S7 1 S6
+S8 1 S7
+S9 1 S7
+
+PILOTS 20                               //飞行员总数
+P1 Wang 9 S5 S4 S6 S7 S8 S9 S1 S2 S3    //飞行员编号，名字，所需训练科目数，所需训练科目编号序列
+P2 Zhang 9 S1 S2 S3 S4 S5 S7 S6 S8 S9
+P3 Zhou 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P4 Wan 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P5 Qin 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P6 Wu 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P7 Peng 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P8 Yuan 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P9 Zhu 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P10 Yan 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P11 Huang 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P12 Shen 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P13 Deng 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P14 Liang 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P15 Chang 9 S1 S2 S3 S4 S5 S6 S7 S8 S9
+P16 Su 5 S4 S6 S7 S8 S9
+P17 He 5 S5 S6 S7 S8 S9
+P18 Luo 4 S6 S7 S8 S9
+P19 Ding 6 S4 S5 S6 S7 S8 S9
+P20 Liu 5 S4 S5 S8 S6 S7 
+
