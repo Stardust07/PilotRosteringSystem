@@ -96,7 +96,7 @@ namespace PilotRosteringSystem
                 durationTable.Add(colors[i], durations[i]);
             }
 
-            dataGridView.ColumnHeadersVisible = true;
+            dataGridView.ColumnHeadersVisible = false;
         }
         private void createRosterAndLoad(bool ifRecovery)
         {
