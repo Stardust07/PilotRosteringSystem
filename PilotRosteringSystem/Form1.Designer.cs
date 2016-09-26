@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
@@ -50,6 +50,7 @@
             this.columnBox = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.新建算例ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.打开算例ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.打开排班表ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,15 +78,16 @@
             this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView.ColumnHeadersHeight = 45;
             this.dataGridView.ColumnHeadersVisible = false;
             this.dataGridView.EnableHeadersVisualStyles = false;
@@ -94,7 +96,7 @@
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
             this.dataGridView.RowHeadersVisible = false;
-            this.dataGridView.RowHeadersWidth = 100;
+            this.dataGridView.RowHeadersWidth = 30;
             this.dataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridView.RowTemplate.Height = 30;
             this.dataGridView.ShowEditingIcon = false;
@@ -178,12 +180,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.未完成ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(130, 30);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(124, 28);
             // 
             // 未完成ToolStripMenuItem
             // 
             this.未完成ToolStripMenuItem.Name = "未完成ToolStripMenuItem";
-            this.未完成ToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
+            this.未完成ToolStripMenuItem.Size = new System.Drawing.Size(123, 24);
             this.未完成ToolStripMenuItem.Text = "未完成";
             this.未完成ToolStripMenuItem.Click += new System.EventHandler(this.未完成ToolStripMenuItem_Click);
             // 
@@ -194,10 +196,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tipLabel.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.tipLabel.Font = new System.Drawing.Font("宋体", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tipLabel.Location = new System.Drawing.Point(10, 69);
+            this.tipLabel.Location = new System.Drawing.Point(10, 70);
             this.tipLabel.Name = "tipLabel";
             this.tipLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tipLabel.Size = new System.Drawing.Size(800, 501);
+            this.tipLabel.Size = new System.Drawing.Size(797, 500);
             this.tipLabel.TabIndex = 0;
             this.tipLabel.Text = "无排班计划";
             this.tipLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -304,11 +306,19 @@
             // 文件ToolStripMenuItem
             // 
             this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.新建算例ToolStripMenuItem,
             this.打开算例ToolStripMenuItem,
             this.打开排班表ToolStripMenuItem});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
             this.文件ToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
             this.文件ToolStripMenuItem.Text = "文件";
+            // 
+            // 新建算例ToolStripMenuItem
+            // 
+            this.新建算例ToolStripMenuItem.Name = "新建算例ToolStripMenuItem";
+            this.新建算例ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.新建算例ToolStripMenuItem.Text = "新建算例";
+            this.新建算例ToolStripMenuItem.Click += new System.EventHandler(this.新建算例ToolStripMenuItem_Click);
             // 
             // 打开算例ToolStripMenuItem
             // 
@@ -403,6 +413,7 @@
             this.Name = "Form1";
             this.Text = "飞行员训练排班智能系统";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.pageContainer.ResumeLayout(false);
             this.pageContainer.PerformLayout();
@@ -450,6 +461,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label timeLabel;
+        private System.Windows.Forms.ToolStripMenuItem 新建算例ToolStripMenuItem;
     }
 }
 

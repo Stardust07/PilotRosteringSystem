@@ -16,3 +16,4 @@ D:\MyPrograms\VC++\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRost
 D:\MyPrograms\VC++\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.Form1.resources
 D:\MyPrograms\VC++\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.Properties.Resources.resources
 D:\MyPrograms\VC++\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.csproj.GenerateResource.Cache
+D:\MyPrograms\VC++\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.InputForm.resources

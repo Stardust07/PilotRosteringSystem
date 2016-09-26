@@ -60,7 +60,7 @@ namespace PilotRosteringSystem
         private Hashtable colorTable, durationTable;
         private String[] durations = { "D1", "D2", "D3", "N1" };
         private Color[] colors = { Color.LightPink, Color.LightSalmon, Color.IndianRed, Color.SlateGray };
-        private String[] weekDays = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
+        private String[] weekDays = { "周一", "周二", "周三", "周四", "周五", "周六", "周日" };
         private ArrayList unfinishedList;
         private ArrayList unfinishedActionList;
 
@@ -96,7 +96,7 @@ namespace PilotRosteringSystem
                 durationTable.Add(colors[i], durations[i]);
             }
 
-            dataGridView.ColumnHeadersVisible = false;
+            
         }
         private void createRosterAndLoad(bool ifRecovery)
         {
@@ -134,7 +134,8 @@ namespace PilotRosteringSystem
             adjustPage();
             dataGridView.ClearSelection();
             timeLabel.Text = "";
-            timeLabel.Text = dataGridView.Columns[1].HeaderText + "--" + dataGridView.Columns[numberOfPerPage].HeaderText;
+            timeLabel.Text = currentYear.ToString() + dataGridView.Columns[1].HeaderText.Substring(0, 4) + "--"
+                + currentYear.ToString() + dataGridView.Columns[numberOfPerPage].HeaderText.Substring(0, 4);
         }
         private void loadRoster(String fileName)
         {
@@ -184,7 +185,7 @@ namespace PilotRosteringSystem
             if ((strLine = streamReader.ReadLine()) != null)
             {
                 DataColumn dataColumn = new DataColumn(HEADER);
-                dataTable.Columns.Add(dataColumn);
+                //dataTable.Columns.Add(dataColumn);
                 string[] tableHeader = strLine.Split(',');
                 int year, month, day;
                 columnCount = tableHeader.Length - 1;
@@ -196,11 +197,14 @@ namespace PilotRosteringSystem
                 GregorianCalendar gc = new GregorianCalendar();
                 DateTime dt = gc.ToDateTime(currentYear, 1, 1, 0, 0, 0, 0);
                 weekOfFirstDay = Convert.ToInt32(dt.DayOfWeek) == 0 ? 7 : Convert.ToInt32(dt.DayOfWeek);
-                
-                for (int i = 1; i <= columnCount; i++)
+                dataColumn = new DataColumn(tableHeader[0]);
+                dataTable.Columns.Add(dataColumn);
+                dataColumn = new DataColumn(tableHeader[1]);
+                dataTable.Columns.Add(dataColumn);
+                for (int i = 2; i <= columnCount; i++)
                 {
-                    dataColumn = new DataColumn(tableHeader[i]);
-                    //dataColumn = new DataColumn(tableHeader[i] + "\r\n" + weekDays[(i + weekOfFirstDay - 2) % 7]);
+                    //dataColumn = new DataColumn(tableHeader[i]);
+                    dataColumn = new DataColumn(tableHeader[i].Substring(4, 4) + "\r\n" + weekDays[(i + weekOfFirstDay - 3) % 7]);
                     dataTable.Columns.Add(dataColumn);
                 }
                 year = Convert.ToInt32(tableHeader[columnCount].Substring(0, 4));
@@ -216,8 +220,8 @@ namespace PilotRosteringSystem
             {
                 string[] contentStrings = strLine.Split(',');
                 DataRow dataRow = dataTable.NewRow();
-                dataRow[0] = contentStrings[0];
-                for (int j = 1; j < columnCount; j++)
+                //dataRow[0] = contentStrings[0];
+                for (int j = 0; j < columnCount; j++)
                 {
                     dataRow[j] = contentStrings[j];
                 }
@@ -227,7 +231,6 @@ namespace PilotRosteringSystem
             streamReader.Close();
             fileStream.Close();
             pageCount = endDay.Month - startDay.Month + 1;
-            //pageCount = (dataTable.Columns.Count - 2) / numberOfPerPage + 1;
             return dataTable;
         }
 
@@ -394,9 +397,13 @@ namespace PilotRosteringSystem
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            int width = tipLabel.Width;
+            int height = tipLabel.Height;
             dataGridView.ClearSelection();
-            dataGridView.Size = new Size(800, 500);
+            dataGridView.Size = new Size(width, height);
             dataGridView.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView.ColumnHeadersVisible = true;
+
         }
 
         private void 未完成ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -646,12 +653,12 @@ namespace PilotRosteringSystem
         }
         private void resize(int number)
         {
-            if (this.WindowState == FormWindowState.Maximized)
-            {
-                this.WindowState = FormWindowState.Normal;
-            }
+            //if (this.WindowState == FormWindowState.Maximized)
+            //{
+            //    this.WindowState = FormWindowState.Normal;
+            //}
                 
-            this.Size = new Size(140 + 100 * number, this.Size.Height);
+            //this.Size = new Size(140 + 100 * number, this.Size.Height);
             return;
         }
 
@@ -746,6 +753,24 @@ namespace PilotRosteringSystem
                     cell.Selected = false;
                 }
             }
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Maximized)
+            {
+                dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+            else
+            {
+                dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            }
+        }
+
+        private void 新建算例ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputForm input = new InputForm();
+            input.Show();
         }
     }
 }
