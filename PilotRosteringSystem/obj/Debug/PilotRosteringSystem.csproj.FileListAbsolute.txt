@@ -17,3 +17,13 @@ D:\MyPrograms\VC++\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRost
 D:\MyPrograms\VC++\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.Properties.Resources.resources
 D:\MyPrograms\VC++\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.csproj.GenerateResource.Cache
 D:\MyPrograms\VC++\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.InputForm.resources
+D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\bin\Debug\PilotRosteringSystem.exe.config
+D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.exe
+D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.pdb
+D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\bin\Debug\PilotRosteringSystem.exe
+D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\bin\Debug\PilotRosteringSystem.pdb
+D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.csprojFakesResolveAssemblyReference.cache
+D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.Form1.resources
+D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.InputForm.resources
+D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.Properties.Resources.resources
+D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.csproj.GenerateResource.Cache
