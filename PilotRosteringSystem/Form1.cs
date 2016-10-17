@@ -769,8 +769,15 @@ namespace PilotRosteringSystem
 
         private void 新建算例ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InputForm input = new InputForm();
+            InputForm input = new InputForm(this);
             input.Show();
+        }
+
+        public void setInstance(String instance)
+        {
+            instanceFile = instance;
+            createRosterAndLoad(false);
+            MessageBox.Show(instanceFile);
         }
     }
 }

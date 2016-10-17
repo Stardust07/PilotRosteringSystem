@@ -13,9 +13,12 @@ namespace PilotRosteringSystem
 {
     public partial class InputForm : Form
     {
-        public InputForm()
+        private Form1 form1;
+        private String instanceName = "instance.txt";
+        public InputForm(Form1 form)
         {
             InitializeComponent();
+            form1 = form;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -39,17 +42,20 @@ namespace PilotRosteringSystem
             parameter.Visible = false;
         }
 
-        private void btn_confirm_Click(object sender, EventArgs e)
+        private void saveInstance(String fileName)
         {
             String startDate, endDate;
             startDate = formatDate(startYear.Text, startMonth.Text, startDay.Text);
             endDate = formatDate(endYear.Text, endMonth.Text, endDay.Text);
 
-            FileStream fileStream = new FileStream("instance.txt", FileMode.Create);
+            FileStream fileStream = new FileStream(fileName, FileMode.Create);
             StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.Default);
 
             streamWriter.Write("SCHEDULING_PERIOD\r\n");
             streamWriter.Write(startDate + " " + endDate + "\r\n");   //训练周期
+
+            //streamWriter.Write("\r\nDAY_SHIFT\r\n");
+            //streamWriter.Write("D" + dayShift.Text + " " + "N" + nightShift.Text + "\r\n");   //时间段配置
 
             streamWriter.Write("\r\nTACTICAL_TIME\r\n"); //战术科目
             for (int i = 0; i < subjectTable.RowCount - 1; i++)
@@ -94,6 +100,13 @@ namespace PilotRosteringSystem
             streamWriter.Close();
         }
 
+        private void btn_confirm_Click(object sender, EventArgs e)
+        {
+            saveInstance(instanceName);
+            form1.setInstance(instanceName);
+            this.Close();
+        }
+
         private String formatDate(String year, String month, String day)
         {
             String result = "";
@@ -124,6 +137,85 @@ namespace PilotRosteringSystem
                 subjectTable.Rows[e.RowIndex].Cells[8].Value = "";
                 subjectTable.Rows[e.RowIndex].Cells[8].ReadOnly = !(bool)subjectTable.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue;
             }
+        }
+
+        private void InputForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //form1.setInstance(instanceName);
+        }
+
+        private void readTable(DataGridView table, String file, bool ifSubjects)
+        {
+            FileStream fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
+            StreamReader streamReader = new StreamReader(fileStream, Encoding.ASCII);
+            int rowCount = 0;
+            string strLine = "";
+
+            if ((strLine = streamReader.ReadLine()) != null)
+            {
+                rowCount = Convert.ToInt32(strLine);
+            }
+            while ((strLine = streamReader.ReadLine()) != null && table.RowCount <= rowCount)
+            {
+                string[] contentStrings = strLine.Split(',');
+                int index = table.Rows.Add();
+                for (int i = 0; i < contentStrings.Length && i < table.ColumnCount; i++)
+                {
+                    if (String.IsNullOrEmpty(contentStrings[i]))
+                    {
+                        break;
+                    }
+                    table.Rows[index].Cells[i].Value = contentStrings[i];
+                }
+            }
+            
+            streamReader.Close();
+        }
+
+        private void writeTable(DataGridView table, String file)
+        {
+            FileStream fileStream = new FileStream(file, FileMode.Create);
+            StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.Default);
+            streamWriter.Write((table.RowCount - 1) + "\r\n");
+            foreach(DataGridViewRow row in table.Rows) 
+            {
+                foreach(DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.Value != null)
+                    {
+                        streamWriter.Write(cell.Value.ToString() + ",");
+                    }
+                   
+                }
+                streamWriter.Write("\r\n");
+            }
+            streamWriter.Close();
+        }
+
+        private void importBtn_Click(object sender, EventArgs e)
+        {
+            if (subjectTable.Visible == true)
+            {
+                subjectTable.Rows.Clear();
+                readTable(subjectTable, "subjects.txt", true);
+            }
+            else if (pilotTable.Visible == true)
+            {
+                pilotTable.Rows.Clear();
+                readTable(pilotTable, "pilots.txt", true);
+            } 
+        }
+
+        private void exportBtn_Click(object sender, EventArgs e)
+        {
+            if (subjectTable.Visible == true)
+            {
+                writeTable(subjectTable, "subjects.txt");
+            }
+            else if (pilotTable.Visible == true)
+            {
+                writeTable(pilotTable, "pilots.txt");
+            } 
         }
     }
 }
