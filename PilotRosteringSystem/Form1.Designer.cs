@@ -231,7 +231,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.IndianRed;
+            this.label4.BackColor = System.Drawing.Color.OrangeRed;
             this.label4.Location = new System.Drawing.Point(81, 0);
             this.label4.Name = "label4";
             this.label4.Padding = new System.Windows.Forms.Padding(5);
@@ -242,7 +242,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.LightSalmon;
+            this.label3.BackColor = System.Drawing.Color.YellowGreen;
             this.label3.Location = new System.Drawing.Point(42, 0);
             this.label3.Name = "label3";
             this.label3.Padding = new System.Windows.Forms.Padding(5);
@@ -316,7 +316,7 @@
             // 新建算例ToolStripMenuItem
             // 
             this.新建算例ToolStripMenuItem.Name = "新建算例ToolStripMenuItem";
-            this.新建算例ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.新建算例ToolStripMenuItem.Size = new System.Drawing.Size(159, 26);
             this.新建算例ToolStripMenuItem.Text = "新建算例";
             this.新建算例ToolStripMenuItem.Click += new System.EventHandler(this.新建算例ToolStripMenuItem_Click);
             // 

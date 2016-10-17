@@ -59,7 +59,7 @@ namespace PilotRosteringSystem
         private String instanceFile, lastRoster, unfinishedFile, unfinishedDate;
         private Hashtable colorTable, durationTable;
         private String[] durations = { "D1", "D2", "D3", "N1" };
-        private Color[] colors = { Color.LightPink, Color.LightSalmon, Color.IndianRed, Color.SlateGray };
+        private Color[] colors = { Color.LightPink, Color.YellowGreen, Color.OrangeRed, Color.SlateGray };
         private String[] weekDays = { "周一", "周二", "周三", "周四", "周五", "周六", "周日" };
         private ArrayList unfinishedList;
         private ArrayList unfinishedActionList;
