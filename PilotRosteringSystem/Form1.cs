@@ -441,10 +441,14 @@ namespace PilotRosteringSystem
             setCellBackColor();
         }
 
+        private bool isDateEqual(String date)
+        {
+            return unfinishedDate.Substring(4, 4).Equals(date.Substring(0, 4));
+        }
         private bool updateUnfinishedList(String date, DataGridViewSelectedCellCollection cells)
         {
 
-            if (unfinishedList.Count != 0 && String.Compare(unfinishedDate, date.Substring(0, 8)) != 0)
+            if (unfinishedList.Count != 0 && !isDateEqual(date))
             {
                 return false;
             }
@@ -453,7 +457,7 @@ namespace PilotRosteringSystem
                 undoButton.Enabled = true;
                 撤销ToolStripMenuItem.Enabled = true;
                 调整计划ToolStripMenuItem.Enabled = true;
-                unfinishedDate = date.Substring(0, 8);
+                unfinishedDate = currentYear + date.Substring(0, 4);
             }
             unfinishedActionList.Add(cells.Count);
             for (int i = 0; i < cells.Count; i++)
@@ -777,7 +781,6 @@ namespace PilotRosteringSystem
         {
             instanceFile = instance;
             createRosterAndLoad(false);
-            MessageBox.Show(instanceFile);
         }
     }
 }

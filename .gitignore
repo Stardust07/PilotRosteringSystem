@@ -1,3 +1,7 @@
 *.exe
 *.suo
 *.exe
+*.exe
+PilotRosteringSystem/bin/Debug/PilotRosteringSystem.pdb
+*.pdb
+PilotRosteringSystem/obj/Debug/PilotRosteringSystem.csproj.GenerateResource.Cache

@@ -57,6 +57,9 @@ namespace PilotRosteringSystem
             //streamWriter.Write("\r\nDAY_SHIFT\r\n");
             //streamWriter.Write("D" + dayShift.Text + " " + "N" + nightShift.Text + "\r\n");   //时间段配置
 
+            //streamWriter.Write("\r\nMAX_DAYr\n");
+            //streamWriter.Write(maxDays.Text + "\r\n");   //最大连续训练天数配置
+
             streamWriter.Write("\r\nTACTICAL_TIME\r\n"); //战术科目
             for (int i = 0; i < subjectTable.RowCount - 1; i++)
             {
