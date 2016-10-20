@@ -132,16 +132,6 @@ namespace PilotRosteringSystem
             
         }
 
-        private void subjectTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex == 7)    //如果是战术科目，允许输入开始时间
-            {
-                MessageBox.Show(subjectTable.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue.ToString());
-                subjectTable.Rows[e.RowIndex].Cells[8].Value = "";
-                subjectTable.Rows[e.RowIndex].Cells[8].ReadOnly = !(bool)subjectTable.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue;
-            }
-        }
-
         private void InputForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             //form1.setInstance(instanceName);
@@ -166,9 +156,13 @@ namespace PilotRosteringSystem
                 {
                     if (String.IsNullOrEmpty(contentStrings[i]))
                     {
-                        break;
+                        table.Rows[index].Cells[i].ReadOnly = true;
                     }
-                    table.Rows[index].Cells[i].Value = contentStrings[i];
+                    else
+                    {
+                        table.Rows[index].Cells[i].ReadOnly = false;
+                        table.Rows[index].Cells[i].Value = contentStrings[i];
+                    }
                 }
             }
             
@@ -182,11 +176,23 @@ namespace PilotRosteringSystem
             streamWriter.Write((table.RowCount - 1) + "\r\n");
             foreach(DataGridViewRow row in table.Rows) 
             {
+                if (row.Index == table.RowCount - 1)
+                {
+                    break;
+                }
                 foreach(DataGridViewCell cell in row.Cells)
                 {
-                    if (cell.Value != null)
+                    if (cell.Value != null && !String.IsNullOrEmpty(cell.Value.ToString()))
                     {
                         streamWriter.Write(cell.Value.ToString() + ",");
+                    }
+                    else if(cell.ColumnIndex == 7) //战术科目
+                    {
+                        streamWriter.Write("0" + ",");
+                    }
+                    else
+                    {
+                        streamWriter.Write(",");
                     }
                    
                 }
@@ -219,6 +225,51 @@ namespace PilotRosteringSystem
             {
                 writeTable(pilotTable, "pilots.txt");
             } 
+        }
+
+        private void subjectTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 7)    //如果是战术科目，允许输入开始时间
+            {
+                for (int i = 0; i < subjectTable.RowCount; i++)
+                {
+                    if (i != e.RowIndex)
+                    {
+                        subjectTable.Rows[i].Cells[7].Value = false;
+                        subjectTable.Rows[i].Cells[8].Value = "";
+                        subjectTable.Rows[i].Cells[8].ReadOnly = true;
+                    }
+                }
+                
+                subjectTable.Rows[e.RowIndex].Cells[8].Value = "";
+                subjectTable.Rows[e.RowIndex].Cells[8].ReadOnly = !(bool)subjectTable.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue;
+            }
+        }
+
+        private void subjectTable_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            
+        }
+
+        private void subjectTable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex == 5)    //如果先序科目数不为零，允许输入序列
+            {
+                if (!subjectTable.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.Equals("0"))
+                {
+                    subjectTable.Rows[e.RowIndex].Cells[6].ReadOnly = false;
+                }
+                else
+                {
+                    subjectTable.Rows[e.RowIndex].Cells[6].Value = "";
+                    subjectTable.Rows[e.RowIndex].Cells[6].ReadOnly = true;
+                }
+            }
+        }
+
+        private void subjectTable_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            subjectTable.Rows[e.RowIndex].Cells[8].ReadOnly = true;
         }
     }
 }

@@ -45,8 +45,9 @@
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.parameter = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.maxDays = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dayShift = new System.Windows.Forms.TextBox();
@@ -78,6 +79,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.subjectTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pilotTable)).BeginInit();
             this.parameter.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.periodGroup.SuspendLayout();
@@ -123,6 +125,9 @@
             this.subjectTable.Size = new System.Drawing.Size(767, 495);
             this.subjectTable.TabIndex = 1;
             this.subjectTable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.subjectTable_CellContentClick);
+            this.subjectTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.subjectTable_CellEndEdit);
+            this.subjectTable.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.subjectTable_CellValueChanged);
+            this.subjectTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.subjectTable_RowsAdded);
             // 
             // Identifier
             // 
@@ -158,6 +163,7 @@
             // 
             this.Subjects.HeaderText = "先序科目编号序列";
             this.Subjects.Name = "Subjects";
+            this.Subjects.ReadOnly = true;
             // 
             // IfTactic
             // 
@@ -221,8 +227,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.parameter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.parameter.Controls.Add(this.maxDays);
-            this.parameter.Controls.Add(this.label3);
+            this.parameter.Controls.Add(this.tableLayoutPanel3);
             this.parameter.Controls.Add(this.groupBox1);
             this.parameter.Controls.Add(this.periodGroup);
             this.parameter.Location = new System.Drawing.Point(12, 46);
@@ -231,29 +236,51 @@
             this.parameter.Size = new System.Drawing.Size(766, 494);
             this.parameter.TabIndex = 6;
             // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.AutoSize = true;
+            this.tableLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Controls.Add(this.maxDays, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.label10, 0, 0);
+            this.tableLayoutPanel3.Font = new System.Drawing.Font("宋体", 9F);
+            this.tableLayoutPanel3.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(19, 399);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(219, 39);
+            this.tableLayoutPanel3.TabIndex = 9;
+            // 
             // maxDays
             // 
             this.maxDays.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.maxDays.Font = new System.Drawing.Font("宋体", 9F);
-            this.maxDays.Location = new System.Drawing.Point(179, 389);
-            this.maxDays.Margin = new System.Windows.Forms.Padding(0);
+            this.maxDays.Location = new System.Drawing.Point(165, 7);
+            this.maxDays.Margin = new System.Windows.Forms.Padding(7);
             this.maxDays.MaxLength = 4;
             this.maxDays.Name = "maxDays";
             this.maxDays.Size = new System.Drawing.Size(47, 25);
-            this.maxDays.TabIndex = 8;
+            this.maxDays.TabIndex = 6;
             this.maxDays.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label3
+            // label10
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("宋体", 10F);
-            this.label3.Location = new System.Drawing.Point(31, 393);
-            this.label3.Margin = new System.Windows.Forms.Padding(4);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(144, 17);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "最大连续训练天数";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("宋体", 10F);
+            this.label10.Location = new System.Drawing.Point(7, 11);
+            this.label10.Margin = new System.Windows.Forms.Padding(7, 11, 7, 7);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(144, 17);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "最大连续训练天数";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBox1
             // 
@@ -611,6 +638,7 @@
             // 
             // importBtn
             // 
+            this.importBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.importBtn.AutoSize = true;
             this.importBtn.Location = new System.Drawing.Point(619, 15);
             this.importBtn.Margin = new System.Windows.Forms.Padding(5);
@@ -623,6 +651,7 @@
             // 
             // exportBtn
             // 
+            this.exportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.exportBtn.AutoSize = true;
             this.exportBtn.Location = new System.Drawing.Point(704, 15);
             this.exportBtn.Margin = new System.Windows.Forms.Padding(5);
@@ -654,6 +683,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pilotTable)).EndInit();
             this.parameter.ResumeLayout(false);
             this.parameter.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -699,6 +730,17 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox dayShift;
+        private System.Windows.Forms.TextBox nightShift;
+        private System.Windows.Forms.Button importBtn;
+        private System.Windows.Forms.Button exportBtn;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TextBox maxDays;
+        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.DataGridViewTextBoxColumn Identifier;
         private System.Windows.Forms.DataGridViewTextBoxColumn Day;
         private System.Windows.Forms.DataGridViewTextBoxColumn Night;
@@ -708,15 +750,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Subjects;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IfTactic;
         private System.Windows.Forms.DataGridViewTextBoxColumn Time;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox dayShift;
-        private System.Windows.Forms.TextBox nightShift;
-        private System.Windows.Forms.TextBox maxDays;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button importBtn;
-        private System.Windows.Forms.Button exportBtn;
     }
 }

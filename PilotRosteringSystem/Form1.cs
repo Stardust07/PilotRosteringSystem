@@ -108,7 +108,7 @@ namespace PilotRosteringSystem
             }
             fileName += ".csv";
             lastRoster = fileName;
-            loadRoster(fileName);
+            loadRoster(fileName, !ifRecovery);
         }
         private void loadRosterByPage(int currentPage)
         {
@@ -137,13 +137,16 @@ namespace PilotRosteringSystem
             timeLabel.Text = currentYear.ToString() + dataGridView.Columns[1].HeaderText.Substring(0, 4) + "--"
                 + currentYear.ToString() + dataGridView.Columns[numberOfPerPage].HeaderText.Substring(0, 4);
         }
-        private void loadRoster(String fileName)
+        private void loadRoster(String fileName, bool isFirstLoad)
         {
             sourceData = readFromFile(fileName);
-            int day = dateTimePicker.Value.DayOfYear;
-            int month = dateTimePicker.Value.Month;
-            //currentPage = (day - currentOffset - 1) / numberOfPerPage + 1;
-            currentPage = month - startDay.Month + 1;
+            if (isFirstLoad)
+            {
+                int day = dateTimePicker.Value.DayOfYear;
+                int month = dateTimePicker.Value.Month;
+                //currentPage = (day - currentOffset - 1) / numberOfPerPage + 1;
+                currentPage = month - startDay.Month + 1;
+            }
    
             loadRosterByPage(currentPage);
             pageContainer.Enabled = true;
@@ -553,7 +556,7 @@ namespace PilotRosteringSystem
             if (result == DialogResult.OK)
             {
                 lastRoster = fileDialog.FileName;
-                loadRoster(lastRoster);
+                loadRoster(lastRoster, true);
                 return;
             }
         }
