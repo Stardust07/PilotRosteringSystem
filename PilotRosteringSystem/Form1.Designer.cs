@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
@@ -41,10 +41,9 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.未完成ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tipLabel = new System.Windows.Forms.Label();
-            this.colorPanel = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.N1Label = new System.Windows.Forms.Label();
+            this.D4Label = new System.Windows.Forms.Label();
+            this.D2Label = new System.Windows.Forms.Label();
             this.D1Label = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.columnBox = new System.Windows.Forms.TextBox();
@@ -60,13 +59,16 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.timeLabel = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.colorPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.N2Label = new System.Windows.Forms.Label();
+            this.D3Label = new System.Windows.Forms.Label();
+            this.D5Label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.pageContainer.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
-            this.colorPanel.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.colorPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView
@@ -80,14 +82,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView.ColumnHeadersHeight = 45;
             this.dataGridView.ColumnHeadersVisible = false;
             this.dataGridView.EnableHeadersVisualStyles = false;
@@ -180,12 +182,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.未完成ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(124, 28);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(130, 30);
             // 
             // 未完成ToolStripMenuItem
             // 
             this.未完成ToolStripMenuItem.Name = "未完成ToolStripMenuItem";
-            this.未完成ToolStripMenuItem.Size = new System.Drawing.Size(123, 24);
+            this.未完成ToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
             this.未完成ToolStripMenuItem.Text = "未完成";
             this.未完成ToolStripMenuItem.Click += new System.EventHandler(this.未完成ToolStripMenuItem_Click);
             // 
@@ -204,57 +206,48 @@
             this.tipLabel.Text = "无排班计划";
             this.tipLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // colorPanel
+            // N1Label
             // 
-            this.colorPanel.Controls.Add(this.label5);
-            this.colorPanel.Controls.Add(this.label4);
-            this.colorPanel.Controls.Add(this.label3);
-            this.colorPanel.Controls.Add(this.D1Label);
-            this.colorPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.colorPanel.Location = new System.Drawing.Point(646, 0);
-            this.colorPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.colorPanel.Name = "colorPanel";
-            this.colorPanel.Size = new System.Drawing.Size(154, 33);
-            this.colorPanel.TabIndex = 10;
+            this.N1Label.AutoSize = true;
+            this.N1Label.BackColor = System.Drawing.Color.SlateGray;
+            this.N1Label.Location = new System.Drawing.Point(198, 3);
+            this.N1Label.Margin = new System.Windows.Forms.Padding(3);
+            this.N1Label.Name = "N1Label";
+            this.N1Label.Padding = new System.Windows.Forms.Padding(5);
+            this.N1Label.Size = new System.Drawing.Size(33, 25);
+            this.N1Label.TabIndex = 3;
+            this.N1Label.Text = "N1";
             // 
-            // label5
+            // D4Label
             // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.SlateGray;
-            this.label5.Location = new System.Drawing.Point(120, 0);
-            this.label5.Name = "label5";
-            this.label5.Padding = new System.Windows.Forms.Padding(5);
-            this.label5.Size = new System.Drawing.Size(33, 25);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "N1";
+            this.D4Label.AutoSize = true;
+            this.D4Label.BackColor = System.Drawing.Color.Turquoise;
+            this.D4Label.Location = new System.Drawing.Point(120, 3);
+            this.D4Label.Margin = new System.Windows.Forms.Padding(3);
+            this.D4Label.Name = "D4Label";
+            this.D4Label.Padding = new System.Windows.Forms.Padding(5);
+            this.D4Label.Size = new System.Drawing.Size(33, 25);
+            this.D4Label.TabIndex = 2;
+            this.D4Label.Text = "D4";
+            this.D4Label.Visible = false;
             // 
-            // label4
+            // D2Label
             // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.OrangeRed;
-            this.label4.Location = new System.Drawing.Point(81, 0);
-            this.label4.Name = "label4";
-            this.label4.Padding = new System.Windows.Forms.Padding(5);
-            this.label4.Size = new System.Drawing.Size(33, 25);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "D3";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.YellowGreen;
-            this.label3.Location = new System.Drawing.Point(42, 0);
-            this.label3.Name = "label3";
-            this.label3.Padding = new System.Windows.Forms.Padding(5);
-            this.label3.Size = new System.Drawing.Size(33, 25);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "D2";
+            this.D2Label.AutoSize = true;
+            this.D2Label.BackColor = System.Drawing.Color.YellowGreen;
+            this.D2Label.Location = new System.Drawing.Point(42, 3);
+            this.D2Label.Margin = new System.Windows.Forms.Padding(3);
+            this.D2Label.Name = "D2Label";
+            this.D2Label.Padding = new System.Windows.Forms.Padding(5);
+            this.D2Label.Size = new System.Drawing.Size(33, 25);
+            this.D2Label.TabIndex = 1;
+            this.D2Label.Text = "D2";
             // 
             // D1Label
             // 
             this.D1Label.AutoSize = true;
             this.D1Label.BackColor = System.Drawing.Color.LightPink;
-            this.D1Label.Location = new System.Drawing.Point(3, 0);
+            this.D1Label.Location = new System.Drawing.Point(3, 3);
             this.D1Label.Margin = new System.Windows.Forms.Padding(3);
             this.D1Label.Name = "D1Label";
             this.D1Label.Padding = new System.Windows.Forms.Padding(5);
@@ -266,18 +259,19 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("宋体", 9F);
-            this.label1.Location = new System.Drawing.Point(21, 0);
+            this.label1.Location = new System.Drawing.Point(210, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(5);
             this.label1.Size = new System.Drawing.Size(77, 25);
             this.label1.TabIndex = 15;
             this.label1.Text = "每页列数";
+            this.label1.Visible = false;
             // 
             // columnBox
             // 
             this.columnBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.columnBox.Location = new System.Drawing.Point(106, 0);
+            this.columnBox.Location = new System.Drawing.Point(287, 0);
             this.columnBox.Margin = new System.Windows.Forms.Padding(0);
             this.columnBox.MaxLength = 2;
             this.columnBox.Name = "columnBox";
@@ -285,6 +279,7 @@
             this.columnBox.TabIndex = 14;
             this.columnBox.Text = "7";
             this.columnBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnBox.Visible = false;
             this.columnBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.columnBox_KeyDown);
             this.columnBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.keyPressed);
             // 
@@ -371,10 +366,11 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.columnBox);
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.timeLabel);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.dateTimePicker);
-            this.panel1.Controls.Add(this.colorPanel);
             this.panel1.Location = new System.Drawing.Point(10, 36);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(800, 33);
@@ -391,19 +387,83 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.columnBox);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(495, 0);
+            this.panel2.Location = new System.Drawing.Point(649, 0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(151, 33);
             this.panel2.TabIndex = 16;
+            // 
+            // colorPanel
+            // 
+            this.colorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.colorPanel.AutoSize = true;
+            this.colorPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.colorPanel.ColumnCount = 7;
+            this.colorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.colorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.colorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.colorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.colorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.colorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.colorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.colorPanel.Controls.Add(this.D1Label, 0, 0);
+            this.colorPanel.Controls.Add(this.D2Label, 1, 0);
+            this.colorPanel.Controls.Add(this.D5Label, 4, 0);
+            this.colorPanel.Controls.Add(this.D4Label, 3, 0);
+            this.colorPanel.Controls.Add(this.D3Label, 2, 0);
+            this.colorPanel.Controls.Add(this.N2Label, 6, 0);
+            this.colorPanel.Controls.Add(this.N1Label, 5, 0);
+            this.colorPanel.Location = new System.Drawing.Point(537, 30);
+            this.colorPanel.Name = "colorPanel";
+            this.colorPanel.RowCount = 1;
+            this.colorPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.colorPanel.Size = new System.Drawing.Size(273, 31);
+            this.colorPanel.TabIndex = 17;
+            // 
+            // N2Label
+            // 
+            this.N2Label.AutoSize = true;
+            this.N2Label.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.N2Label.Location = new System.Drawing.Point(237, 3);
+            this.N2Label.Margin = new System.Windows.Forms.Padding(3);
+            this.N2Label.Name = "N2Label";
+            this.N2Label.Padding = new System.Windows.Forms.Padding(5);
+            this.N2Label.Size = new System.Drawing.Size(33, 25);
+            this.N2Label.TabIndex = 5;
+            this.N2Label.Text = "N2";
+            this.N2Label.Visible = false;
+            // 
+            // D3Label
+            // 
+            this.D3Label.AutoSize = true;
+            this.D3Label.BackColor = System.Drawing.Color.OrangeRed;
+            this.D3Label.Location = new System.Drawing.Point(81, 3);
+            this.D3Label.Margin = new System.Windows.Forms.Padding(3);
+            this.D3Label.Name = "D3Label";
+            this.D3Label.Padding = new System.Windows.Forms.Padding(5);
+            this.D3Label.Size = new System.Drawing.Size(33, 25);
+            this.D3Label.TabIndex = 4;
+            this.D3Label.Text = "D3";
+            // 
+            // D5Label
+            // 
+            this.D5Label.AutoSize = true;
+            this.D5Label.BackColor = System.Drawing.Color.NavajoWhite;
+            this.D5Label.Location = new System.Drawing.Point(159, 3);
+            this.D5Label.Margin = new System.Windows.Forms.Padding(3);
+            this.D5Label.Name = "D5Label";
+            this.D5Label.Padding = new System.Windows.Forms.Padding(5);
+            this.D5Label.Size = new System.Drawing.Size(33, 25);
+            this.D5Label.TabIndex = 6;
+            this.D5Label.Text = "D5";
+            this.D5Label.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(822, 631);
+            this.Controls.Add(this.colorPanel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.tipLabel);
@@ -419,14 +479,12 @@
             this.pageContainer.ResumeLayout(false);
             this.pageContainer.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
-            this.colorPanel.ResumeLayout(false);
-            this.colorPanel.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.colorPanel.ResumeLayout(false);
+            this.colorPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -443,11 +501,10 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 未完成ToolStripMenuItem;
         private System.Windows.Forms.Label tipLabel;
-        private System.Windows.Forms.Panel colorPanel;
         private System.Windows.Forms.Label D1Label;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label N1Label;
+        private System.Windows.Forms.Label D4Label;
+        private System.Windows.Forms.Label D2Label;
         private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 文件ToolStripMenuItem;
@@ -463,6 +520,10 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label timeLabel;
         private System.Windows.Forms.ToolStripMenuItem 新建算例ToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel colorPanel;
+        private System.Windows.Forms.Label N2Label;
+        private System.Windows.Forms.Label D3Label;
+        private System.Windows.Forms.Label D5Label;
     }
 }
 

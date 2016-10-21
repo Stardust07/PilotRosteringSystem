@@ -76,6 +76,8 @@
             this.tabPanel = new System.Windows.Forms.TableLayoutPanel();
             this.importBtn = new System.Windows.Forms.Button();
             this.exportBtn = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.subjectTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pilotTable)).BeginInit();
             this.parameter.SuspendLayout();
@@ -299,16 +301,16 @@
             // 
             this.tableLayoutPanel1.AutoSize = true;
             this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.Controls.Add(this.label12, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.dayShift, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.nightShift, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label11, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label13, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 2, 0);
             this.tableLayoutPanel1.Font = new System.Drawing.Font("宋体", 9F);
             this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(27, 48);
@@ -317,7 +319,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(187, 78);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(260, 78);
             this.tableLayoutPanel1.TabIndex = 6;
             // 
             // dayShift
@@ -640,6 +642,7 @@
             // 
             this.importBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.importBtn.AutoSize = true;
+            this.importBtn.Enabled = false;
             this.importBtn.Location = new System.Drawing.Point(619, 15);
             this.importBtn.Margin = new System.Windows.Forms.Padding(5);
             this.importBtn.Name = "importBtn";
@@ -653,6 +656,7 @@
             // 
             this.exportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.exportBtn.AutoSize = true;
+            this.exportBtn.Enabled = false;
             this.exportBtn.Location = new System.Drawing.Point(704, 15);
             this.exportBtn.Margin = new System.Windows.Forms.Padding(5);
             this.exportBtn.Name = "exportBtn";
@@ -661,6 +665,28 @@
             this.exportBtn.Text = "导出";
             this.exportBtn.UseVisualStyleBackColor = true;
             this.exportBtn.Click += new System.EventHandler(this.exportBtn_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Adobe 宋体 Std L", 9F);
+            this.label3.Location = new System.Drawing.Point(192, 11);
+            this.label3.Margin = new System.Windows.Forms.Padding(5, 11, 7, 5);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(61, 17);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "（0~5）";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Adobe 宋体 Std L", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label12.Location = new System.Drawing.Point(192, 50);
+            this.label12.Margin = new System.Windows.Forms.Padding(5, 11, 7, 5);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(61, 17);
+            this.label12.TabIndex = 9;
+            this.label12.Text = "（0~2）";
             // 
             // InputForm
             // 
@@ -750,5 +776,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Subjects;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IfTactic;
         private System.Windows.Forms.DataGridViewTextBoxColumn Time;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label3;
     }
 }

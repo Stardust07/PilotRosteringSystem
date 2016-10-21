@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -26,6 +27,8 @@ namespace PilotRosteringSystem
             parameter.Visible = true;
             pilotTable.Visible = false;
             subjectTable.Visible = false;
+            importBtn.Enabled = false;
+            exportBtn.Enabled = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -33,6 +36,8 @@ namespace PilotRosteringSystem
             subjectTable.Visible = true;
             parameter.Visible = false;
             pilotTable.Visible = false;
+            importBtn.Enabled = true;
+            exportBtn.Enabled = true;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -40,28 +45,50 @@ namespace PilotRosteringSystem
             pilotTable.Visible = true;
             subjectTable.Visible = false;
             parameter.Visible = false;
+            importBtn.Enabled = true;
+            exportBtn.Enabled = true;
         }
 
-        private void saveInstance(String fileName)
+        private bool saveInstance(String fileName)
         {
-            String startDate, endDate;
-            startDate = formatDate(startYear.Text, startMonth.Text, startDay.Text);
-            endDate = formatDate(endYear.Text, endMonth.Text, endDay.Text);
+            //if (!Regex.IsMatch(startYear.Text, @"^/d*[.]?/d*$") || !Regex.IsMatch(startMonth.Text, @"^/d*[.]?/d*$") || !Regex.IsMatch(startDay.Text, @"^/d*[.]?/d*$")
+            //    || !Regex.IsMatch(endYear.Text, @"^/d*[.]?/d*$") || !Regex.IsMatch(endMonth.Text, @"^/d*[.]?/d*$") || !Regex.IsMatch(endDay.Text, @"^/d*[.]?/d*$")
+            //    || !Regex.IsMatch(dayShift.Text, @"^/d*[.]?/d*$") || !Regex.IsMatch(nightShift.Text, @"^/d*[.]?/d*$") || !Regex.IsMatch(maxDays.Text, @"^/d*[.]?/d*$"))
+            //{
+            //    MessageBox.Show("请输入数字！");
+            //    return false;
+            //}
+            if (Convert.ToInt32(dayShift.Text) > 5 || Convert.ToInt32(dayShift.Text) < 0 || Convert.ToInt32(nightShift.Text) > 2 || Convert.ToInt32(nightShift.Text) < 0)
+            {
+                MessageBox.Show("请输入正确的时间段配置参数！");
+                return false;
+            }
+            
+            if (Convert.ToInt32(maxDays.Text) < 0)
+            {
+                MessageBox.Show("请输入正确的最大连续训练天数！");
+                return false;
+            }
 
+            int i;
+            String startDate, endDate;
             FileStream fileStream = new FileStream(fileName, FileMode.Create);
             StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.Default);
+
+            startDate = formatDate(startYear.Text, startMonth.Text, startDay.Text);
+            endDate = formatDate(endYear.Text, endMonth.Text, endDay.Text);
 
             streamWriter.Write("SCHEDULING_PERIOD\r\n");
             streamWriter.Write(startDate + " " + endDate + "\r\n");   //训练周期
 
-            //streamWriter.Write("\r\nDAY_SHIFT\r\n");
-            //streamWriter.Write("D" + dayShift.Text + " " + "N" + nightShift.Text + "\r\n");   //时间段配置
+            streamWriter.Write("\r\nDAY_SHIFT\r\n");
+            streamWriter.Write("D" + dayShift.Text + " " + "N" + nightShift.Text + "\r\n");   //时间段配置
 
-            //streamWriter.Write("\r\nMAX_DAYr\n");
-            //streamWriter.Write(maxDays.Text + "\r\n");   //最大连续训练天数配置
+            streamWriter.Write("\r\nMAX_DAY\r\n");
+            streamWriter.Write(maxDays.Text + "\r\n");   //最大连续训练天数配置
 
             streamWriter.Write("\r\nTACTICAL_TIME\r\n"); //战术科目
-            for (int i = 0; i < subjectTable.RowCount - 1; i++)
+            for (i = 0; i < subjectTable.RowCount - 1; i++)
             {
                 if ((bool)subjectTable.Rows[i].Cells[7].FormattedValue)
                 {
@@ -70,9 +97,13 @@ namespace PilotRosteringSystem
                     break;
                 }
             }
+            if (i == subjectTable.RowCount - 1)
+            {
+                streamWriter.Write("ID_NONE\r\n");
+            }
 
             streamWriter.Write("\r\nSUBJECTS " + (subjectTable.RowCount - 1) + "\r\n");//科目信息
-            for (int i = 0; i < subjectTable.RowCount - 1; i++)
+            for (i = 0; i < subjectTable.RowCount - 1; i++)
             {
                 DataGridViewRow row = subjectTable.Rows[i];
                 for (int j = 0; j < 5; j++)
@@ -83,7 +114,7 @@ namespace PilotRosteringSystem
             }
 
             streamWriter.Write("\r\nSUBJECT_DEPENDENCIES\r\n");  //科目依赖关系
-            for (int i = 0; i < subjectTable.RowCount - 1; i++)
+            for (i = 0; i < subjectTable.RowCount - 1; i++)
             {
                 DataGridViewRow row = subjectTable.Rows[i];
                 streamWriter.Write(row.Cells[0].Value + " " + row.Cells[5].Value + " " + row.Cells[6].Value);
@@ -91,7 +122,7 @@ namespace PilotRosteringSystem
             }
 
             streamWriter.Write("\r\nPILOTS " + (pilotTable.RowCount - 1) + "\r\n"); //飞行员信息
-            for (int i = 0; i < pilotTable.RowCount - 1; i++)
+            for (i = 0; i < pilotTable.RowCount - 1; i++)
             {
                 DataGridViewRow row = pilotTable.Rows[i];
                 for (int j = 0; j < pilotTable.ColumnCount; j++)
@@ -101,13 +132,17 @@ namespace PilotRosteringSystem
                 streamWriter.Write("\r\n");
             }
             streamWriter.Close();
+            return true;
         }
 
         private void btn_confirm_Click(object sender, EventArgs e)
         {
-            saveInstance(instanceName);
-            form1.setInstance(instanceName);
-            this.Close();
+            if (saveInstance(instanceName))
+            {
+                form1.setInstance(instanceName);
+                this.Close();
+
+            }
         }
 
         private String formatDate(String year, String month, String day)

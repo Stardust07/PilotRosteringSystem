@@ -57,13 +57,16 @@ namespace PilotRosteringSystem
         private DataTable sourceData;
         private int currentPage, pageCount, currentYear, weekOfFirstDay, currentOffset, userPage;
         private String instanceFile, lastRoster, unfinishedFile, unfinishedDate;
-        private Hashtable colorTable, durationTable;
-        private String[] durations = { "D1", "D2", "D3", "N1" };
-        private Color[] colors = { Color.LightPink, Color.YellowGreen, Color.OrangeRed, Color.SlateGray };
+        private Hashtable colorTable, shiftTable;
+        private const int maxDayshift = 5;
+        private String[] shifts = { "D1", "D2", "D3", "D4", "D5", "N1", "N2" };
+        private Color[] colors = { Color.LightPink, Color.YellowGreen, Color.OrangeRed, Color.DarkTurquoise, Color.NavajoWhite, Color.SlateGray, Color.DarkSeaGreen };
         private String[] weekDays = { "周一", "周二", "周三", "周四", "周五", "周六", "周日" };
         private ArrayList unfinishedList;
         private ArrayList unfinishedActionList;
-
+        private int dayShifts, nightShifts;
+        private Label[] shiftLabels = { };
+        
         private DateTime startDay, endDay;
         public Form1()
         {
@@ -78,7 +81,9 @@ namespace PilotRosteringSystem
             weekOfFirstDay = 1;
             currentOffset = 0;
             userPage = 0;
-
+            dayShifts = 3;
+            nightShifts = 1;
+            
             instanceFile = "instance_1.txt";
             lastRoster = "roster.csv";
             unfinishedFile = "unfinished.txt";
@@ -87,17 +92,40 @@ namespace PilotRosteringSystem
             unfinishedList = new ArrayList();
             unfinishedActionList = new ArrayList();
             colorTable = new Hashtable();
-            durationTable = new Hashtable();
+            shiftTable = new Hashtable();
             columnBox.Text = numberOfPerPage.ToString();
 
-            for (int i = 0; i < durations.Length; i++)
+            shiftLabels = new Label[shifts.Length];
+            for (int i = 0; i < shifts.Length; i++)
             {
-                colorTable.Add(durations[i], colors[i]);
-                durationTable.Add(colors[i], durations[i]);
+                shiftLabels[i] = (Label)this.Controls.Find(shifts[i] + "label", true)[0];
+                shiftLabels[i].Visible = false;
+            }
+        }
+
+        private void setShiftTable()
+        {
+            colorTable.Clear();
+            shiftTable.Clear();
+            for (int i = 0; i < shiftLabels.Length; i++)
+            {
+                shiftLabels[i].Visible = false;
+            }
+            for (int i = 0; i < dayShifts; i++)
+            {
+                colorTable.Add(shifts[i], colors[i]);
+                shiftTable.Add(colors[i], shifts[i]);
+                shiftLabels[i].Visible = true;
             }
 
-            
+            for (int i = 0; i < nightShifts; i++)
+            {
+                colorTable.Add(shifts[i + maxDayshift], colors[i + maxDayshift]);
+                shiftTable.Add(colors[i + maxDayshift], shifts[i + maxDayshift]);
+                shiftLabels[i + maxDayshift].Visible = true;
+            }
         }
+
         private void createRosterAndLoad(bool ifRecovery)
         {
             String fileName = "roster";
@@ -114,13 +142,13 @@ namespace PilotRosteringSystem
         {
             setNumberOfPerpage();
             dataGridView.DataSource = null;
-            if (currentYear != dateTimePicker.Value.Year)
-            {
-                dataGridView.DataSource = new DataTable();
-                tipLabel.Visible = true;
-                pageContainer.Visible = false;
-                return;
-            }
+            //if (currentYear != dateTimePicker.Value.Year)
+            //{
+            //    dataGridView.DataSource = new DataTable();
+            //    tipLabel.Visible = true;
+            //    pageContainer.Visible = false;
+            //    return;
+            //}
             pageContainer.Visible = true;
             tipLabel.Visible = false;
   
@@ -139,7 +167,7 @@ namespace PilotRosteringSystem
         }
         private void loadRoster(String fileName, bool isFirstLoad)
         {
-            sourceData = readFromFile(fileName);
+            sourceData = readRoster(fileName, isFirstLoad);
             if (isFirstLoad)
             {
                 int day = dateTimePicker.Value.DayOfYear;
@@ -173,17 +201,29 @@ namespace PilotRosteringSystem
             }
             totalPage.Text = "共" + pageCount.ToString() + "页";
         }
-        private void readInstance()
-        {
 
-        }
-        private DataTable readFromFile(String filePath)
+        private DataTable readRoster(String filePath, bool isFirstLoad)
         {
             DataTable dataTable = new DataTable();
             FileStream fileStream = new FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
             StreamReader streamReader = new StreamReader(fileStream, Encoding.ASCII);
             string strLine = "";
             int columnCount = 0;
+            if ((strLine = streamReader.ReadLine()) != null)  //read the instance name
+            {
+                instanceFile = strLine;
+            }
+            if ((strLine = streamReader.ReadLine()) != null)  //read the shift setting
+            {
+                string[] contentStrings = strLine.Split(',');
+                dayShifts = Convert.ToInt32(contentStrings[0]);
+                nightShifts = Convert.ToInt32(contentStrings[1]);
+            }
+            if (isFirstLoad)
+            {
+                setShiftTable();
+            }
+            
             //读取表头
             if ((strLine = streamReader.ReadLine()) != null)
             {
@@ -487,7 +527,7 @@ namespace PilotRosteringSystem
                 unfinished += sourceData.Rows[item.getRow()][0] + " ";
                     //dataGridView.Rows[item.getRow()].Cells[0].Value + " ";
                 unfinished += item.getSubject() + " ";
-                unfinished += durationTable[item.getColor()] + "\r\n";
+                unfinished += shiftTable[item.getColor()] + "\r\n";
                 streamWriter.Write(unfinished);
             }
             streamWriter.Close();
