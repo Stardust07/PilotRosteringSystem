@@ -173,7 +173,8 @@ namespace PilotRosteringSystem
                 int day = dateTimePicker.Value.DayOfYear;
                 int month = dateTimePicker.Value.Month;
                 //currentPage = (day - currentOffset - 1) / numberOfPerPage + 1;
-                currentPage = month - startDay.Month + 1;
+                //currentPage = month - startDay.Month + 1 > 0 ? month - startDay.Month + 1: 1;
+                currentPage = 1;
             }
    
             loadRosterByPage(currentPage);
