@@ -46,8 +46,6 @@ namespace PilotRosteringSystem
                 return backColor;
             }
         }
-        //[DllImport("PilotRosteringSolver.dll", EntryPoint = "run", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        //public static extern void run(int argc, string argv);
 
         [DllImport("PilotRosteringSolver.dll", EntryPoint = "createRoster")]
         public static extern void createRoster(string instanceFilePath, string rosterFilePath, string unfinishedIemsFilePath, bool ifRecovery);
@@ -60,7 +58,7 @@ namespace PilotRosteringSystem
         private Hashtable colorTable, shiftTable;
         private const int maxDayshift = 5;
         private String[] shifts = { "D1", "D2", "D3", "D4", "D5", "N1", "N2" };
-        private Color[] colors = { Color.LightPink, Color.YellowGreen, Color.OrangeRed, Color.DarkTurquoise, Color.NavajoWhite, Color.SlateGray, Color.DarkSeaGreen };
+        private Color[] colors = { Color.LightPink, Color.MediumOrchid, Color.OrangeRed, Color.DarkTurquoise, Color.NavajoWhite, Color.SlateGray, Color.DarkSeaGreen };
         private String[] weekDays = { "周一", "周二", "周三", "周四", "周五", "周六", "周日" };
         private ArrayList unfinishedList;
         private ArrayList unfinishedActionList;
@@ -142,13 +140,7 @@ namespace PilotRosteringSystem
         {
             setNumberOfPerpage();
             dataGridView.DataSource = null;
-            //if (currentYear != dateTimePicker.Value.Year)
-            //{
-            //    dataGridView.DataSource = new DataTable();
-            //    tipLabel.Visible = true;
-            //    pageContainer.Visible = false;
-            //    return;
-            //}
+
             pageContainer.Visible = true;
             tipLabel.Visible = false;
   
