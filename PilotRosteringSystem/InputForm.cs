@@ -75,8 +75,8 @@ namespace PilotRosteringSystem
             FileStream fileStream = new FileStream(fileName, FileMode.Create);
             StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.Default);
 
-            startDate = formatDate(startYear.Text, startMonth.Text, startDay.Text);
-            endDate = formatDate(endYear.Text, endMonth.Text, endDay.Text);
+            startDate = formatDate(startDatePicker.Value.Year.ToString(), startDatePicker.Value.Month.ToString(), startDatePicker.Value.Day.ToString());
+            endDate = formatDate(endDatePicker.Value.Year.ToString(), endDatePicker.Value.Month.ToString(), endDatePicker.Value.Day.ToString());
 
             streamWriter.Write("SCHEDULING_PERIOD\r\n");
             streamWriter.Write(startDate + " " + endDate + "\r\n");   //训练周期
@@ -186,6 +186,11 @@ namespace PilotRosteringSystem
             while ((strLine = streamReader.ReadLine()) != null && table.RowCount <= rowCount)
             {
                 string[] contentStrings = strLine.Split(',');
+                if (contentStrings.Length  - 1 != table.ColumnCount)
+                {
+                    MessageBox.Show("文件格式错误");
+                    return;
+                }
                 int index = table.Rows.Add();
                 for (int i = 0; i < contentStrings.Length && i < table.ColumnCount; i++)
                 {
@@ -238,27 +243,54 @@ namespace PilotRosteringSystem
 
         private void importBtn_Click(object sender, EventArgs e)
         {
+            String fileName = "";
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = "表格文件 (*.csv)|*.csv|文本文件 (*.txt)|*.txt|所有文件 (*.*)|*.*";
+            fileDialog.InitialDirectory = Application.StartupPath + "\\Temp\\";
+            DialogResult result = fileDialog.ShowDialog();
+            if (result != DialogResult.OK)
+            {
+                return;
+            }
+            else
+            {
+                fileName = fileDialog.FileName;
+            }
             if (subjectTable.Visible == true)
             {
                 subjectTable.Rows.Clear();
-                readTable(subjectTable, "subjects.txt", true);
+                readTable(subjectTable, fileName, true);
             }
             else if (pilotTable.Visible == true)
             {
                 pilotTable.Rows.Clear();
-                readTable(pilotTable, "pilots.txt", true);
+                readTable(pilotTable, fileName, true);
             } 
+            
         }
 
         private void exportBtn_Click(object sender, EventArgs e)
         {
+            String fileName = "";
+            SaveFileDialog fileDialog = new SaveFileDialog();
+            fileDialog.Filter = "表格文件 (*.csv)|*.csv|文本文件 (*.txt)|*.txt|所有文件 (*.*)|*.*";
+            fileDialog.InitialDirectory = Application.StartupPath + "\\Temp\\";
+            DialogResult result = fileDialog.ShowDialog();
+            if (result != DialogResult.OK)
+            {
+                return;
+            }
+            else
+            {
+                fileName = fileDialog.FileName;
+            }
             if (subjectTable.Visible == true)
             {
-                writeTable(subjectTable, "subjects.txt");
+                writeTable(subjectTable, fileName);
             }
             else if (pilotTable.Visible == true)
             {
-                writeTable(pilotTable, "pilots.txt");
+                writeTable(pilotTable, fileName);
             } 
         }
 
