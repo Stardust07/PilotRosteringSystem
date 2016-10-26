@@ -92,7 +92,7 @@ namespace PilotRosteringSystem
             {
                 if ((bool)subjectTable.Rows[i].Cells[7].FormattedValue)
                 {
-                    streamWriter.Write(subjectTable.Rows[i].Cells[0].Value + " " + subjectTable.Rows[i].Cells[8].Value);
+                    streamWriter.Write(subjectTable.Rows[i].Cells[0].Value + " " + subjectTable.Rows[i].Cells[8].Value + " " + subjectTable.Rows[i].Cells[9].Value);
                     streamWriter.Write("\r\n");
                     break;
                 }
@@ -305,17 +305,25 @@ namespace PilotRosteringSystem
                         subjectTable.Rows[i].Cells[7].Value = false;
                         subjectTable.Rows[i].Cells[8].Value = "";
                         subjectTable.Rows[i].Cells[8].ReadOnly = true;
+                        subjectTable.Rows[i].Cells[9].Value = "";
+                        subjectTable.Rows[i].Cells[9].ReadOnly = true;
                     }
                 }
-                
-                subjectTable.Rows[e.RowIndex].Cells[8].Value = "";
-                subjectTable.Rows[e.RowIndex].Cells[8].ReadOnly = !(bool)subjectTable.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue;
-            }
-        }
 
-        private void subjectTable_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            
+                if ((bool)subjectTable.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue)
+                {
+                    subjectTable.Rows[e.RowIndex].Cells[8].Value = formatDate(startDatePicker.Value.Year.ToString(), startDatePicker.Value.Month.ToString(), startDatePicker.Value.Day.ToString());
+                    subjectTable.Rows[e.RowIndex].Cells[9].Value = formatDate(endDatePicker.Value.Year.ToString(), endDatePicker.Value.Month.ToString(), endDatePicker.Value.Day.ToString());
+                }
+                else
+                {
+                    subjectTable.Rows[e.RowIndex].Cells[8].Value = "";
+                    subjectTable.Rows[e.RowIndex].Cells[9].Value = "";
+                }
+   
+                subjectTable.Rows[e.RowIndex].Cells[8].ReadOnly = !(bool)subjectTable.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue;
+                subjectTable.Rows[e.RowIndex].Cells[9].ReadOnly = !(bool)subjectTable.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue;
+            }
         }
 
         private void subjectTable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -337,6 +345,7 @@ namespace PilotRosteringSystem
         private void subjectTable_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             subjectTable.Rows[e.RowIndex].Cells[8].ReadOnly = true;
+            subjectTable.Rows[e.RowIndex].Cells[9].ReadOnly = true;
         }
     }
 }
