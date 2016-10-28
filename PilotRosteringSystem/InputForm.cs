@@ -87,6 +87,12 @@ namespace PilotRosteringSystem
             streamWriter.Write("\r\nMAX_DAY\r\n");
             streamWriter.Write(maxDays.Text + "\r\n");   //最大连续训练天数配置
 
+            streamWriter.Write("\r\nMAX_HOUR_PER_SEVEN_DAYS\r\n");
+            streamWriter.Write(maxHour7.Text + "\r\n");   //每周最大训练时长
+
+            streamWriter.Write("\r\nMAX_HOUR_PER_THIRTY_DAYS\r\n");
+            streamWriter.Write(maxHour30.Text + "\r\n");   //每月最大训练时长
+
             streamWriter.Write("\r\nTACTICAL_TIME\r\n"); //战术科目
             for (i = 0; i < subjectTable.RowCount - 1; i++)
             {
