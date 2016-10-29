@@ -634,18 +634,18 @@ namespace PilotRosteringSystem
         {
             if (e.Button == MouseButtons.Right)
             {
-                if (subjectTable.Visible == true)
+                if (subjectTable.Visible == true && e.RowIndex < subjectTable.RowCount - 1)
                 {
                     subjectTable.ClearSelection();
                     subjectTable.Rows[e.RowIndex].Selected = true;
+                    contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
                 }
-                else if (pilotTable.Visible == true)
+                else if (pilotTable.Visible == true && e.RowIndex < pilotTable.RowCount - 1)
                 {
                     pilotTable.ClearSelection();
                     pilotTable.Rows[e.RowIndex].Selected = true;
+                    contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
                 }
-                
-                contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
             }
         }
 
