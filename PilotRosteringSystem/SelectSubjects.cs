@@ -15,18 +15,41 @@ namespace PilotRosteringSystem
     {
         private DataGridView subjectTable, pilotTable;
         private String cellContent;
+        private int selectedRow;
         public SelectSubjects(DataGridView subjectTable, DataGridView pilotTable)
         {
             this.subjectTable = subjectTable;
             this.pilotTable = pilotTable;
-            if (pilotTable != null && pilotTable.SelectedRows[0].Cells[3].Value != null)
+            if (pilotTable == null)
             {
-                
-                cellContent = pilotTable.SelectedRows[0].Cells[3].Value.ToString();
+                if (subjectTable.SelectedRows.Count == 0)
+                {
+                    this.selectedRow = subjectTable.SelectedCells[0].RowIndex;
+                }
+                else
+                {
+                    this.selectedRow = subjectTable.SelectedRows[0].Index;
+                }
             }
-            else if (subjectTable != null && subjectTable.SelectedRows[0].Cells[6].Value != null)
+            else
             {
-                cellContent = subjectTable.SelectedRows[0].Cells[6].Value.ToString();
+                if (pilotTable.SelectedRows.Count == 0)
+                {
+                    this.selectedRow = pilotTable.SelectedCells[0].RowIndex;
+                }
+                else
+                {
+                    this.selectedRow = pilotTable.SelectedRows[0].Index;
+                }
+            }
+            if (pilotTable != null && pilotTable.Rows[selectedRow].Cells[3].Value != null)
+            {
+
+                cellContent = pilotTable.Rows[selectedRow].Cells[3].Value.ToString();
+            }
+            else if (subjectTable != null && subjectTable.Rows[selectedRow].Cells[6].Value != null)
+            {
+                cellContent = subjectTable.Rows[selectedRow].Cells[6].Value.ToString();
             }
             else
             {
@@ -63,31 +86,35 @@ namespace PilotRosteringSystem
             
             if (pilotTable == null)
             {
-                if (subjectTable.SelectedRows.Count == 0)
-                {
-                    int rowIndex = subjectTable.SelectedCells[0].RowIndex;
-                    subjectTable.Rows[rowIndex].Cells[5].Value = checkedListBox.CheckedItems.Count;
-                    subjectTable.Rows[rowIndex].Cells[6].Value = str;
-                }
-                else
-                {
-                    subjectTable.SelectedRows[0].Cells[5].Value = checkedListBox.CheckedItems.Count;
-                    subjectTable.SelectedRows[0].Cells[6].Value = str;
-                }    
+                subjectTable.Rows[selectedRow].Cells[5].Value = checkedListBox.CheckedItems.Count;
+                subjectTable.Rows[selectedRow].Cells[6].Value = str;
+                //if (subjectTable.SelectedRows.Count == 0)
+                //{
+                //    int rowIndex = subjectTable.SelectedCells[0].RowIndex;
+                //    subjectTable.Rows[rowIndex].Cells[5].Value = checkedListBox.CheckedItems.Count;
+                //    subjectTable.Rows[rowIndex].Cells[6].Value = str;
+                //}
+                //else
+                //{
+                //    subjectTable.SelectedRows[0].Cells[5].Value = checkedListBox.CheckedItems.Count;
+                //    subjectTable.SelectedRows[0].Cells[6].Value = str;
+                //}    
             }
             else
             {
-                if (pilotTable.SelectedRows.Count == 0)
-                {
-                    int rowIndex = pilotTable.SelectedCells[0].RowIndex;
-                    pilotTable.Rows[rowIndex].Cells[2].Value = checkedListBox.CheckedItems.Count;
-                    pilotTable.Rows[rowIndex].Cells[3].Value = str;
-                }
-                else
-                {
-                    pilotTable.SelectedRows[0].Cells[2].Value = checkedListBox.CheckedItems.Count;
-                    pilotTable.SelectedRows[0].Cells[3].Value = str;
-                }    
+                pilotTable.Rows[selectedRow].Cells[2].Value = checkedListBox.CheckedItems.Count;
+                pilotTable.Rows[selectedRow].Cells[3].Value = str;
+                //if (pilotTable.SelectedRows.Count == 0)
+                //{
+                //    int rowIndex = pilotTable.SelectedCells[0].RowIndex;
+                //    pilotTable.Rows[rowIndex].Cells[2].Value = checkedListBox.CheckedItems.Count;
+                //    pilotTable.Rows[rowIndex].Cells[3].Value = str;
+                //}
+                //else
+                //{
+                //    pilotTable.SelectedRows[0].Cells[2].Value = checkedListBox.CheckedItems.Count;
+                //    pilotTable.SelectedRows[0].Cells[3].Value = str;
+                //}    
             }
             this.Close();
         }

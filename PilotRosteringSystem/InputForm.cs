@@ -52,13 +52,6 @@ namespace PilotRosteringSystem
 
         private bool saveInstance(String fileName)
         {
-            //if (!Regex.IsMatch(startYear.Text, @"^/d*[.]?/d*$") || !Regex.IsMatch(startMonth.Text, @"^/d*[.]?/d*$") || !Regex.IsMatch(startDay.Text, @"^/d*[.]?/d*$")
-            //    || !Regex.IsMatch(endYear.Text, @"^/d*[.]?/d*$") || !Regex.IsMatch(endMonth.Text, @"^/d*[.]?/d*$") || !Regex.IsMatch(endDay.Text, @"^/d*[.]?/d*$")
-            //    || !Regex.IsMatch(dayShift.Text, @"^/d*[.]?/d*$") || !Regex.IsMatch(nightShift.Text, @"^/d*[.]?/d*$") || !Regex.IsMatch(maxDays.Text, @"^/d*[.]?/d*$"))
-            //{
-            //    MessageBox.Show("请输入数字！");
-            //    return false;
-            //}
             if (Convert.ToInt32(dayShift.Text) > 5 || Convert.ToInt32(dayShift.Text) < 0 || Convert.ToInt32(nightShift.Text) > 2 || Convert.ToInt32(nightShift.Text) < 0)
             {
                 MessageBox.Show("请输入正确的时间段配置参数！");
@@ -131,6 +124,11 @@ namespace PilotRosteringSystem
                 DataGridViewRow row = subjectTable.Rows[i];
                 for (int j = 0; j < 5; j++)
                 {
+                    if (j < 2 && (row.Cells[j].Value == null || String.IsNullOrEmpty(row.Cells[j].Value.ToString())))
+                    {
+                        MessageBox.Show("请输入正确的科目信息！");
+                        return false;
+                    }
                     streamWriter.Write(row.Cells[j].Value + " ");
                 }
                 streamWriter.Write("\r\n");
@@ -150,6 +148,11 @@ namespace PilotRosteringSystem
                 DataGridViewRow row = pilotTable.Rows[i];
                 for (int j = 0; j < pilotTable.ColumnCount; j++)
                 {
+                    if (j < 2 && (row.Cells[j].Value == null || String.IsNullOrEmpty(row.Cells[j].Value.ToString())))
+                    {
+                        MessageBox.Show("请输入正确的飞行员信息！");
+                        return false;
+                    }
                     streamWriter.Write(row.Cells[j].Value + " ");
                 }
                 streamWriter.Write("\r\n");
@@ -185,24 +188,6 @@ namespace PilotRosteringSystem
             return result;
         }
 
-        private void InputForm_Load(object sender, EventArgs e)
-        {
-            //CalendarColumn col = new CalendarColumn();
-            //DataGridViewColumn col = new DataGridViewColumn();
-            //col.HeaderText = "开始时间";
-            //subjectTable.Columns.Add(col);
-            //col = new CalendarColumn();
-            //col.HeaderText = "结束时间";
-            //subjectTable.Columns.Add(col);
-
-            
-        }
-
-        private void InputForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            //form1.setInstance(instanceName);
-        }
-
         private void readTable(DataGridView table, String file, bool ifSubjects)
         {
             FileStream fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
@@ -225,13 +210,18 @@ namespace PilotRosteringSystem
                 int index = table.Rows.Add();
                 for (int i = 0; i < contentStrings.Length && i < table.ColumnCount; i++)
                 {
-                    if (String.IsNullOrEmpty(contentStrings[i]))
+                    if (table.ColumnCount == 4 && (i == 2 || i == 3) || table.ColumnCount == 10 && (i == 5 || i == 6))  //pilots table  or  subjects table
+                    {
+                        table.Rows[index].Cells[i].Value = contentStrings[i];
+                        table.Rows[index].Cells[i].ReadOnly = true;
+                    }
+                    else if (String.IsNullOrEmpty(contentStrings[i]))
                     {
                         table.Rows[index].Cells[i].ReadOnly = true;
                     }
                     else
                     {
-                        //table.Rows[index].Cells[i].ReadOnly = false;
+                        table.Rows[index].Cells[i].ReadOnly = false;
                         table.Rows[index].Cells[i].Value = contentStrings[i];
                     }
                 }
@@ -349,9 +339,7 @@ namespace PilotRosteringSystem
                 {
                     subjectTable.Rows[e.RowIndex].Cells[8].Value = startDatePicker.Value;
                     subjectTable.Rows[e.RowIndex].Cells[9].Value = endDatePicker.Value;
-                    //subjectTable.Rows[e.RowIndex].Cells[8].Value = formatDate(startDatePicker.Value.Year.ToString(), startDatePicker.Value.Month.ToString(), startDatePicker.Value.Day.ToString());
-                    //subjectTable.Rows[e.RowIndex].Cells[9].Value = formatDate(endDatePicker.Value.Year.ToString(), endDatePicker.Value.Month.ToString(), endDatePicker.Value.Day.ToString());
-                }
+                              }
                 else
                 {
                     subjectTable.Rows[e.RowIndex].Cells[8].Value = "";
@@ -625,7 +613,7 @@ namespace PilotRosteringSystem
         {
             if (e.ColumnIndex == 6 || e.ColumnIndex == 5)    //如果是先序科目序列
             {
-                subjectTable.Rows[e.RowIndex].Selected = true;
+                //subjectTable.Rows[e.RowIndex].Selected = true;
 
                 SelectSubjects form = new SelectSubjects(subjectTable, null);
                 form.Show();
@@ -634,12 +622,98 @@ namespace PilotRosteringSystem
 
         private void pilotTable_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 3)    //如果是科目序列
+            if (e.ColumnIndex == 3 || e.ColumnIndex == 2)    //如果是科目序列
             {
-                pilotTable.Rows[e.RowIndex].Selected = true;
+                //pilotTable.Rows[e.RowIndex].Selected = true;
                 SelectSubjects form = new SelectSubjects(subjectTable, pilotTable);
                 form.Show();
             }
+        }
+
+        private void dataGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (subjectTable.Visible == true)
+                {
+                    subjectTable.ClearSelection();
+                    subjectTable.Rows[e.RowIndex].Selected = true;
+                }
+                else if (pilotTable.Visible == true)
+                {
+                    pilotTable.ClearSelection();
+                    pilotTable.Rows[e.RowIndex].Selected = true;
+                }
+                
+                contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
+            }
+        }
+
+        private void 删除该行ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (subjectTable.Visible == true)
+            {
+                removeSubject(subjectTable.SelectedRows[0].Index);
+            }
+            else if (pilotTable.Visible == true)
+            {
+                pilotTable.Rows.RemoveAt(pilotTable.SelectedRows[0].Index);
+            }
+        }
+
+        private void removeSubject(int rowIndex)
+        {
+            String subjectID = subjectTable.Rows[rowIndex].Cells[0].Value.ToString();
+
+            for (int i = 0; i < subjectTable.RowCount - 1; i++)
+            {
+                DataGridViewRow row = subjectTable.Rows[i];
+                if (row.Cells[6].Value.ToString().IndexOf(subjectID, 0) >= 0)
+                {
+                    String[] subjectIDs = row.Cells[6].Value.ToString().Split(' ');
+                    String newStr = "";
+                    row.Cells[5].Value = Convert.ToInt32(row.Cells[5].Value) - 1;
+                    for (int j = 0; j < subjectIDs.Length; j++)
+                    {
+                        if (subjectIDs[j].Equals(subjectID))
+                        {
+                            continue;
+                        }
+                        newStr += subjectIDs[j] + " ";
+                    }
+                    if (newStr.Length != 0)
+                    {
+                        newStr = newStr.Substring(0, newStr.Length - 1);
+                    }
+
+                    row.Cells[6].Value = newStr;
+                }
+            }
+
+            for (int i = 0; i < pilotTable.RowCount - 1; i++)
+            {
+                DataGridViewRow row = pilotTable.Rows[i];
+                if (row.Cells[3].Value.ToString().IndexOf(subjectID, 0) >= 0)
+                {
+                    String[] subjectIDs = row.Cells[3].Value.ToString().Split(' ');
+                    String newStr = "";
+                    row.Cells[2].Value = Convert.ToInt32(row.Cells[2].Value) - 1;
+                    for (int j = 0; j < subjectIDs.Length; j++)
+                    {
+                        if (subjectIDs[j].Equals(subjectID))
+                        {
+                            continue;
+                        }
+                        newStr += subjectIDs[j] + " ";
+                    }
+                    if (newStr.Length != 0)
+                    {
+                        newStr = newStr.Substring(0, newStr.Length - 1);
+                    }
+                    row.Cells[3].Value = newStr;
+                }
+            }
+            subjectTable.Rows.RemoveAt(rowIndex);
         }
     }
 }

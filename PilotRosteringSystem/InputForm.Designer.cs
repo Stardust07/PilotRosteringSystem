@@ -28,9 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btn_confirm = new System.Windows.Forms.Button();
             this.subjectTable = new System.Windows.Forms.DataGridView();
+            this.Identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Day = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Night = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Each = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Max = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Subjects = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IfTactic = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column1 = new PilotRosteringSystem.InputForm.CalendarColumn();
+            this.Column2 = new PilotRosteringSystem.InputForm.CalendarColumn();
             this.pilotTable = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.parameter = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -60,20 +75,8 @@
             this.tabPanel = new System.Windows.Forms.TableLayoutPanel();
             this.importBtn = new System.Windows.Forms.Button();
             this.exportBtn = new System.Windows.Forms.Button();
-            this.Identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Day = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Night = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Each = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Max = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Subjects = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IfTactic = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Column1 = new PilotRosteringSystem.InputForm.CalendarColumn();
-            this.Column2 = new PilotRosteringSystem.InputForm.CalendarColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.删除该行ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.subjectTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pilotTable)).BeginInit();
             this.parameter.SuspendLayout();
@@ -84,6 +87,7 @@
             this.periodGroup.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tabPanel.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_confirm
@@ -127,7 +131,66 @@
             this.subjectTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.subjectTable_CellClick);
             this.subjectTable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.subjectTable_CellContentClick);
             this.subjectTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.subjectTable_CellEndEdit);
+            this.subjectTable.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellMouseClick);
             this.subjectTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.subjectTable_RowsAdded);
+            // 
+            // Identifier
+            // 
+            this.Identifier.HeaderText = "科目编号";
+            this.Identifier.Name = "Identifier";
+            // 
+            // Day
+            // 
+            this.Day.HeaderText = "白天训练次数";
+            this.Day.Name = "Day";
+            // 
+            // Night
+            // 
+            this.Night.HeaderText = "夜间训练次数";
+            this.Night.Name = "Night";
+            // 
+            // Each
+            // 
+            this.Each.HeaderText = "一次训练小时数";
+            this.Each.Name = "Each";
+            // 
+            // Max
+            // 
+            this.Max.HeaderText = "同时段最多训练人数";
+            this.Max.Name = "Max";
+            // 
+            // Number
+            // 
+            this.Number.HeaderText = "先序科目数";
+            this.Number.Name = "Number";
+            // 
+            // Subjects
+            // 
+            this.Subjects.HeaderText = "先序科目编号序列";
+            this.Subjects.Name = "Subjects";
+            this.Subjects.ReadOnly = true;
+            // 
+            // IfTactic
+            // 
+            this.IfTactic.FalseValue = "0";
+            this.IfTactic.HeaderText = "战术科目";
+            this.IfTactic.IndeterminateValue = "0";
+            this.IfTactic.Name = "IfTactic";
+            this.IfTactic.ToolTipText = "是否为战术科目";
+            this.IfTactic.TrueValue = "1";
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "开始时间";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "结束时间";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
             // pilotTable
             // 
@@ -149,6 +212,29 @@
             this.pilotTable.Size = new System.Drawing.Size(767, 495);
             this.pilotTable.TabIndex = 5;
             this.pilotTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.pilotTable_CellClick);
+            this.pilotTable.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellMouseClick);
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "飞行员编号";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "飞行员姓名";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.HeaderText = "需训练科目数";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.HeaderText = "需训练科目编号序列";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
             // 
             // parameter
             // 
@@ -563,85 +649,20 @@
             this.exportBtn.UseVisualStyleBackColor = true;
             this.exportBtn.Click += new System.EventHandler(this.exportBtn_Click);
             // 
-            // Identifier
+            // contextMenuStrip1
             // 
-            this.Identifier.HeaderText = "科目编号";
-            this.Identifier.Name = "Identifier";
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.删除该行ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(145, 30);
             // 
-            // Day
+            // 删除该行ToolStripMenuItem
             // 
-            this.Day.HeaderText = "白天训练次数";
-            this.Day.Name = "Day";
-            // 
-            // Night
-            // 
-            this.Night.HeaderText = "夜间训练次数";
-            this.Night.Name = "Night";
-            // 
-            // Each
-            // 
-            this.Each.HeaderText = "一次训练小时数";
-            this.Each.Name = "Each";
-            // 
-            // Max
-            // 
-            this.Max.HeaderText = "同时段最多训练人数";
-            this.Max.Name = "Max";
-            // 
-            // Number
-            // 
-            this.Number.HeaderText = "先序科目数";
-            this.Number.Name = "Number";
-            // 
-            // Subjects
-            // 
-            this.Subjects.HeaderText = "先序科目编号序列";
-            this.Subjects.Name = "Subjects";
-            this.Subjects.ReadOnly = true;
-            // 
-            // IfTactic
-            // 
-            this.IfTactic.FalseValue = "0";
-            this.IfTactic.HeaderText = "战术科目";
-            this.IfTactic.IndeterminateValue = "0";
-            this.IfTactic.Name = "IfTactic";
-            this.IfTactic.ToolTipText = "是否为战术科目";
-            this.IfTactic.TrueValue = "1";
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "开始时间";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "结束时间";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "飞行员编号";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "飞行员姓名";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "需训练科目数";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.HeaderText = "需训练科目编号序列";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            this.删除该行ToolStripMenuItem.Name = "删除该行ToolStripMenuItem";
+            this.删除该行ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
+            this.删除该行ToolStripMenuItem.Text = "删除该行";
+            this.删除该行ToolStripMenuItem.Click += new System.EventHandler(this.删除该行ToolStripMenuItem_Click);
             // 
             // InputForm
             // 
@@ -658,8 +679,6 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "InputForm";
             this.Text = "输入算例";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.InputForm_FormClosed);
-            this.Load += new System.EventHandler(this.InputForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.subjectTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pilotTable)).EndInit();
             this.parameter.ResumeLayout(false);
@@ -677,6 +696,7 @@
             this.tableLayoutPanel2.PerformLayout();
             this.tabPanel.ResumeLayout(false);
             this.tabPanel.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -730,5 +750,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 删除该行ToolStripMenuItem;
     }
 }

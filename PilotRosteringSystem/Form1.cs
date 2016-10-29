@@ -481,6 +481,7 @@ namespace PilotRosteringSystem
         {
             return unfinishedDate.Substring(4, 4).Equals(date.Substring(0, 4));
         }
+
         private bool updateUnfinishedList(String date, DataGridViewSelectedCellCollection cells)
         {
 
