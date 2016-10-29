@@ -30,25 +30,16 @@
         {
             this.btn_confirm = new System.Windows.Forms.Button();
             this.subjectTable = new System.Windows.Forms.DataGridView();
-            this.Identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Day = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Night = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Each = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Max = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Subjects = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IfTactic = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.startTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.endTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pilotTable = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.parameter = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.maxHour30 = new System.Windows.Forms.TextBox();
+            this.maxHour7 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.maxDays = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.nightShift = new System.Windows.Forms.ComboBox();
@@ -69,21 +60,30 @@
             this.tabPanel = new System.Windows.Forms.TableLayoutPanel();
             this.importBtn = new System.Windows.Forms.Button();
             this.exportBtn = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.maxHour7 = new System.Windows.Forms.TextBox();
-            this.maxHour30 = new System.Windows.Forms.TextBox();
+            this.Identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Day = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Night = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Each = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Max = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Subjects = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IfTactic = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column1 = new PilotRosteringSystem.InputForm.CalendarColumn();
+            this.Column2 = new PilotRosteringSystem.InputForm.CalendarColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.subjectTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pilotTable)).BeginInit();
             this.parameter.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.periodGroup.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tabPanel.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_confirm
@@ -115,8 +115,8 @@
             this.Number,
             this.Subjects,
             this.IfTactic,
-            this.startTime,
-            this.endTime});
+            this.Column1,
+            this.Column2});
             this.subjectTable.Location = new System.Drawing.Point(12, 46);
             this.subjectTable.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.subjectTable.MultiSelect = false;
@@ -124,68 +124,10 @@
             this.subjectTable.RowTemplate.Height = 27;
             this.subjectTable.Size = new System.Drawing.Size(767, 495);
             this.subjectTable.TabIndex = 1;
+            this.subjectTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.subjectTable_CellClick);
             this.subjectTable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.subjectTable_CellContentClick);
             this.subjectTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.subjectTable_CellEndEdit);
             this.subjectTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.subjectTable_RowsAdded);
-            // 
-            // Identifier
-            // 
-            this.Identifier.HeaderText = "科目编号";
-            this.Identifier.Name = "Identifier";
-            // 
-            // Day
-            // 
-            this.Day.HeaderText = "白天训练次数";
-            this.Day.Name = "Day";
-            // 
-            // Night
-            // 
-            this.Night.HeaderText = "夜间训练次数";
-            this.Night.Name = "Night";
-            // 
-            // Each
-            // 
-            this.Each.HeaderText = "一次训练小时数";
-            this.Each.Name = "Each";
-            // 
-            // Max
-            // 
-            this.Max.HeaderText = "同时段最多训练人数";
-            this.Max.Name = "Max";
-            // 
-            // Number
-            // 
-            this.Number.HeaderText = "先序科目数";
-            this.Number.Name = "Number";
-            // 
-            // Subjects
-            // 
-            this.Subjects.HeaderText = "先序科目编号序列";
-            this.Subjects.Name = "Subjects";
-            this.Subjects.ReadOnly = true;
-            // 
-            // IfTactic
-            // 
-            this.IfTactic.FalseValue = "0";
-            this.IfTactic.HeaderText = "战术科目";
-            this.IfTactic.IndeterminateValue = "0";
-            this.IfTactic.Name = "IfTactic";
-            this.IfTactic.ToolTipText = "是否为战术科目";
-            this.IfTactic.TrueValue = "1";
-            // 
-            // startTime
-            // 
-            this.startTime.HeaderText = "开始时间";
-            this.startTime.Name = "startTime";
-            this.startTime.ReadOnly = true;
-            this.startTime.ToolTipText = "类似20160101格式";
-            // 
-            // endTime
-            // 
-            this.endTime.HeaderText = "结束时间";
-            this.endTime.Name = "endTime";
-            this.endTime.ReadOnly = true;
-            this.endTime.ToolTipText = "类似20160101格式";
             // 
             // pilotTable
             // 
@@ -206,26 +148,7 @@
             this.pilotTable.RowTemplate.Height = 27;
             this.pilotTable.Size = new System.Drawing.Size(767, 495);
             this.pilotTable.TabIndex = 5;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "飞行员编号";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "飞行员姓名";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "需训练科目数";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.HeaderText = "需训练科目编号序列";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.pilotTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.pilotTable_CellClick);
             // 
             // parameter
             // 
@@ -241,6 +164,19 @@
             this.parameter.Name = "parameter";
             this.parameter.Size = new System.Drawing.Size(767, 495);
             this.parameter.TabIndex = 6;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.tableLayoutPanel3);
+            this.groupBox2.Font = new System.Drawing.Font("宋体", 10F);
+            this.groupBox2.Location = new System.Drawing.Point(401, 16);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Size = new System.Drawing.Size(347, 196);
+            this.groupBox2.TabIndex = 7;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "训练时长配置";
             // 
             // tableLayoutPanel3
             // 
@@ -267,6 +203,44 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(237, 123);
             this.tableLayoutPanel3.TabIndex = 9;
             // 
+            // maxHour30
+            // 
+            this.maxHour30.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.maxHour30.Font = new System.Drawing.Font("宋体", 9F);
+            this.maxHour30.Location = new System.Drawing.Point(183, 90);
+            this.maxHour30.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
+            this.maxHour30.MaxLength = 4;
+            this.maxHour30.Name = "maxHour30";
+            this.maxHour30.Size = new System.Drawing.Size(47, 25);
+            this.maxHour30.TabIndex = 10;
+            this.maxHour30.Text = "36";
+            this.maxHour30.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // maxHour7
+            // 
+            this.maxHour7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.maxHour7.Font = new System.Drawing.Font("宋体", 9F);
+            this.maxHour7.Location = new System.Drawing.Point(183, 49);
+            this.maxHour7.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
+            this.maxHour7.MaxLength = 4;
+            this.maxHour7.Name = "maxHour7";
+            this.maxHour7.Size = new System.Drawing.Size(47, 25);
+            this.maxHour7.TabIndex = 9;
+            this.maxHour7.Text = "9";
+            this.maxHour7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("宋体", 10F);
+            this.label4.Location = new System.Drawing.Point(7, 52);
+            this.label4.Margin = new System.Windows.Forms.Padding(7, 11, 7, 8);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(153, 17);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "每7天最大训练时长";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // maxDays
             // 
             this.maxDays.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -291,6 +265,18 @@
             this.label10.TabIndex = 0;
             this.label10.Text = "最大连续训练天数";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("宋体", 10F);
+            this.label5.Location = new System.Drawing.Point(7, 93);
+            this.label5.Margin = new System.Windows.Forms.Padding(7, 11, 7, 8);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(162, 17);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "每30天最大训练时长";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBox1
             // 
@@ -577,68 +563,85 @@
             this.exportBtn.UseVisualStyleBackColor = true;
             this.exportBtn.Click += new System.EventHandler(this.exportBtn_Click);
             // 
-            // groupBox2
+            // Identifier
             // 
-            this.groupBox2.Controls.Add(this.tableLayoutPanel3);
-            this.groupBox2.Font = new System.Drawing.Font("宋体", 10F);
-            this.groupBox2.Location = new System.Drawing.Point(401, 16);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(347, 196);
-            this.groupBox2.TabIndex = 7;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "训练时长配置";
+            this.Identifier.HeaderText = "科目编号";
+            this.Identifier.Name = "Identifier";
             // 
-            // label4
+            // Day
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("宋体", 10F);
-            this.label4.Location = new System.Drawing.Point(7, 52);
-            this.label4.Margin = new System.Windows.Forms.Padding(7, 11, 7, 8);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(153, 17);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "每7天最大训练时长";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Day.HeaderText = "白天训练次数";
+            this.Day.Name = "Day";
             // 
-            // label5
+            // Night
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("宋体", 10F);
-            this.label5.Location = new System.Drawing.Point(7, 93);
-            this.label5.Margin = new System.Windows.Forms.Padding(7, 11, 7, 8);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(162, 17);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "每30天最大训练时长";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Night.HeaderText = "夜间训练次数";
+            this.Night.Name = "Night";
             // 
-            // maxHour7
+            // Each
             // 
-            this.maxHour7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.maxHour7.Font = new System.Drawing.Font("宋体", 9F);
-            this.maxHour7.Location = new System.Drawing.Point(183, 49);
-            this.maxHour7.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
-            this.maxHour7.MaxLength = 4;
-            this.maxHour7.Name = "maxHour7";
-            this.maxHour7.Size = new System.Drawing.Size(47, 25);
-            this.maxHour7.TabIndex = 9;
-            this.maxHour7.Text = "9";
-            this.maxHour7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Each.HeaderText = "一次训练小时数";
+            this.Each.Name = "Each";
             // 
-            // maxHour30
+            // Max
             // 
-            this.maxHour30.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.maxHour30.Font = new System.Drawing.Font("宋体", 9F);
-            this.maxHour30.Location = new System.Drawing.Point(183, 90);
-            this.maxHour30.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
-            this.maxHour30.MaxLength = 4;
-            this.maxHour30.Name = "maxHour30";
-            this.maxHour30.Size = new System.Drawing.Size(47, 25);
-            this.maxHour30.TabIndex = 10;
-            this.maxHour30.Text = "36";
-            this.maxHour30.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Max.HeaderText = "同时段最多训练人数";
+            this.Max.Name = "Max";
+            // 
+            // Number
+            // 
+            this.Number.HeaderText = "先序科目数";
+            this.Number.Name = "Number";
+            // 
+            // Subjects
+            // 
+            this.Subjects.HeaderText = "先序科目编号序列";
+            this.Subjects.Name = "Subjects";
+            this.Subjects.ReadOnly = true;
+            // 
+            // IfTactic
+            // 
+            this.IfTactic.FalseValue = "0";
+            this.IfTactic.HeaderText = "战术科目";
+            this.IfTactic.IndeterminateValue = "0";
+            this.IfTactic.Name = "IfTactic";
+            this.IfTactic.ToolTipText = "是否为战术科目";
+            this.IfTactic.TrueValue = "1";
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "开始时间";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "结束时间";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "飞行员编号";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "飞行员姓名";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.HeaderText = "需训练科目数";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.HeaderText = "需训练科目编号序列";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
             // 
             // InputForm
             // 
@@ -660,6 +663,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.subjectTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pilotTable)).EndInit();
             this.parameter.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -672,8 +677,6 @@
             this.tableLayoutPanel2.PerformLayout();
             this.tabPanel.ResumeLayout(false);
             this.tabPanel.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -693,10 +696,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TableLayoutPanel tabPanel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label11;
@@ -712,6 +711,11 @@
         private System.Windows.Forms.DateTimePicker endDatePicker;
         private System.Windows.Forms.ComboBox dayShift;
         private System.Windows.Forms.ComboBox nightShift;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox maxHour30;
+        private System.Windows.Forms.TextBox maxHour7;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Identifier;
         private System.Windows.Forms.DataGridViewTextBoxColumn Day;
         private System.Windows.Forms.DataGridViewTextBoxColumn Night;
@@ -720,12 +724,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Number;
         private System.Windows.Forms.DataGridViewTextBoxColumn Subjects;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IfTactic;
-        private System.Windows.Forms.DataGridViewTextBoxColumn startTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn endTime;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox maxHour30;
-        private System.Windows.Forms.TextBox maxHour7;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private InputForm.CalendarColumn Column1;
+        private InputForm.CalendarColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
     }
 }

@@ -16,6 +16,7 @@ namespace PilotRosteringSystem
     {
         private Form1 form1;
         private String instanceName = "instance.txt";
+
         public InputForm(Form1 form)
         {
             InitializeComponent();
@@ -70,6 +71,18 @@ namespace PilotRosteringSystem
                 return false;
             }
 
+            if (Convert.ToInt32(maxHour7.Text) < 0)
+            {
+                MessageBox.Show("请输入正确的每7天最大训练时长！");
+                return false;
+            }
+
+            if (Convert.ToInt32(maxHour30.Text) < 0)
+            {
+                MessageBox.Show("请输入正确的每30天最大训练时长！");
+                return false;
+            }
+
             int i;
             String startDate, endDate;
             FileStream fileStream = new FileStream(fileName, FileMode.Create);
@@ -98,7 +111,11 @@ namespace PilotRosteringSystem
             {
                 if ((bool)subjectTable.Rows[i].Cells[7].FormattedValue)
                 {
-                    streamWriter.Write(subjectTable.Rows[i].Cells[0].Value + " " + subjectTable.Rows[i].Cells[8].Value + " " + subjectTable.Rows[i].Cells[9].Value);
+                    String[] strs = subjectTable.Rows[i].Cells[8].Value.ToString().Split(' ')[0].Split('/');
+                    startDate = formatDate(strs[0], strs[1], strs[2]);
+                    strs = subjectTable.Rows[i].Cells[9].Value.ToString().Split(' ')[0].Split('/');
+                    endDate = formatDate(strs[0], strs[1], strs[2]);
+                    streamWriter.Write(subjectTable.Rows[i].Cells[0].Value + " " + startDate + " " + endDate);
                     streamWriter.Write("\r\n");
                     break;
                 }
@@ -170,6 +187,14 @@ namespace PilotRosteringSystem
 
         private void InputForm_Load(object sender, EventArgs e)
         {
+            //CalendarColumn col = new CalendarColumn();
+            //DataGridViewColumn col = new DataGridViewColumn();
+            //col.HeaderText = "开始时间";
+            //subjectTable.Columns.Add(col);
+            //col = new CalendarColumn();
+            //col.HeaderText = "结束时间";
+            //subjectTable.Columns.Add(col);
+
             
         }
 
@@ -206,7 +231,7 @@ namespace PilotRosteringSystem
                     }
                     else
                     {
-                        table.Rows[index].Cells[i].ReadOnly = false;
+                        //table.Rows[index].Cells[i].ReadOnly = false;
                         table.Rows[index].Cells[i].Value = contentStrings[i];
                     }
                 }
@@ -230,7 +255,7 @@ namespace PilotRosteringSystem
                 {
                     if (cell.Value != null && !String.IsNullOrEmpty(cell.Value.ToString()))
                     {
-                        streamWriter.Write(cell.Value.ToString() + ",");
+                        streamWriter.Write(cell.FormattedValue.ToString() + ",");
                     }
                     else if(cell.ColumnIndex == 7) //战术科目
                     {
@@ -302,6 +327,10 @@ namespace PilotRosteringSystem
 
         private void subjectTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
             if (e.ColumnIndex == 7)    //如果是战术科目，允许输入开始时间
             {
                 for (int i = 0; i < subjectTable.RowCount; i++)
@@ -318,8 +347,10 @@ namespace PilotRosteringSystem
 
                 if ((bool)subjectTable.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue)
                 {
-                    subjectTable.Rows[e.RowIndex].Cells[8].Value = formatDate(startDatePicker.Value.Year.ToString(), startDatePicker.Value.Month.ToString(), startDatePicker.Value.Day.ToString());
-                    subjectTable.Rows[e.RowIndex].Cells[9].Value = formatDate(endDatePicker.Value.Year.ToString(), endDatePicker.Value.Month.ToString(), endDatePicker.Value.Day.ToString());
+                    subjectTable.Rows[e.RowIndex].Cells[8].Value = startDatePicker.Value;
+                    subjectTable.Rows[e.RowIndex].Cells[9].Value = endDatePicker.Value;
+                    //subjectTable.Rows[e.RowIndex].Cells[8].Value = formatDate(startDatePicker.Value.Year.ToString(), startDatePicker.Value.Month.ToString(), startDatePicker.Value.Day.ToString());
+                    //subjectTable.Rows[e.RowIndex].Cells[9].Value = formatDate(endDatePicker.Value.Year.ToString(), endDatePicker.Value.Month.ToString(), endDatePicker.Value.Day.ToString());
                 }
                 else
                 {
@@ -338,7 +369,7 @@ namespace PilotRosteringSystem
             {
                 if (!subjectTable.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.Equals("0"))
                 {
-                    subjectTable.Rows[e.RowIndex].Cells[6].ReadOnly = false;
+                    //subjectTable.Rows[e.RowIndex].Cells[6].ReadOnly = false;
                 }
                 else
                 {
@@ -350,8 +381,265 @@ namespace PilotRosteringSystem
 
         private void subjectTable_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
+            subjectTable.Rows[e.RowIndex].Cells[5].ReadOnly = true;
+            subjectTable.Rows[e.RowIndex].Cells[6].ReadOnly = true;
             subjectTable.Rows[e.RowIndex].Cells[8].ReadOnly = true;
             subjectTable.Rows[e.RowIndex].Cells[9].ReadOnly = true;
+        }
+
+        public class CalendarColumn : DataGridViewColumn
+        {
+            public CalendarColumn()
+                : base(new CalendarCell())
+            {
+            }
+
+            public override DataGridViewCell CellTemplate
+            {
+                get
+                {
+                    return base.CellTemplate;
+                }
+                set
+                {
+                    // Ensure that the cell used for the template is a CalendarCell.
+                    if (value != null &&
+                        !value.GetType().IsAssignableFrom(typeof(CalendarCell)))
+                    {
+                        throw new InvalidCastException("Must be a CalendarCell");
+                    }
+                    base.CellTemplate = value;
+                }
+            }
+        }
+        public class CalendarCell : DataGridViewTextBoxCell
+        {
+
+            public CalendarCell()
+                : base()
+            {
+                // Use the short date format.
+                this.Style.Format = "d";
+            }
+
+            public override void InitializeEditingControl(int rowIndex, object
+                initialFormattedValue, DataGridViewCellStyle dataGridViewCellStyle)
+            {
+                // Set the value of the editing control to the current cell value.
+                base.InitializeEditingControl(rowIndex, initialFormattedValue,
+                    dataGridViewCellStyle);
+                CalendarEditingControl ctl =
+                    DataGridView.EditingControl as CalendarEditingControl;
+                if (this.ValueType == typeof(String))
+                {
+                    String[] strs = this.Value.ToString().Split(' ')[0].Split('/');
+                    int year = Convert.ToInt32(strs[0]);
+                    int month = Convert.ToInt32(strs[1]);
+                    int day = Convert.ToInt32(strs[2]);
+                    ctl.Value = new DateTime(year, month, day);
+                }
+                else
+                {
+                    ctl.Value = (DateTime)this.Value;
+                }
+            }
+
+            public override Type EditType
+            {
+                get
+                {
+                    // Return the type of the editing contol that CalendarCell uses.
+                    return typeof(CalendarEditingControl);
+                }
+            }
+
+            public override Type ValueType
+            {
+                get
+                {
+                    // Return the type of the value that CalendarCell contains.
+                    return typeof(String);
+                }
+            }
+
+            public override object DefaultNewRowValue
+            {
+                get
+                {
+                    // Use the current date and time as the default value.
+                    //return DateTime.Now;
+                    return null;
+                }
+            }
+        }
+
+        class CalendarEditingControl : DateTimePicker, IDataGridViewEditingControl
+        {
+            DataGridView dataGridView;
+            private bool valueChanged = false;
+            int rowIndex;
+
+            public CalendarEditingControl()
+            {
+                this.Format = DateTimePickerFormat.Short;
+            }
+
+            // Implements the IDataGridViewEditingControl.EditingControlFormattedValue 
+            // property.
+            public object EditingControlFormattedValue
+            {
+                get
+                {
+                    return this.Value.ToShortDateString();
+                }
+                set
+                {
+                    String newValue = value as String;
+                    if (newValue != null)
+                    {
+                        this.Value = DateTime.Parse(newValue);
+                    }
+                }
+            }
+
+            // Implements the 
+            // IDataGridViewEditingControl.GetEditingControlFormattedValue method.
+            public object GetEditingControlFormattedValue(
+                DataGridViewDataErrorContexts context)
+            {
+                return EditingControlFormattedValue;
+            }
+
+            // Implements the 
+            // IDataGridViewEditingControl.ApplyCellStyleToEditingControl method.
+            public void ApplyCellStyleToEditingControl(
+                DataGridViewCellStyle dataGridViewCellStyle)
+            {
+                this.Font = dataGridViewCellStyle.Font;
+                this.CalendarForeColor = dataGridViewCellStyle.ForeColor;
+                this.CalendarMonthBackground = dataGridViewCellStyle.BackColor;
+            }
+
+            // Implements the IDataGridViewEditingControl.EditingControlRowIndex 
+            // property.
+            public int EditingControlRowIndex
+            {
+                get
+                {
+                    return rowIndex;
+                }
+                set
+                {
+                    rowIndex = value;
+                }
+            }
+
+            // Implements the IDataGridViewEditingControl.EditingControlWantsInputKey 
+            // method.
+            public bool EditingControlWantsInputKey(
+                Keys key, bool dataGridViewWantsInputKey)
+            {
+                // Let the DateTimePicker handle the keys listed.
+                switch (key & Keys.KeyCode)
+                {
+                    case Keys.Left:
+                    case Keys.Up:
+                    case Keys.Down:
+                    case Keys.Right:
+                    case Keys.Home:
+                    case Keys.End:
+                    case Keys.PageDown:
+                    case Keys.PageUp:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            // Implements the IDataGridViewEditingControl.PrepareEditingControlForEdit 
+            // method.
+            public void PrepareEditingControlForEdit(bool selectAll)
+            {
+                // No preparation needs to be done.
+            }
+
+            // Implements the IDataGridViewEditingControl
+            // .RepositionEditingControlOnValueChange property.
+            public bool RepositionEditingControlOnValueChange
+            {
+                get
+                {
+                    return false;
+                }
+            }
+
+            // Implements the IDataGridViewEditingControl
+            // .EditingControlDataGridView property.
+            public DataGridView EditingControlDataGridView
+            {
+                get
+                {
+                    return dataGridView;
+                }
+                set
+                {
+                    dataGridView = value;
+                }
+            }
+
+            // Implements the IDataGridViewEditingControl
+            // .EditingControlValueChanged property.
+            public bool EditingControlValueChanged
+            {
+                get
+                {
+                    return valueChanged;
+                }
+                set
+                {
+                    valueChanged = value;
+                }
+            }
+
+            // Implements the IDataGridViewEditingControl
+            // .EditingPanelCursor property.
+            public Cursor EditingPanelCursor
+            {
+                get
+                {
+                    return base.Cursor;
+                }
+            }
+
+            protected override void OnValueChanged(EventArgs eventargs)
+            {
+                // Notify the DataGridView that the contents of the cell
+                // have changed.
+                valueChanged = true;
+                this.EditingControlDataGridView.NotifyCurrentCellDirty(true);
+                base.OnValueChanged(eventargs);
+            }
+        }
+
+        private void subjectTable_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 6 || e.ColumnIndex == 5)    //如果是先序科目序列
+            {
+                subjectTable.Rows[e.RowIndex].Selected = true;
+
+                SelectSubjects form = new SelectSubjects(subjectTable, null);
+                form.Show();
+            }
+        }
+
+        private void pilotTable_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 3)    //如果是科目序列
+            {
+                pilotTable.Rows[e.RowIndex].Selected = true;
+                SelectSubjects form = new SelectSubjects(subjectTable, pilotTable);
+                form.Show();
+            }
         }
     }
 }
