@@ -53,17 +53,18 @@ namespace PilotRosteringSystem
         private int numberOfPerPage = 30;
         private const String HEADER = " ";
         private DataTable sourceData;
-        private int currentPage, pageCount, currentYear, weekOfFirstDay, currentOffset, userPage;
+        private int currentPage, pageCount, currentYear, weekOfFirstDay, currentOffset;
         private String instanceFile, lastRoster, unfinishedFile, unfinishedDate;
         private Hashtable colorTable, shiftTable;
         private const int maxDayshift = 5;
         private String[] shifts = { "D1", "D2", "D3", "D4", "D5", "N1", "N2" };
-        private Color[] colors = { Color.LightPink, Color.MediumOrchid, Color.OrangeRed, Color.DarkTurquoise, Color.NavajoWhite, Color.SlateGray, Color.DarkSeaGreen };
+        private Color[] colors = { Color.LightPink, Color.MediumOrchid, Color.OrangeRed, Color.DarkTurquoise, Color.Peru, Color.SlateGray, Color.DarkSeaGreen };
         private String[] weekDays = { "周一", "周二", "周三", "周四", "周五", "周六", "周日" };
         private ArrayList unfinishedList;
         private ArrayList unfinishedActionList;
         private int dayShifts, nightShifts;
         private Label[] shiftLabels = { };
+        private int startOfTactic, endOfTactic;
         
         private DateTime startDay, endDay;
         public Form1()
@@ -78,7 +79,8 @@ namespace PilotRosteringSystem
             currentYear = 2016;
             weekOfFirstDay = 1;
             currentOffset = 0;
-            userPage = 0;
+            startOfTactic = 0;
+            endOfTactic = 0;
             dayShifts = 3;
             nightShifts = 1;
             
@@ -216,7 +218,12 @@ namespace PilotRosteringSystem
             {
                 setShiftTable();
             }
-            
+            if ((strLine = streamReader.ReadLine()) != null)  //read the tactic time
+            {
+                string[] contentStrings = strLine.Split(',');
+                startOfTactic = Convert.ToInt32(contentStrings[0].Substring(4, 4));
+                endOfTactic = Convert.ToInt32(contentStrings[1].Substring(4, 4));
+            }
             //读取表头
             if ((strLine = streamReader.ReadLine()) != null)
             {
@@ -327,6 +334,7 @@ namespace PilotRosteringSystem
             for (int i = 0; i < numberOfPerPage && i + baseOffset + 1 < columnsCount; i++)
             {
                 DataColumn dataColumn = new DataColumn(sourceData.Columns[i + baseOffset + 2].ColumnName);
+                
                 desData.Columns.Add(dataColumn);
             }
 
@@ -439,7 +447,6 @@ namespace PilotRosteringSystem
             dataGridView.Size = new Size(width, height);
             dataGridView.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridView.ColumnHeadersVisible = true;
-
         }
 
         private void 未完成ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -475,6 +482,16 @@ namespace PilotRosteringSystem
         private void dataGridView_DataSourceChanged(object sender, EventArgs e)
         {
             setCellBackColor();
+           
+            for (int i = 1; i < dataGridView.ColumnCount; i++)
+            {
+                int day = Convert.ToInt32(dataGridView.Columns[i].HeaderText.Substring(0, 4));
+                if (day >= startOfTactic && day <= endOfTactic)
+                {
+                    dataGridView.Columns[i].HeaderCell.Style.BackColor = Color.PowderBlue;
+                    dataGridView.Columns[i].DefaultCellStyle.BackColor = Color.PowderBlue;
+                }
+            }
         }
 
         private bool isDateEqual(String date)
