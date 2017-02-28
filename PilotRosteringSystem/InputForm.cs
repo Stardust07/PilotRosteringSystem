@@ -14,10 +14,10 @@ namespace PilotRosteringSystem
 {
     public partial class InputForm : Form
     {
-        private Form1 form1;
+        private MainForm form1;
         private String instanceName = "instance.txt";
 
-        public InputForm(Form1 form)
+        public InputForm(MainForm form)
         {
             InitializeComponent();
             form1 = form;
@@ -52,25 +52,20 @@ namespace PilotRosteringSystem
 
         private bool saveInstance(String fileName)
         {
-            if (Convert.ToInt32(dayShift.Text) > 5 || Convert.ToInt32(dayShift.Text) < 0 || Convert.ToInt32(nightShift.Text) > 2 || Convert.ToInt32(nightShift.Text) < 0)
-            {
-                MessageBox.Show("请输入正确的时间段配置参数！");
-                return false;
-            }
-            
-            if (Convert.ToInt32(maxDays.Text) < 0)
+            int temp;
+            if (!Int32.TryParse(maxDays.Text, out temp) || temp < 0)
             {
                 MessageBox.Show("请输入正确的最大连续训练天数！");
                 return false;
             }
 
-            if (Convert.ToInt32(maxHour7.Text) < 0)
+            if (!Int32.TryParse(maxHour7.Text, out temp) || temp < 0)
             {
                 MessageBox.Show("请输入正确的每7天最大训练时长！");
                 return false;
             }
 
-            if (Convert.ToInt32(maxHour30.Text) < 0)
+            if (!Int32.TryParse(maxHour30.Text, out temp) || temp < 0)
             {
                 MessageBox.Show("请输入正确的每30天最大训练时长！");
                 return false;
@@ -88,7 +83,8 @@ namespace PilotRosteringSystem
             streamWriter.Write(startDate + " " + endDate + "\r\n");   //训练周期
 
             streamWriter.Write("\r\nDAY_SHIFT\r\n");
-            streamWriter.Write("D" + dayShift.Text + " " + "N" + nightShift.Text + "\r\n");   //时间段配置
+            //streamWriter.Write("D" + dayShift.Text + " " + "N" + nightShift.Text + "\r\n");   //时间段配置
+            streamWriter.Write("D1 N1" + "\r\n");   //时间段配置
 
             streamWriter.Write("\r\nMAX_DAY\r\n");
             streamWriter.Write(maxDays.Text + "\r\n");   //最大连续训练天数配置
@@ -104,11 +100,21 @@ namespace PilotRosteringSystem
             {
                 if ((bool)subjectTable.Rows[i].Cells[7].FormattedValue)
                 {
-                    String[] strs = subjectTable.Rows[i].Cells[8].Value.ToString().Split(' ')[0].Split('/');
-                    startDate = formatDate(strs[0], strs[1], strs[2]);
-                    strs = subjectTable.Rows[i].Cells[9].Value.ToString().Split(' ')[0].Split('/');
-                    endDate = formatDate(strs[0], strs[1], strs[2]);
-                    streamWriter.Write(subjectTable.Rows[i].Cells[0].Value + " " + startDate + " " + endDate);
+                    String tacticDate = "";
+                    if (subjectTable.Rows[i].Cells[8].Value == null || String.IsNullOrEmpty(subjectTable.Rows[i].Cells[8].Value.ToString()))
+                    {
+                        tacticDate = "ID_NONE";
+                    }
+                    else
+                    {
+                        String[] strs = subjectTable.Rows[i].Cells[8].Value.ToString().Split(' ')[0].Split('/');
+                        startDate = formatDate(strs[0], strs[1], strs[2]);
+                        strs = subjectTable.Rows[i].Cells[9].Value.ToString().Split(' ')[0].Split('/');
+                        endDate = formatDate(strs[0], strs[1], strs[2]);
+                        tacticDate = startDate + " " + endDate;
+                    }
+                    
+                    streamWriter.Write(subjectTable.Rows[i].Cells[0].Value + " " + tacticDate);
                     streamWriter.Write("\r\n");
                     break;
                 }
@@ -124,7 +130,7 @@ namespace PilotRosteringSystem
                 DataGridViewRow row = subjectTable.Rows[i];
                 for (int j = 0; j < 5; j++)
                 {
-                    if (j < 2 && (row.Cells[j].Value == null || String.IsNullOrEmpty(row.Cells[j].Value.ToString())))
+                    if (j < 6 && (row.Cells[j].Value == null || String.IsNullOrEmpty(row.Cells[j].Value.ToString())))
                     {
                         MessageBox.Show("请输入正确的科目信息！");
                         return false;
@@ -171,7 +177,7 @@ namespace PilotRosteringSystem
             }
         }
 
-        private String formatDate(String year, String month, String day)
+        public static String formatDate(String year, String month, String day)
         {
             String result = "";
             result += year;
@@ -197,7 +203,11 @@ namespace PilotRosteringSystem
 
             if ((strLine = streamReader.ReadLine()) != null)
             {
-                rowCount = Convert.ToInt32(strLine);
+                if (!Int32.TryParse(strLine, out rowCount)) {
+                    MessageBox.Show("文件格式错误");
+                    return;
+                }
+                //rowCount = Convert.ToInt32(strLine);
             }
             while ((strLine = streamReader.ReadLine()) != null && table.RowCount <= rowCount)
             {
@@ -337,8 +347,10 @@ namespace PilotRosteringSystem
 
                 if ((bool)subjectTable.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue)
                 {
-                    subjectTable.Rows[e.RowIndex].Cells[8].Value = startDatePicker.Value;
-                    subjectTable.Rows[e.RowIndex].Cells[9].Value = endDatePicker.Value;
+                    //subjectTable.Rows[e.RowIndex].Cells[8].Value = startDatePicker.Value;
+                    //subjectTable.Rows[e.RowIndex].Cells[9].Value = endDatePicker.Value;
+                    subjectTable.Rows[e.RowIndex].Cells[8].Value = "";
+                    subjectTable.Rows[e.RowIndex].Cells[9].Value = "";
                               }
                 else
                 {
@@ -418,18 +430,18 @@ namespace PilotRosteringSystem
                     dataGridViewCellStyle);
                 CalendarEditingControl ctl =
                     DataGridView.EditingControl as CalendarEditingControl;
-                if (this.ValueType == typeof(String))
-                {
-                    String[] strs = this.Value.ToString().Split(' ')[0].Split('/');
-                    int year = Convert.ToInt32(strs[0]);
-                    int month = Convert.ToInt32(strs[1]);
-                    int day = Convert.ToInt32(strs[2]);
-                    ctl.Value = new DateTime(year, month, day);
-                }
-                else
-                {
-                    ctl.Value = (DateTime)this.Value;
-                }
+                //if (this.ValueType == typeof(String))
+                //{
+                //    String[] strs = this.Value.ToString().Split(' ')[0].Split('/');
+                //    int year = Convert.ToInt32(strs[0]);
+                //    int month = Convert.ToInt32(strs[1]);
+                //    int day = Convert.ToInt32(strs[2]);
+                //    ctl.Value = new DateTime(year, month, day);
+                //}
+                //else
+                //{
+                //    ctl.Value = (DateTime)this.Value;
+                //}
             }
 
             public override Type EditType
