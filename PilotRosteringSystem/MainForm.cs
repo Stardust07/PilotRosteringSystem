@@ -158,7 +158,6 @@ namespace PilotRosteringSystem
             pageContainer.Visible = true;
             tipLabel.Visible = false;
 
-            //dataGridView.DataSource = getDataByDay(currentOffset + (currentPage - 1) * numberOfPerPage + 1);
             dataGridView.DataSource = getDataByPage(currentPage);
             for (int i = 0; i < dataGridView.Columns.Count; i++)
             {
