@@ -23,6 +23,17 @@ namespace PilotRosteringSystem
         {
             String startDate, endDate, currentDate;
 
+            if (DateTime.Compare(currentDatePicker.Value, startDatePicker.Value) >= 0)
+            {
+                MessageBox.Show("当前日期需要小于战术科目开始日期");
+                return;
+            }
+            if (DateTime.Compare(startDatePicker.Value, endDatePicker.Value) >= 0)
+            {
+                MessageBox.Show("战术科目开始日期需要小于结束日期");
+                return;
+            }
+
             startDate = InputForm.formatDate(startDatePicker.Value.Year.ToString(), startDatePicker.Value.Month.ToString(), startDatePicker.Value.Day.ToString());
             endDate = InputForm.formatDate(endDatePicker.Value.Year.ToString(), endDatePicker.Value.Month.ToString(), endDatePicker.Value.Day.ToString());
             currentDate = InputForm.formatDate(currentDatePicker.Value.Year.ToString(), currentDatePicker.Value.Month.ToString(), currentDatePicker.Value.Day.ToString());

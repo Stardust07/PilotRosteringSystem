@@ -20,7 +20,6 @@ D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRoster
 E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\bin\Debug\PilotRosteringSystem.exe.config
 E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\bin\Debug\PilotRosteringSystem.exe
 E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\bin\Debug\PilotRosteringSystem.pdb
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.csprojFakesResolveAssemblyReference.cache
 E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.MainForm.resources
 E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.InputForm.resources
 E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.Properties.Resources.resources

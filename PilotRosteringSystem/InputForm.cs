@@ -53,7 +53,7 @@ namespace PilotRosteringSystem
         private bool saveInstance(String fileName)
         {
             int temp;
-            if (!Int32.TryParse(maxDays.Text, out temp) || temp < 0)
+            if (!Int32.TryParse(maxDays.Text, out temp) || temp < 0 || temp > 7)
             {
                 MessageBox.Show("请输入正确的最大连续训练天数！");
                 return false;
