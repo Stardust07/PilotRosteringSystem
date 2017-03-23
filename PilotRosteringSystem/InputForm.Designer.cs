@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btn_confirm = new System.Windows.Forms.Button();
             this.subjectTable = new System.Windows.Forms.DataGridView();
             this.Identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -142,8 +142,8 @@
             // 
             // Day
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            this.Day.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            this.Day.DefaultCellStyle = dataGridViewCellStyle2;
             this.Day.HeaderText = "白天训练次数";
             this.Day.Name = "Day";
             // 

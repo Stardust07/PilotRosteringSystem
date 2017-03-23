@@ -225,7 +225,7 @@ namespace PilotRosteringSystem
                         table.Rows[index].Cells[i].Value = contentStrings[i];
                         table.Rows[index].Cells[i].ReadOnly = true;
                     }
-                    else if (String.IsNullOrEmpty(contentStrings[i]))
+                    else if (table.ColumnCount == 10 && i == 8 && table.Rows[index].Cells[i - 1].Value.Equals("False"))
                     {
                         table.Rows[index].Cells[i].ReadOnly = true;
                     }
@@ -430,18 +430,22 @@ namespace PilotRosteringSystem
                     dataGridViewCellStyle);
                 CalendarEditingControl ctl =
                     DataGridView.EditingControl as CalendarEditingControl;
-                //if (this.ValueType == typeof(String))
-                //{
-                //    String[] strs = this.Value.ToString().Split(' ')[0].Split('/');
-                //    int year = Convert.ToInt32(strs[0]);
-                //    int month = Convert.ToInt32(strs[1]);
-                //    int day = Convert.ToInt32(strs[2]);
-                //    ctl.Value = new DateTime(year, month, day);
-                //}
-                //else
-                //{
-                //    ctl.Value = (DateTime)this.Value;
-                //}
+                if (this.ValueType == typeof(String) && !String.IsNullOrEmpty(this.Value.ToString()))
+                {
+                    String[] strs = this.Value.ToString().Split(' ')[0].Split('/');
+                    int year = Convert.ToInt32(strs[0]);
+                    int month = Convert.ToInt32(strs[1]);
+                    int day = Convert.ToInt32(strs[2]);
+                    ctl.Value = new DateTime(year, month, day);
+                }
+                else if (this.ValueType == typeof(String) && String.IsNullOrEmpty(this.Value.ToString()))
+                {
+                    //ctl.Value = null;
+                }
+                else
+                {
+                    ctl.Value = (DateTime)this.Value;
+                }
             }
 
             public override Type EditType
