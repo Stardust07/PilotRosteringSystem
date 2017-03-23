@@ -17,15 +17,3 @@ D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRoster
 D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.InputForm.resources
 D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.Properties.Resources.resources
 D:\qym\workspace\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.csproj.GenerateResource.Cache
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\bin\Debug\PilotRosteringSystem.exe.config
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\bin\Debug\PilotRosteringSystem.exe
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\bin\Debug\PilotRosteringSystem.pdb
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.MainForm.resources
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.InputForm.resources
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.Properties.Resources.resources
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.SelectSubjects.resources
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.StatisticsForm.resources
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.TacticForm.resources
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.csproj.GenerateResource.Cache
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.exe
-E:\qym\workspace\PilotRosteringSolver\PilotRosteringSystem\PilotRosteringSystem\obj\Debug\PilotRosteringSystem.pdb
